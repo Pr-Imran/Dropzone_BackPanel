@@ -1,20 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DropZone_BackPanel.Data.Entity.MasterData
 {
     public class District : Base
     {
-        [Required]
-        public string? districtCode { get; set; }
-
-        [Required]
-        public string? districtName { get; set; }
-        public string? districtNameBn { get; set; }
-
-        public string? shortName { get; set; }
-
         public int divisionId { get; set; }
+        public Division division { get; set; }
 
-        public Division? division { get; set; }
+        [Column(TypeName = "NVARCHAR(20)")]
+        public string? districtCode { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
+        public string? districtName { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
+        public string? districtNameBn { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
+        public string? shortName { get; set; }
+        [Column(TypeName = "NVARCHAR(10)")]
+        public string? isActive { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
+        public string? latitude { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
+        public string? longitude { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace DropZone_BackPanel.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Dashboard", "DashBoard", new { area = "Dboard" });
         }
 
         public IActionResult Privacy()

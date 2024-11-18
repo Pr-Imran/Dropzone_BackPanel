@@ -74,10 +74,11 @@ namespace DropZone_BackPanel.Areas.Auth.Controllers
             {
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
-                    return Redirect(returnUrl); // Safely redirect
+                    return Redirect(returnUrl); 
                 }
 
-                return RedirectToAction("Index", "Home"); // Default fallback
+                
+                return RedirectToAction("Dashboard", "DashBoard", new { area = "Dboard" });
             }
 
             if (result.IsLockedOut)
@@ -89,7 +90,7 @@ namespace DropZone_BackPanel.Areas.Auth.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
-            return View(model); // Redisplay login view if unsuccessful
+            return View(model); 
         }
 
 
@@ -354,7 +355,7 @@ namespace DropZone_BackPanel.Areas.Auth.Controllers
         {
             await _signInManager.SignOutAsync();
             
-            return RedirectToPage("/Login");
+            return RedirectToAction("Login");
         }
 
         //[HttpGet]

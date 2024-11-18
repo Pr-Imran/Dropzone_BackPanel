@@ -21,7 +21,8 @@ namespace DropZone_BackPanel.Context
         public DbSet<Division> divisions { get; set; }
         public DbSet<PostOffice> postOffices { get; set; }
         public DbSet<Thana> thanas { get; set; }
-        public DbSet<Union> unions { get; set; }
+        public DbSet<UnionWard> unionWards { get; set; }
+        public DbSet<RangeMetro> rangeMetros { get; set; }
         public DbSet<Village> villages { get; set; }
         #endregion
 

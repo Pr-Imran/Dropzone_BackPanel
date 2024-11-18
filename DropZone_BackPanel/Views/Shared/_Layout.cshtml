@@ -1,748 +1,1578 @@
 ﻿
-@using DropZone_BackPanel.Data.Entity
-@using Microsoft.AspNetCore.Identity;
-
-@inject UserManager<ApplicationUser> _userManager;
-
+@using DropZone_BackPanel.ERPService.AuthService.Interfaces
+@using System
+@inject IUserInfoes userInfo
 @{
-    // var emp = await userInfo.GetUserInfoByUserName(User.Identity.Name);
-    // var userInfos = await userInfo.GetUserBasicInfoes(User.Identity.Name);
-    //var userPhoto = await emplyeeService.GetEmployeePhotographByEmpId(emp.Id);
-    var baseImageUrl = "http://portfolio.police.gov.bd";
-    // var role = await _userManager.GetRolesAsync(userInfos);
+   var userInfos = await userInfo.GetUserInfoByUserName1(@User.Identity.Name);
+    var EmpInfoImage = userInfos.Where(x => x.UserName == @User.Identity.Name).FirstOrDefault();
+    //var navbarss = await userInfo.AssignPage(User.Identity.Name);
+   // var roles = await _userManager.GetRolesAsync(user);
+    
+
+    List<string> role;
+    if (EmpInfoImage != null && EmpInfoImage.lstRole != null && EmpInfoImage.lstRole.Any())
+    {
+        role = EmpInfoImage.lstRole;
+    }
+    else
+    {
+       
+        role = new List<string>(); 
+    }
+
+
+
+    
 }
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Police Telecom</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="Apex admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Apex admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/img/ico/favicon.ico">
-    @*<link rel="shortcut icon" type="image/png" href="~/app-assets/img/ico/favicon-32.png">*@
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link href="http://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
-    <!-- BEGIN VENDOR CSS-->
-    <!-- font icons-->
-    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/feather/style.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/simple-line-icons/style.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/prism.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/switchery.min.css">
-    @*<link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/chartist.min.css">*@
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/datatables/dataTables.bootstrap4.min.css">
-    <!-- END VENDOR CSS-->
-    <!-- BEGIN APEX CSS-->
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/components.css">
-    <link rel="stylesheet" href="~/app-assets/css/plugins/switchery.css">
-    <!-- END APEX CSS-->
-    <!-- BEGIN Page Level CSS-->
-    @*<link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/dashboard1.css">*@
-    <!-- END Page Level CSS-->
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewData["Title"] -Drop Zone</title>
+
+    @*<link rel="shortcut icon" href="/EmpImages/@company" type="image/x-icon" />*@
+    <link rel="shortcut icon" href="/EmpImages/Elpida ERP_Outline.png" type="image/x-icon" />
+    <!-- Include Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="/CustomSelectOption/select2.min.css" rel="stylesheet" />
+    <link href="~/SweetAlert/sweetalert2.css" rel="stylesheet" />
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom Date Picker-->
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <!-- Custom styles for this page -->
+
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src=" https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+
+   
     <style>
-        /*.modal-backdrop{
-            z-index:0!important;
-        }*/
-        #scrl::-webkit-scrollbar {
-            display: none;
+        .collapse {
+            margin: 0 !important;
         }
 
-        #scrl {
-            height: 370px;
+        .card-title {
+            margin-top: 5px !important;
+        }
+
+        h5 {
+            margin-top: 7px !important;
+        }
+
+        h4 {
+            margin-top: 7px !important;
+        }
+
+        h2 {
+            margin-top: 7px !important;
+        }
+
+        body {
+            font-size: 11pt !important;
+            color: black !important;
+            background: #ffffff !important;
+
+        }
+
+        table .btn {
+            font-size: 8pt !important;
+            padding: 3px 5px 3px 5px !important;
+        }
+
+        table th, table td {
+            /*padding: 2px 2px 2px 2px !important;*/
+            color: black !important;
+            font-weight: normal !important;
+        }
+
+        .mainMenu, .DashBoardMenu {
+            background: #252c32;
+            /*position:relative;*/
+        }
+
+            .mainMenu :hover, .DashBoardMenu:hover {
+                background: #13007c;
+            }
+
+        .subMenu {
+            /*position:absolute;
+                                            top:0;
+                                            right:0;*/
+            background: #3f4b54;
+            /*margin: 0 !important;*/
+            /* margin-left: 110px;*/
+            z-index: 999;
+        }
+
+            .subMenu :hover {
+                background: #13007c !important;
+            }
+
+        .col-form-label {
+            color: #606066 !important;
+            font-weight: normal !important;
+            padding: 0 0 0 0;
+        }
+
+        .form-control {
+            color: #606066 !important;
+            font-size: 10pt !important;
+            padding: 1px 20px 1px 8px;
+            border: 1px solid #606066;
+            height: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 6px !important;
+        }
+        /*Parsly  Section*/
+        input.parsley-success,
+        select.parsley-success,
+        textarea.parsley-success {
+            color: #468847;
+            background-color: #DFF0D8;
+            border: 1px solid #D6E9C6;
+        }
+
+        input.parsley-error,
+        select.parsley-error,
+        textarea.parsley-error {
+            color: #B94A48;
+            background-color: #F2DEDE;
+            border: 1px solid #EED3D7;
+        }
+
+        .parsley-errors-list {
+            margin: 2px 0 3px;
+            padding: 0;
+            list-style-type: none;
+            font-size: 0.9em;
+            line-height: 0.9em;
+            opacity: 0;
+            transition: all .3s ease-in;
+            -o-transition: all .3s ease-in;
+            -moz-transition: all .3s ease-in;
+            -webkit-transition: all .3s ease-in;
+        }
+
+            .parsley-errors-list.filled {
+                opacity: 1;
+            }
+
+        .parsley-type, .parsley-required, .parsley-equalto {
+            color: #ff0000;
+        }
+        /*Parsly  Section*/
+        .btnCustom {
+            background-color: #004474;
+        }
+
+        .ui-autocomplete {
+            cursor: pointer;
+            height: 400px;
+            width: 300px;
+            overflow-y: scroll;
+            z-index: 1050;
+        }
+
+        .buttons-excel {
+            font-weight: 400;
+            text-align: center;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            border-radius: .2rem;
+            color: #fff;
+            background-color: #36b9cc;
+            border-color: #36b9cc;
+        }
+
+        .buttons-print {
+            font-weight: 400;
+            text-align: center;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            border-radius: .2rem;
+            color: #fff;
+            background-color: #1cc88a;
+            border-color: #1cc88a;
+        }
+
+        .buttons-csv {
+            font-weight: 400;
+            text-align: center;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            border-radius: .2rem;
+            color: white !important;
+            background-color: darkviolet !important;
+            border: 1px solid darkviolet !important;
+        }
+
+        .identity-box {
+            color: black;
+            font-weight: bolder;
+            text-align: right;
+            background: #d4d6d8;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .identity-box-center {
+            color: black;
+            font-weight: bolder;
+            text-align: center;
+            background: #eff2f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        /*////////////////////////////////*/
+
+        .userimg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid gray;
+            box-shadow: 1px 1px gray;
+        }
+
+        .dropdown-item {
+            color: sienna;
+            background: /*#0e4472*/ #13007c !important;
+            font-size: 13px;
+            width: 175px !important;
+            margin: 0 auto;
+            border-radius: 30px;
+            margin-bottom: 5px;
+        }
+
+            .dropdown-item .fas {
+                margin-top: 0;
+                font-size: 13px;
+            }
+
+            .dropdown-item:hover {
+                background: #C99AF7 !important;
+            }
+
+
+        .dropdown-itemb {
+            color: sienna;
+            background: #13007c !important;
+            font-size: 13px;
+            width: 175px !important;
+            margin: 0 auto;
+            border-radius: 30px;
+            margin-bottom: 5px;
+        }
+
+            .dropdown-itemb .fas {
+                margin-top: 0;
+                font-size: 13px;
+            }
+
+            .dropdown-itemb:hover {
+                background: #13007c !important;
+            }
+
+
+        .btncamera {
+            cursor: pointer;
+        }
+
+        input, select {
+            box-shadow: none !important;
+        }
+
+
+        /*Edit Employee Heading CSS*/
+        /*.outerr-box {
+                                                    background: #E0E0E0;
+                                                    padding: 5px 10px;
+                                                    width: fit-content;
+                                                    color: black;
+                                                    font-weight: 700;
+                                                    margin-left: 5px;
+                                                    text-align: center;
+                                                    border-left: 2px solid;
+                                                }
+
+                                                    .outerr-box p {
+                                                        margin: 0;
+                                                    }*/
+        .outBox p:first-child {
+            font-size: 22px;
+        }
+
+        .outBox img {
+            height: 70px !important;
+            width: 70px !important;
+        }
+
+        .form-group label {
+            color: black !important;
+        }
+
+        #menu .navbar-nav {
+            max-height: 500px;
             overflow: scroll;
         }
 
-        .addToCart {
-            height: 350px;
-            overflow: auto;
-            top: 0;
-        }
-
-        #grid,
-        #list {
-            height: 497px;
-            overflow: scroll;
-        }
-
-        #itemImage {
-            height: 130px;
-        }
-
-        @@media screen and (min-height: 870px) {
-            #grid, #list {
-                height: 770px;
-                overflow: scroll;
-            }
-            #itemImage{
-                height:172px;
-            }
-            #scrl {
-                height: 650px;
-                overflow: scroll;
+            #menu .navbar-nav::-webkit-scrollbar {
+                width: 0; /* Remove scrollbar space */
+                background: transparent; /* Optional: just make scrollbar invisible */
             }
 
-            .addToCart {
-                height: 600px;
-                overflow: auto;
+
+
+
+        /*Notification*/
+        .notification a {
+            text-decoration: none;
+            color: black;
+        }
+
+            .notification a:hover {
+                text-decoration: none;
+            }
+
+            .notification a:visited {
+                color: black;
+            }
+
+        .notification .box::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+            border-radius: 5px
+        }
+
+        .notification .box::-webkit-scrollbar {
+            width: 10px;
+            background-color: #F5F5F5;
+            border-radius: 5px
+        }
+
+        .notification .box::-webkit-scrollbar-thumb {
+            background-color: black;
+            border: 2px solid black;
+            border-radius: 5px
+        }
+
+        .notification header {
+            -moz-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+            height: 110px;
+            vertical-align: middle;
+        }
+
+        .notification h1 {
+            float: left;
+            padding: 10px 30px
+        }
+
+        /*body {
+                                                    margin: 0;
+                                                    padding: 0;
+                                                    font-family: 'Raleway', sans-serif;
+                                                }*/
+
+        .notification .icons {
+            display: inline;
+            float: right
+        }
+
+        .notification {
+            padding-top: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+            .notification .number1 {
+                height: 22px;
+                width: 22px;
+                background-color: #d63031;
+                border-radius: 20px;
+                color: white;
+                text-align: center;
+                position: absolute;
+                top: 15px;
+                left: 60px;
+                border-style: solid;
+                border-width: 2px;
+            }
+
+                .notification .number1:empty {
+                    display: none;
+                }
+
+            .notification .notBtn {
+                transition: 0.5s;
+                cursor: pointer
+            }
+
+            .notification .fas {
+                font-size: 25pt;
+                padding-bottom: 10px;
+                color: black;
+                margin-right: 40px;
+                margin-left: 40px;
+                animation: color .5s ease-in-out infinite;
+            }
+
+
+            .notification .box {
+                width: 400px;
+                height: 0px;
+                border-radius: 10px;
+                transition: 0.5s;
+                position: absolute;
+                overflow-y: scroll;
+                padding: 0px;
+                left: -300px;
+                margin-top: 5px;
+                background-color: #F4F4F4;
+                -webkit-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.2);
+                -moz-box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+                box-shadow: 10px 10px 23px 0px rgba(0,0,0,0.1);
+                cursor: context-menu;
+            }
+
+            .notification .fas:hover {
+                color: #d63031;
+            }
+
+            .notification .notBtn:hover > .box {
+                height: 60vh
+            }
+
+            .notification .content {
+                padding: 20px;
+                color: black;
+                vertical-align: middle;
+                text-align: left;
+            }
+
+            .notification .gry {
+                background-color: #F4F4F4;
+            }
+
+            .notification .top {
+                color: black;
+                padding: 10px
+            }
+
+            .notification .display {
+                position: relative;
+            }
+
+            .notification .cont {
+                position: absolute;
                 top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #F4F4F4;
+            }
+
+                .notification .cont:empty {
+                    display: none;
+                }
+
+            .notification .stick {
+                text-align: center;
+                display: block;
+                font-size: 50pt;
+                padding-top: 70px;
+                padding-left: 80px
+            }
+
+                .notification .stick:hover {
+                    color: black;
+                }
+
+            .notification .cent {
+                text-align: center;
+                display: block;
+            }
+
+            .notification .sec {
+                padding: 25px 10px;
+                background-color: #F4F4F4;
+                transition: 0.5s;
+            }
+
+            .notification .secRead {
+                padding: 25px 10px;
+                background-color: #D6DBE9;
+                transition: 0.5s;
+            }
+
+            .notification .profCont {
+                padding-left: 15px;
+            }
+
+            .notification .profile {
+                -webkit-clip-path: circle(50% at 50% 50%);
+                clip-path: circle(50% at 50% 50%);
+                width: 75px;
+                float: left;
+            }
+
+            .notification .txt {
+                vertical-align: top;
+                font-size: 1.25rem;
+                padding: 5px;
+            }
+
+            .notification .sub {
+                font-size: 1rem;
+                color: grey;
+            }
+
+            .notification .new {
+                border-style: none none solid none;
+                border-color: #293955;
+            }
+
+            .notification .sec:hover {
+                background-color: #D6DBE9;
+            }
+
+
+
+        .hidd {
+            display: none !important;
+        }
+
+        .Nohidd {
+            display: block !important;
+        }
+
+        @@media (min-width: 768px) {
+            .collapse {
+                position: static !important;
+                left: 0 !important;
+                z-index: 1 !important;
+                top: 0 !important;
             }
         }
 
+        @@media screen and (max-width: 600px) {
+            .company {
+                font-size: 10pt !important;
+                padding: 2px;
+            }
+
+            .collapse {
+                position: static !important;
+                left: 100 !important;
+                z-index: 1 !important;
+            }
+        }
     </style>
+
+    <script type="text/javascript">
+        window.FontAwesomeConfig = { autoReplaceSvg: false }
+    </script>
+
     @RenderSection("Style", required: false)
 </head>
-<body class="vertical-layout vertical-menu 2-columns  navbar-sticky" data-menu="vertical-menu" data-col="2-columns">
-    <nav class="navbar navbar-expand-lg navbar-light header-navbar navbar-fixed">
-        <div class="container-fluid navbar-wrapper">
-            <div class="navbar-header d-flex">
-                <div class="navbar-toggle menu-toggle d-xl-none d-block float-left align-items-center justify-content-center" data-toggle="collapse"><i class="ft-menu font-medium-3"></i></div>
-                <ul class="navbar-nav">
-                    <li class="nav-item mr-2 d-none d-lg-block"><a class="nav-link apptogglefullscreen" id="navbar-fullscreen" href="javascript:;"><i class="ft-maximize font-medium-3"></i></a></li>
-                    <li class="nav-item nav-search">
-                        <a class="nav-link nav-link-search" href="javascript:"><i class="ft-search font-medium-3"></i></a>
-                        <div class="search-input">
-                            <div class="search-input-icon"><i class="ft-search font-medium-3"></i></div>
-                            <input class="input" type="text" placeholder="Explore Apex..." tabindex="0" data-search="template-search">
-                            <div class="search-input-close"><i class="ft-x font-medium-3"></i></div>
-                            <ul class="search-list"></ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="navbar-container">
-                <div class="collapse navbar-collapse d-block" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="i18n-dropdown dropdown nav-item mr-2">
-                            <a class="nav-link d-flex align-items-center dropdown-toggle dropdown-language" id="dropdown-flag" href="javascript:;" data-toggle="dropdown"><img class="langimg selected-flag" src="../../../app-assets/img/flags/us.png" alt="flag"><span class="selected-language d-md-flex d-none">English</span></a>
-                            <div class="dropdown-menu dropdown-menu-right text-left" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="javascript:;" data-language="en"><img class="langimg mr-2" src="../../../app-assets/img/flags/us.png" alt="flag"><span class="font-small-3">English</span></a><a class="dropdown-item" href="javascript:;" data-language="es"><img class="langimg mr-2" src="../../../app-assets/img/flags/es.png" alt="flag"><span class="font-small-3">Spanish</span></a><a class="dropdown-item" href="javascript:;" data-language="pt"><img class="langimg mr-2" src="../../../app-assets/img/flags/pt.png" alt="flag"><span class="font-small-3">Portuguese</span></a><a class="dropdown-item" href="javascript:;" data-language="de"><img class="langimg mr-2" src="../../../app-assets/img/flags/de.png" alt="flag"><span class="font-small-3">German</span></a></div>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a class="nav-link dropdown-toggle dropdown-notification p-0 mt-2" id="dropdownBasic1" href="javascript:;" data-toggle="dropdown"><i class="ft-bell font-medium-3"></i><span class="notification badge badge-pill badge-danger">4</span></a>
-                            <ul class="notification-dropdown dropdown-menu dropdown-menu-media dropdown-menu-right m-0 overflow-hidden">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header d-flex justify-content-between m-0 px-3 py-2 white bg-primary">
-                                        <div class="d-flex"><i class="ft-bell font-medium-3 d-flex align-items-center mr-2"></i><span class="noti-title">7 New Notification</span></div><span class="text-bold-400 cursor-pointer">Mark all as read</span>
+<body style="background: #f7f7f7 !important;">
+
+    <!-- Topbar -->
+    <nav class="navbar navbar-light navbar-expand bg-white topbar static-top shadow fixed-top">
+
+        <img class="p-2" src="~/assets/logo-r.png" style="width: 200px; height:80px;" alt="DropZone" />
+      
+        @* <span style="font-weight:900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 25pt; color:#13007c;">DropZone</span> *@
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item no-arrow">
+            </li>
+            <li>
+               @*  <div class="notification">
+                    <a href="#">
+                        <div class="notBtn" href="#">
+                            <i class="fas fa-bell" style="font-size: 25pt !important; margin: 0"></i>
+                            <span id="notifyCount" style="position: absolute; background-color: red; padding:5px; border-radius: 50%; text-align: center; font-weight: bold; top: 15px; left: 15px;">0</span>
+                            <div class="box">
+                                <div class="display">
+                                    <div class="nothing">
+                                        <i class="fas fa-child stick"></i>
+                                        <div class="cent">Looks Like your all caught up!</div>
                                     </div>
-                                </li>
-                                <li class="scrollable-container">
-                                    <a class="d-flex justify-content-between" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="mr-3"><img class="avatar" src="~/app-assets/img/portrait/small/avatar-s-20.png" alt="avatar" height="45" width="45"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Kate Young</span><small class="grey lighten-1 font-italic float-right">5 mins ago</small></h6><small class="noti-text">Commented on your photo</small>
-                                                <h6 class="noti-text font-small-3 m-0">Great Shot John! Really enjoying the composition on this piece.</h6>
-                                            </div>
-                                        </div>
-                                    </a><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="mr-3"><img class="avatar" src="~/app-assets/img/portrait/small/avatar-s-11.png" alt="avatar" height="45" width="45"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Andrew Watts</span><small class="grey lighten-1 font-italic float-right">49 mins ago</small></h6><small class="noti-text">Liked your album: UI/UX Inspo</small>
-                                            </div>
-                                        </div>
-                                    </a><a class="d-flex justify-content-between read-notification" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center py-0 pr-0">
-                                            <div class="media-left">
-                                                <div class="mr-3"><img src="~/app-assets/img/icons/sketch-mac-icon.png" alt="avatar" height="45" width="45"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0">Update</h6><small class="noti-text">MyBook v2.0.7</small>
-                                            </div>
-                                            <div class="media-right">
-                                                <div class="border-left">
-                                                    <div class="px-4 py-2 border-bottom">
-                                                        <h6 class="m-0 text-bold-600">Update</h6>
-                                                    </div>
-                                                    <div class="px-4 py-2 text-center">
-                                                        <h6 class="m-0">Close</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a><a class="d-flex justify-content-between read-notification" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="avatar bg-primary bg-lighten-3 mr-3 p-1"><span class="avatar-content font-medium-2">LD</span></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Registration done</span><small class="grey lighten-1 font-italic float-right">6 hrs ago</small></h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="cursor-pointer">
-                                        <div class="media d-flex align-items-center justify-content-between">
-                                            <div class="media-left">
-                                                <div class="media-body">
-                                                    <h6 class="m-0">New Offers</h6>
-                                                </div>
-                                            </div>
-                                            <div class="media-right">
-                                                <div class="custom-control custom-switch">
-                                                    <input class="switchery" type="checkbox" checked id="notificationSwtich" data-size="sm">
-                                                    <label for="notificationSwtich"></label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="cont" id="notifyBox">
                                     </div>
-                                    <div class="d-flex justify-content-between cursor-pointer read-notification">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="avatar bg-danger bg-lighten-4 mr-3 p-1"><span class="avatar-content font-medium-2"><i class="ft-heart text-danger"></i></span></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Application approved</span><small class="grey lighten-1 font-italic float-right">18 hrs ago</small></h6>
-                                            </div>
-                                        </div>
-                                    </div><a class="d-flex justify-content-between read-notification" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="mr-3"><img class="avatar" src="~/app-assets/img/portrait/small/avatar-s-6.png" alt="avatar" height="45" width="45"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Anna Lee</span><small class="grey lighten-1 font-italic float-right">27 hrs ago</small></h6><small class="noti-text">Commented on your photo</small>
-                                                <h6 class="noti-text font-small-3 text-bold-500 m-0">Woah!Loving these colors! Keep it up</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="d-flex justify-content-between cursor-pointer read-notification">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="avatar bg-info bg-lighten-4 mr-3 p-1">
-                                                    <div class="avatar-content font-medium-2"><i class="ft-align-left text-info"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Report generated</span><small class="grey lighten-1 font-italic float-right">35 hrs ago</small></h6>
-                                            </div>
-                                        </div>
-                                    </div><a class="d-flex justify-content-between read-notification" href="javascript:void(0)">
-                                        <div class="media d-flex align-items-center">
-                                            <div class="media-left">
-                                                <div class="mr-3"><img class="avatar" src="~/app-assets/img/portrait/small/avatar-s-7.png" alt="avatar" height="45" width="45"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="m-0"><span>Oliver Wright</span><small class="grey lighten-1 font-italic float-right">2 days ago</small></h6><small class="noti-text">Liked your album: UI/UX Inspo</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="dropdown-menu-footer">
-                                    <div class="noti-footer text-center cursor-pointer primary border-top text-bold-400 py-1">Read All Notifications</div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown nav-item mr-1">
-                            <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-end" id="dropdownBasic2" href="javascript:;" data-toggle="dropdown">
-                               @*  <div class="user d-md-flex d-none mr-2"><span class="text-right">@emp.empName</span><span class="text-right text-muted font-small-3">available</span></div>
-                                @if (emp.imageUrl == null || emp.imageUrl == "")
-                                {
-                                    <img class="avatar" src="~/images/users/userImage.jpg" alt="avatar" height="35" width="35">
-                                    
-                                }
-                                else
-                                {
-                                   <img class="avatar" src="@emp.imageUrl" alt="avatar" height="35" width="35">
-                                } *@
-                                
-                            </a>
-                            <div class="dropdown-menu text-left dropdown-menu-right m-0 pb-0" aria-labelledby="dropdownBasic2">
-                                <a class="dropdown-item" href="app-chat.html">
-                                    <div class="d-flex align-items-center"><i class="ft-message-square mr-2"></i><span>Chat</span></div>
-                                </a><a class="dropdown-item" href="page-user-profile.html">
-                                    <div class="d-flex align-items-center"><i class="ft-edit mr-2"></i><span>Edit Profile</span></div>
-                                </a><a class="dropdown-item" href="app-email.html">
-                                    <div class="d-flex align-items-center"><i class="ft-mail mr-2"></i><span>My Inbox</span></div>
-                                </a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="auth-login.html">
-                                    <form asp- method="post" asp-area="Auth" asp-controller="Account" asp-action="Logout" id="logoutForm" class="navbar-right">
-                                        <button type="submit" onclick="ClearLocalStorage()" class="d-flex align-items-center btn-sm btn-danger"><i class="ft-power mr-2"></i>Logout</button>
-                                    </form>
-                                   
-                                </a>
+                                    <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;"><a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a></div>
+                                </div>
                             </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block mr-2 mt-1"><a class="nav-link notification-sidebar-toggle" href="javascript:;"><i class="ft-align-right font-medium-3"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar (Header) Ends-->
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-    <div class="wrapper">
+                        </div>
+                    </a>
+                </div> *@
+            </li>
 
 
-        <!-- main menu-->
-        <!--.main-menu(class="#{menuColor} #{menuOpenType}", class=(menuShadow == true ? 'menu-shadow' : ''))-->
-        <div class="app-sidebar menu-fixed" data-background-color="man-of-steel" data-image="/app-assets/img/sidebar-bg/01.jpg" data-scroll-to-active="true">
-            <!-- main menu header-->
-            <!-- Sidebar Header starts-->
-            <div class="sidebar-header">
-                <div class="logo clearfix">
-                    <a class="logo-text float-left" href="index.html">
-                        <div class="logo-img"><img src="~/logo/goldPolice2.PNG" style="width:55px;height:55px;" alt="PT Logo" /></div><span class="text pl-2">EKYC</span>
-                    </a><a class="nav-toggle d-none d-lg-none d-xl-block" id="sidebarToggle" href="javascript:;"><i class="toggle-icon ft-toggle-right" data-toggle="expanded"></i></a><a class="nav-close d-block d-lg-block d-xl-none" id="sidebarClose" href="javascript:;"><i class="ft-x"></i></a>
-                </div>
-            </div>
-            <!-- Sidebar Header Ends-->
-            <!-- / main menu header-->
-            <!-- main menu content-->
-            <div class="sidebar-content main-menu-content">
-                <div class="nav-container">
-                    <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                        <li class="has-sub nav-item">
-                            <a href="javascript:;"><i class="ft-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
-                            <ul class="menu-content">
-                                <li class="active">
-                                    <a href="/Portfolio/PortfolioDashboard"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Dashboard 1">Admin Dashboard</span></a>
-                                </li>
-                                <li>
-                                    <a href="/Portfolio/PortfolioDashboard"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Dashboard 2">Unit Dashboard</span></a>
-                                </li>
-                            </ul>
-                        </li>
-@* 
-                       
-                        @if (role.FirstOrDefault() == "OC Logistic" || role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "Supper Admin")
-                        {
-                            <li class="has-sub nav-item">
-                                <a href="javascript:;"><i class="ft-aperture"></i><span class="menu-title" data-i18n="UI Kit">Stock In</span></a>
-                                <ul class="menu-content">
-                                    <li>
-                                        <a href="~/Inventory/StockIn/StocksIn/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Grid">Stock Entry</span></a>
-                                    </li>
-
-                                    <li>
-                                        <a href="~/Inventory/StockIn/GetStockMaster/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Typography">Stock List</span></a>
-                                    </li>
-
-                                 
-
-                                </ul>
-                            </li>
-
-                        }
-
-                        @if (role.FirstOrDefault() == "OC Betar" || role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "Supper Admin")
-                        {
-                            <li class="has-sub nav-item">
-                                <a href="javascript:;"><i class="ft-box"></i><span class="menu-title" data-i18n="Components">Item Issue Info</span></a>
-                                <ul class="menu-content">
-
-                                    <li class="">
-                                        <a href="~/Inventory/Requisition/RequsitionToIssue/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Advanced Cards">Issue to Unit</span></a>
-                                    </li>
-
-
-                                    <li>
-                                        <a href="~/Inventory/StockIn/GetIssuedStockBySp/0"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Bootstrap">Unit Issued List</span></a>
-                                    </li>
-
-                                    <li>
-                                        <a href="~/Inventory/StockIssue/StockMasterIssueToEndUser"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Bootstrap">Issue to User</span></a>
-                                    </li>
-
-                                    <li>
-                                        <a href="~/Inventory/StockIssue/StockIssuedToEndUserList"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Bootstrap">User Issued List</span></a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        
-                        }
-
-                        @if (role.FirstOrDefault() == "OC Betar" || role.FirstOrDefault() == "User" || role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "Supper Admin" || role.FirstOrDefault() == "OC Logistic")
-                        {
-                            <li class="has-sub nav-item">
-                                <a href="javascript:;"><i class="ft-layers"></i><span class="menu-title" data-i18n="Cards">Requisition</span></a>
-                                <ul class="menu-content" style="">
-                                    @if (role.FirstOrDefault() == "OC Betar" || role.FirstOrDefault() == "User" || role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "Supper Admin")
-                                    {
-                                        <li class="">
-                                            <a href="~/Inventory/Requisition/CreateRequisition/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Basic Cards">Create Requisition</span></a>
-                                        </li>
-                                    }
-                                    <li class="">
-                                        <a href="~/Inventory/Requisition/RequsitionMaster/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Advanced Cards">Requisition List</span></a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        }
-
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" id="toggleButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer">
+                    <p class="mr-2  d-lg-inline text-gray-600 small">Hello @User.Identity.Name</p>
+                    <br />
+                    @if (role.Contains("Field Officer"))
+                    {
+                        <p class="mr-2  d-lg-inline text-gray-600 small" style="color:#13007c !important"> (@EmpInfoImage?.thanaName)</p>
+                    }
+                    else{}
                     
-
-                        <li class="has-sub nav-item">
-                            <a href="javascript:;"><i class="ft-edit"></i><span class="menu-title" data-i18n="Forms">Reports</span></a>
-                            <ul class="menu-content">
-                                <li>
-                                    <a href="/Inventory/StockIn/Report"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Layouts">Report</span></a>
-                                </li>
-                            <li class="">
-                                <a href="~/Inventory/StockIssue/ItemIssueReportPdf/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="">Reports1</span></a>
-                            </li>
-                            <li class="">
-                                <a href="~/Inventory/StockIssue/ItemRequsitionReportPdf/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="">Reports2</span></a>
-                            </li>
-                            <li class="">
-                                <a href="~/Inventory/StockIssue/RequeitionApproveReportPdf/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="">Reports3</span></a>
-                            </li>
-                            <li class="">
-                                <a href="~/Inventory/StockIssue/RequestApprovalReqReportPdf/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="">Reports4</span></a>
-                            </li>
-                              <li class="">
-                                <a href="~/Inventory/StockIssue/StockReportPdf/"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="">Reports5</span></a>
-                            </li>
-                             
-                                
-                            </ul>
-                        </li>
-
-                        @if (role.FirstOrDefault() == "Admin" || role.FirstOrDefault() == "Supper Admin")
-                        {
-                            <li class="has-sub nav-item">
-                                <a href="javascript:;"><i class="ft-grid"></i><span class="menu-title" data-i18n="Tables">Settings</span></a>
-                                <ul class="menu-content">
-                                    <li>
-                                        <a href="~/Auth/Register"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Extended">User Create</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="~/Auth/Account/UserList"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Basic">User List</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="~/Auth/Account/UserRoleCreate"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Extended">User Role Create</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="~/Auth/Account/AssaignRoleToUser"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Extended">User Role Assign</span></a>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-                            <li class="has-sub nav-item">
-                                <a href="javascript:;"><i class="ft-layout"></i><span class="menu-title" data-i18n="Data Tables">Master Data</span></a>
-                                <ul class="menu-content">
-
-                                    <li>
-                                        <a href="/MasterData/ItemCategory/Index"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Basic">Item Category</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/MasterData/Item/Index"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Advanced">Item Entry</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/MasterData/SpecialBranchUnit/Index"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="Data Sources">Unit Entry</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/MasterData/FiscalYear/Index"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="API">Fiscal Year</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/MasterData/Section/Index"><i class="ft-arrow-right submenu-icon"></i><span class="menu-item" data-i18n="API">Section</span></a>
-                                    </li>
-                                </ul>
-                            </li>
-                        
-                        }
-                  
- *@
-                      
-                       
-                    </ul>
-                </div>
-            </div>
-            <!-- main menu content-->
-            <div class="sidebar-background"></div>
-            <!-- main menu footer-->
-            <!-- include includes/menu-footer-->
-            <!-- main menu footer-->
-            <!-- / main menu-->
-        </div>
-
-        <div class="main-panel">
-            <!-- BEGIN : Main Content-->
-            <div class="main-content">
-                <div class="content-overlay"></div>
-                @RenderBody()
-            </div>
-            <!-- END : End Main Content-->
-            <!-- BEGIN : Footer-->
-            <footer class="footer undefined undefined">
-                <p class="clearfix text-muted m-0"><span>Copyright &copy; 2023 &nbsp;</span><a href="https://opus-bd.com/" id="pixinventLink" target="_blank">OPUS</a><span class="d-none d-sm-inline-block">, All rights reserved.</span></p>
-            </footer>
-            <!-- End : Footer-->
-            <!-- Scroll to top button -->
-            <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
-
-        </div>
-    </div>
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-    <!-- START Notification Sidebar-->
-    <aside class="notification-sidebar d-none d-sm-none d-md-block" id="notification-sidebar">
-        <a class="notification-sidebar-close"><i class="ft-x font-medium-3 grey darken-1"></i></a>
-        <div class="side-nav notification-sidebar-content">
-            <div class="row">
-                <div class="col-12 notification-nav-tabs">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item"><a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="activity-tab" href="#activity-tab" aria-expanded="true">Activity</a></li>
-                        <li class="nav-item"><a class="nav-link" id="base-tab2" data-toggle="tab" aria-controls="settings-tab" href="#settings-tab" aria-expanded="false">Settings</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 notification-tab-content">
-                    <div class="tab-content">
-                        <div class="row tab-pane active" id="activity-tab" role="tabpanel" aria-expanded="true" aria-labelledby="base-tab1">
-                            <div class="col-12" id="activity">
-                                <h5 class="my-2 text-bold-500">System Logs</h5>
-                                <div class="timeline-left timeline-wrapper mb-3" id="timeline-1">
-                                    <ul class="timeline">
-                                        <li class="timeline-line mt-4"></li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-download primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>New Update Available</span><span class="float-right grey font-italic font-small-2">1 min ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Android Pie 9.0.0_r52v availabe (658MB).</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Download Now!</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><img class="avatar" src="../../../app-assets/img/portrait/small/avatar-s-15.png" alt="avatar" width="40"></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Reminder!</span><span class="float-right grey font-italic font-small-2">52 min ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Your meeting is scheduled with Mr. Derrick Walters at 16:00.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Snooze</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><img class="avatar" src="../../../app-assets/img/portrait/small/avatar-s-16.png" alt="avatar" width="40"></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Recieved a File</span><span class="float-right grey font-italic font-small-2">4 hours ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Christina Rogers sent you a file for the next conference.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><img src="../../../app-assets/img/icons/sketch-mac-icon.png" alt="icon" width="20"><span class="text-bold-500 ml-2">Diamond.sketch</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-mic primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Voice Message</span><span class="float-right grey font-italic font-small-2">10 hours ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Natalya Parker sent you a voice message.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Listen</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-cloud-drizzle primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Weather Update</span><span class="float-right grey font-italic font-small-2">Yesterday</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Hi John! It is a rainy day with 16&deg;C.</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <h5 class="my-2 text-bold-500">Applications Logs</h5>
-                                <div class="timeline-left timeline-wrapper" id="timeline-2">
-                                    <ul class="timeline">
-                                        <li class="timeline-line mt-4"></li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><img class="avatar" src="../../../app-assets/img/portrait/small/avatar-s-26.png" alt="avatar" width="40"></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Gmail</span><span class="float-right grey font-italic font-small-2">Just now</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Victoria Hampton sent you a mail and has a file attachment with it.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><img src="../../../app-assets/img/icons/pdf.png" alt="pdf icon" width="20"><span class="text-bold-500 ml-2">Register.pdf</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-droplet primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>MakeMyTrip</span><span class="float-right grey font-italic font-small-2">7 hours ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">Your next flight for San Francisco will be on 24th March.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Important</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><img class="avatar" src="../../../app-assets/img/portrait/small/avatar-s-23.png" alt="avatar" width="40"></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>CNN</span><span class="float-right grey font-italic font-small-2">16 hours ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">U.S. investigating report says email account linked to CIA Director was hacked.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Read full article</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-map primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Maps</span><span class="float-right grey font-italic font-small-2">Yesterday</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">You visited Walmart Supercenter in Chicago.</p>
-                                                <div class="notification-note">
-                                                    <div class="p-1 pl-2"><span class="text-bold-500">Write a Review!</span></div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="timeline-item">
-                                            <div class="timeline-badge"><span class="bg-primary bg-lighten-4" data-toggle="tooltip" data-placement="right" title="Portfolio project work"><i class="ft-package primary"></i></span></div>
-                                            <div class="activity-list-text">
-                                                <h6 class="mb-1"><span>Updates Available</span><span class="float-right grey font-italic font-small-2">2 days ago</span></h6>
-                                                <p class="mt-0 mb-2 font-small-3">19 app updates found.</p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                  @*   <h6 class="mr-2  d-lg-inline text-gray-600 small">@EmpInfoImage?.thanaId</h6> *@
+                  @*   <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello @User.Identity.Name</span> *@
+                    @if (EmpInfoImage?.DivisionName != null)
+                    {
+                        <img class="img-profile rounded-circle" src="~/@EmpInfoImage?.DivisionName" height="32" width="32">
+                    }
+                    else
+                    {
+                        <img class="img-profile rounded-circle" src="~/assets/user.png"  style="width: 45px; height:45px;">
+                    }
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" id="myBox" aria-labelledby="" style="width:300px; padding: 0;">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0; margin-top: 0;margin: 2px 0;">
+                                <div class="card-body row">
+                                    <div class="col-12 ">
+                                        <div class="form-group row" style="display: flex;justify-content: center; align-items: center;">
+                                            @if (EmpInfoImage?.DivisionName != null)
+                                            {
+                                                <img class="img-profile rounded-circle userimg" src="~/@EmpInfoImage?.DivisionName" height="80" width="80" style="border-radius: 50%;" />
+                                            }
+                                            else
+                                            {
+                                                <img class="img-profile rounded-circle" src="~/assets/user.png" height="80" width="80" style="border-radius: 50%;">
+                                            }
+                                            <i class="fa fa-camera btncamera" data-toggle="modal" data-target="#updatePhotoModal" style="margin: 0% 1% -18% -5%;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 username" style="text-align: center; font-size:18px;font-family:'Times New Roman', Times, serif;">
+                                        <label><b>@EmpInfoImage?.EmpName</b></label><br />
+                                        <label>@EmpInfoImage?.DesignationName</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row tab-pane" id="settings-tab" aria-labelledby="base-tab2">
-                            <div class="col-12" id="settings">
-                                <h5 class="mt-2 mb-3">General Settings</h5>
-                                <ul class="list-unstyled mb-0 mx-2">
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Notifications</span>
-                                            <div class="float-right">
-                                                <div class="custom-switch">
-                                                    <input class="custom-control-input" id="noti-s-switch-1" type="checkbox">
-                                                    <label class="custom-control-label" for="noti-s-switch-1"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Use switches when looking for yes or no answers.</p>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Show recent activity</span>
-                                            <div class="float-right">
-                                                <div class="checkbox">
-                                                    <input id="noti-s-checkbox-1" type="checkbox" checked>
-                                                    <label for="noti-s-checkbox-1"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">The "for" attribute is necessary to bind checkbox with the input.</p>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Product Update</span>
-                                            <div class="float-right">
-                                                <div class="custom-switch">
-                                                    <input class="custom-control-input" id="noti-s-switch-4" type="checkbox" checked>
-                                                    <label class="custom-control-label" for="noti-s-switch-4"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Message and mail me on weekly product updates.</p>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Email on Follow</span>
-                                            <div class="float-right">
-                                                <div class="custom-switch">
-                                                    <input class="custom-control-input" id="noti-s-switch-3" type="checkbox">
-                                                    <label class="custom-control-label" for="noti-s-switch-3"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Mail me when someone follows me.</p>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Announcements</span>
-                                            <div class="float-right">
-                                                <div class="checkbox">
-                                                    <input id="noti-s-checkbox-2" type="checkbox" checked>
-                                                    <label for="noti-s-checkbox-2"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Receive all the news and announcements from my clients.</p>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Date and Time</span>
-                                            <div class="float-right">
-                                                <div class="checkbox">
-                                                    <input id="noti-s-checkbox-3" type="checkbox">
-                                                    <label for="noti-s-checkbox-3"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Show date and time on top of every page.</p>
-                                    </li>
-                                    <li>
-                                        <div class="mb-1">
-                                            <span class="text-bold-500">Email on Comments</span>
-                                            <div class="float-right">
-                                                <div class="custom-switch">
-                                                    <input class="custom-control-input" id="noti-s-switch-2" type="checkbox" checked>
-                                                    <label class="custom-control-label" for="noti-s-switch-2"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="font-small-3 m-0">Mail me when someone comments on my article.</p>
-                                    </li>
-                                </ul>
+
+
+                        <br /><br /><br />
+                        <div class="col-12 flex-column" style="color:black;">
+                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0;">
+                                <div class="card-body">
+                                 
+                                       
+
+                                        
+                                             <div class="form-group row">
+                                                 <div class="col-5" style="text-align:right;    margin-left: 7px;">
+                                                     @* <span>Employee ID:</span><br />
+                                                     <span>Department :</span><br />
+                                                     <span>Mobile     :</span><br />
+                                                     <span>Email      :</span><br /> *@
+                                                 </div>
+                                                 <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
+                                                     @* <span>@EmpInfoImage?.EmpCode</span><br />
+                                                     <span>@EmpInfoImage?.departmentName</span><br />
+                                                     <span>@EmpInfoImage?.mobileNo</span><br />
+                                                     <span style="margin-right:10px">@EmpInfoImage?.email</span><br /> *@
+                                                 </div>
+                                             </div>
+                                             
+
+                                            
+                                        
+                                        
+
+
+                                        @* <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
+                                            <span>@EmpInfoImage?.EmpCode</span><br />
+                                            <span>@EmpInfoImage?.departmentName</span><br />
+                                            <span>@EmpInfoImage?.mobileNo</span><br />
+                                            <span style="margin-right:10px">@EmpInfoImage?.email</span><br />
+                                        </div> *@
+                                  
+                                   
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0; margin-bottom: 0;">
+                                <div class="card-body">
+                                  @*   <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal" style="color:white;font-size:13px; text-align: center;">
+                                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 "></i>
+                                        Change Password
+                                    </a> *@
+                                    <a class="dropdown-item dropdown-itemb" href="#" data-toggle="modal" data-target="#logoutModal" style="color:white;font-size:13px; text-align: center;">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
+                                        Logout
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- End of Topbar -->
+    <div id="page-top" style="margin-top:67px">
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+
+            <style>
+                /* Reset default list styles */
+                menu, menuitem {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    z-index: 999;
+                }
+
+                /* Style the sidebar */
+                #sidebar2 {
+                    background-color: #252c32;
+                    color: white;
+                }
+
+                /* Style top-level menu items */
+                menuitem {
+                    margin-bottom: 10px;
+                    position: relative;
+                }
+
+                    menuitem > a {
+                        display: block;
+                        color: white;
+                        text-decoration: none;
+                        padding: 10px;
+                        background-color: #252c32;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    menuitem:hover menu {
+                        display: block;
+                    }
+
+                    /* Position and style submenu */
+                    menuitem menu {
+                        position: absolute;
+                        top: 0;
+                        left: 100%;
+                        /*display: none;*/
+                        background-color: #9fb3c5;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    /* Style submenu items */
+                    menuitem menuitem a {
+                        color: white;
+                        text-decoration: none;
+                        padding: 5px;
+                        background-color: #444;
+                        border-radius: 5px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                        menuitem menuitem a:hover {
+                            background-color: #666;
+                        }
+
+            </style>
+            <nav class="navbar-nav sidebar sidebar-dark accordion toggled " style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
+                @*    <menu class="py-2" style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
+                 <menuitem class="text-center">
+                        <a class="border-0 m-auto  mt-2" style="border-radius:50%" id="sidebarToggle"></a>
+                    </menuitem> *@
+                    <menuitem class="nav-item mainMenu">
+                       @*  @if (roles.Select(x => x.RoleName).Contains("Public User"))
+                        {
+                            <a class="nav-link" id="HomeIconPub">
+                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="dashboard">Dashboard</span>
+                            </a>
+                        }
+                        else if (roles.Select(x => x.RoleName).Contains("Admin") || roles.Select(x => x.RoleName).Contains("Field Officer"))
+                        {
+                            <a class="nav-link" id="HomeIcon">
+                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="dashboard">Dashboard</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link" id="HomeIcon">
+                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="dashboard">Dashboard</span>
+                            </a>
+                        }
+ *@
+
+
+                       @*  <a class="nav-link" id="HomeIcon">
+                            <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
+                            <span style="color:white;" id="dashboard">Dshboard</span>
+                        </a> *@
+                    </menuitem>
+                   
+                    @* @foreach (var item in navbarss.ERPModules.Where(x => x.isDelete != 1))
+                    {
+                        <menuitem class="nav-item mainMenu" id="accordionSidebar_@item.moduleName.Replace(" ", "")">
+                            <a class="nav-link collapsed" onclick="clickShow('@item.moduleName.Replace(" ", "")')" data-toggle="collapse" data-target="#collapse_@item.moduleName.Replace(" ", "")" aria-expanded="true" aria-controls="collapse__@item.moduleName.Replace(" ", "")">
+                                <i style="color:white;font-size:20px" class="@item.iconeLink"></i>
+                                <span style="color:white;" id="Setting_@item.moduleName.Replace(" ", "")">@item.moduleName</span>
+                            </a>
+                            <menu class="p-0 m-0">
+                                @foreach (var itemchid in navbarss.navbars.Where(x => x.moduleId == item.Id && x.parentID == 0))
+                                {
+                                    if (itemchid.isParent == 0)
+                                    {
+                                        <menuitem class="p-0">
+                                            <a id="collapse_@item.moduleName.Replace(" ", "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar" class="nav-link collapse subMenu hidd collapse_@item.moduleName.Replace(" ", "")" onclick="LocalSet(@itemchid.moduleId,@itemchid.Id)" href="@Url.Action("GridMenuPage", "Home", new { moduleId = @itemchid.moduleId, perentId = @itemchid.Id  })">
+                                                <i class="@itemchid.imageClass"></i><span>@itemchid.nameOption</span>
+                                            </a>
+                                        </menuitem>
+                                    }
+                                }
+                            </menu>
+                        </menuitem>
+                    } *@
+                </menu>
+            </nav>
+
+
+            <!-- End of Sidebar -->
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column mt-2">
+                <div id="main-container">
+                    <!-- Main Content -->
+                    <div id="content" style="background:#f7f7f7">
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid" style="padding: 0;background:#fff">
+                            @RenderBody()
+
+
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
+                    <!-- End of Main Content -->
+                    <!-- Footer -->
+                    <!-- End of Footer -->
+                    <footer class="sticky-footer m-0 bg-white" style="background: #f7f7f7 !important;">
+                        <div class="container">
+                            <div class="copyright text-center">
+                                <span><a href="https://www.opus-bd.com/" target="_blank" style="text-decoration:none;"> OPUS Technology Ltd </a>&copy; @DateTime.Now.Year</span>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+        <!-- End of Page Wrapper -->
+
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <form asp- method="post" asp-area="Auth" asp-controller="Account" asp-action="Logout" id="logoutForm" class="navbar-right">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button type="submit" onclick="ClearLocalStorage()" style="background-color:#13007c;color:white" class="btn" >Logout</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </aside>
-    <!-- END Notification Sidebar-->
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
-    <!-- BEGIN VENDOR JS-->
-    <script src="~/app-assets/vendors/js/vendors.min.js"></script>
-    <script src="~/app-assets/vendors/js/switchery.min.js"></script>
-    <!-- BEGIN VENDOR JS-->
-    <!-- BEGIN PAGE VENDOR JS-->
-    @*<script src="~/app-assets/vendors/js/chartist.min.js"></script>*@
-    <script src="~/app-assets/vendors/js/select2.full.min.js"></script>
-    <script src="~/app-assets/vendors/js/datatable/jquery.dataTables.min.js"></script>
-    <script src="~/app-assets/vendors/js/datatable/dataTables.bootstrap4.min.js"></script>
-    <script src="~/app-assets/vendors/js/sweetalert2.all.min.js"></script>
-    <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN APEX JS-->
-    <script src="~/app-assets/js/core/app-menu.js"></script>
-    <script src="~/app-assets/js/core/app.js"></script>
-    <script src="~/app-assets/js/notification-sidebar.js"></script>
-    <script src="~/app-assets/js/customizer.js"></script>
-    <script src="~/app-assets/js/scroll-top.js"></script>
-    <!-- END APEX JS-->
-    <script src="~/js/common.js"></script>
-    <!-- BEGIN PAGE LEVEL JS-->
-   @* <script src="~/app-assets/js/dashboard1.js"></script>*@
-    <!-- END PAGE LEVEL JS-->
-    <script src="~/app-assets/js/select2.js"></script>
-    <!-- BEGIN: Custom CSS-->
-    <script src="~/assets/js/scripts.js"></script>
-@*    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js" type="text/javascript"></script>*@
-   
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+    <!-- Change Password Modal-->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Change Password </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="changePassForm" data-parsley-validate="parsley">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-lg-4 col-sm-12" style="color:black;" for="OldPassword">Current Password<span style="float:right;">:</span></label>
+                            <div class="col-md-8 col-lg-8 col-sm-12">
+                                <input type="password" class="form-control" id="OldPassword" name="OldPassword" autocomplete="off" data-parsley-required="true" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-lg-4 col-sm-12" style="color:black;" for="Password">New Password<span style="float:right;">:</span></label>
+                            <div class="col-md-8 col-lg-8 col-sm-12">
+                                <input type="password" class="form-control" id="Password" onkeyup="getpasswordvalidation()" name="Password" autocomplete="off" data-parsley-required="true" />
+                            </div>
+                            <div id="passId">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-lg-4 col-sm-12" style="color:black;" for="ConfirmPassword">Confirm Password<span style="float:right;">:</span></label>
+                            <div class="col-md-8 col-lg-8 col-sm-12">
+                                <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" autocomplete="off" data-parsley-required="true" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <button type="button" id="changePassBtn" style="float:right;" class="btn btn-success">Submit</button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updatePhotoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Photo</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formPhoto">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group row">
+                            <div class="col-7">
+                                @if (EmpInfoImage?.DivisionName != null)
+                                {
+                                    <img id="user_img" name="empPhoto" style="width:200px;height:200px" src="~/@EmpInfoImage?.DivisionName" alt="" class="img-thumbnail float-left">
+                                }
+                                else
+                                {
+                                    <img id="user_img" name="empPhoto" style="width:200px;height:200px" src="/images/user-icon-png.png" alt="" class="img-thumbnail float-left">
+                                }
+                                <input type="hidden" name="employeeID" id="employeeID" value="@EmpInfoImage?.EmployeeId" />
+                                <input type="hidden" name="photographID" id="photographID" value="@EmpInfoImage?.photoId" />
+                                <input type="file" title="Photo Upload" id="imagePath" data-parsley-required="true" name="empPhoto" class="btn btn-default btn-sm pull-right" onchange="show(this)" />
+                                <span style="float:left;color:red;" class="redStar">*</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <button type="button" value="Submit" onclick="uploadPhoto()" class="btn btn-success btn-lg" style="float:right; margin-top:5px;"><i class="fas fa-save"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="BDModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">HAPPY BIRTHDAY</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <span type="text" name="" id="Wish" value=""></span>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+    <!-- Custom Date Picker-->
+    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+    <!-- parsly Validation -->
+    <script src="~/js/parsly.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script src="~/SweetAlert/sweetalert2.common.js"></script>
+    <script src="~/SweetAlert/sweetalert2.js"></script>
+    <script src="~/js/jquery.autocomplete.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/js/canvas/jquery.canvasjs.min.js"></script>
+    <script type="text/javascript" src="~/qrcode/jquery-qrcode-0.17.0.js"></script>
+    <script type="text/javascript" src="~/qrcode/jquery-qrcode-0.17.0.min.js"></script>
+    <script type="text/javascript" src="~/qrcode/scripts.js"></script>
+    <!-- Comon Ajax Lib -->
+    <script type="text/javascript" src="~/js/common.js"></script>
+    <script type="text/javascript" src="~/js/jquery.number.js"></script>
+    <script type="text/javascript" src="~/js/jquery.number.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="~/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" integrity="sha512-2bMhOkE/ACz21dJT8zBOMgMecNxx0d37NND803ExktKiKdSzdwn+L7i9fdccw/3V06gM/DBWKbYmQvKMdAA9Nw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/CustomSelectOption/select2.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            location.reload(true);
+        }
+
+        function ajaxFunctionCheckUserLogin(response) {
+            if (response.isPassChange == 0 || response.isPassChange == null) {
+                //$('#OldPassword').val('123456').attr('readonly', true);
+                $('#changePasswordModal').modal('show');
+                //$('#passAlert').text("You haven't change your password");
+            }
+            else {
+                var date2 = new Date();
+                var date1 = new Date(response.passChangeDate);
+                var Difference_In_Time = date2.getTime() - date1.getTime();
+                var days = Difference_In_Time / (1000 * 3600 * 24);
+
+                //$('#passAlert').text("You have changed your password " + days.toString().split('.')[0] + " days ago.");
+            }
+        }
+        function ajaxFunctionGetExpirationDays(response) {
+            console.log(response)
+            if (response == false) {
+
+                $('#changePasswordModal').modal('show');
+
+            }
+            else {
+
+            }
+        }
+        function ajaxFunctionGetexpieryPriorAlert(response) {
+            console.log(response)
+            if (parseInt(response) > 0) {
+
+                $('#changePasswordModal').modal('show');
+                alert("You have " + response + " days before your password expires.");
+            }
+            else {
+
+            }
+        }
+        var aa = 2;
+        function clickShow(moduleName) {
+            $('.collapse').addClass('hidd');
+            if ($('.collapse_' + moduleName).hasClass('hidd')) {
+                $('.collapse_' + moduleName).removeClass('hidd');
+                //if (aa % 2 == 0) {
+                //    $('.collapse_' + moduleName).addClass('hidd');
+                //}
+            } else {
+                $('.collapse_' + moduleName).addClass('hidd');
+
+            }
+
+            //else {
+            //    /*if ($('.collapse_' + moduleName).hasClass('hidd')) {*/
+            //        $('.collapse_' + moduleName).removeClass('hidd');
+            //   /* }*/
+            //}
+
+            aa++;
+        }
+        //function ajaxFunctionCheckBirthday(response) {
+        //    console.log(response)
+        //    if (response != null ) {
+        //    var birthdayMessage = 'Happy Birthday ' + response[0].name + ' - "Many happy returns on your birthday"';
+        //        $('#BDModal').modal('show');
+
+        //        $('#Wish').text(birthdayMessage).attr('readonly', true);
+
+        //    }
+
+        //}
+
+        $("#toggleButton").click(function () {
+            $("#myBox").toggle(); // Toggle the visibility of the box
+        });
+        $(document).ready(function () {
+            $("#HomeIcon").prop('href', '/POS/Pos/Dashboad');
+            $("#HomeIconPub").prop('href', '/POS/Pos/MerchantDashboadNew');
+
+            
+            $('#main-container').click(function () {
+                $('.collapse').addClass('hidd');
+
+            });
+            localStorage.setItem('isValid', false);
+            //var hasBirthdayModalBeenShown = getCookie('BDModal');
+
+            //if (!hasBirthdayModalBeenShown) {
+            //    // Call your ajaxFunctionCheckBirthday() here to show the modal.
+
+            //    // Set the cookie to prevent showing the modal again.
+            //    setCookie('BDModal', 'true', 365); // Set the cookie to expire in 365 days.
+            //}
+
+            $('.collapse').addClass('hidd');
+
+            Common.Ajax('GET', '/Auth/UserAssignPage/GetExpirationDays', [], 'json', ajaxFunctionGetExpirationDays, false);
+            Common.Ajax('GET', '/Auth/UserAssignPage/GetexpieryPriorAlert', [], 'json', ajaxFunctionGetexpieryPriorAlert, false);
+            //Common.Ajax('GET', '/Auth/Account/GetBirthdayChange', [], 'json', ajaxFunctionCheckBirthday, false);
+            Common.Ajax('GET', '/Auth/Account/GetLastPassChange', [], 'json', ajaxFunctionCheckUserLogin, false);
+
+            $('#changePassBtn').click(function () {
+
+                //Asad added
+                var oldPassword = $('#OldPassword').val();
+                var password = $('#Password').val();
+                var confirmPassword = $('#ConfirmPassword').val();
+
+                if (oldPassword == null || oldPassword == '') {
+                    alert('Please enter old password.');
+                    return false;
+                }
+
+
+                if (password != confirmPassword) {
+                    alert('Password and Confirm Password are different.')
+                    return false;
+                }
+
+
+
+                var isValid = localStorage.getItem('isValid');
+
+                if (isValid) {
+                    var formData = $('#changePassForm').serialize();
+                    $.ajax({
+                        url: '/Auth/Account/ChangePasswordNew',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data == 'ok') {
+                                swal('success', 'Password changed successfully!', 'success').then(function () {
+                                    window.location.href = '/Auth/Account/Login';
+                                });
+                            }
+                            else {
+                                swal('warning', 'Can not change the password. Please try again!', 'warning');
+                            }
+                        }
+                    });
+                }
+                else {
+                    alert('Password is not valid!');
+                }
+
+            })
+            // $('#changePassBtn').click(function () {
+            //     var formData = $('#changePassForm').serialize();
+            //     $.ajax({
+            //         url: '/Auth/Account/ChangePasswordNew',
+            //         data: formData,
+            //         processData: false,
+            //         contentType: false,
+            //         type: 'GET',
+            //         success: function (data) {
+            //             if (data == 'ok') {
+            //                 swal('success', 'Password changed successfully!', 'success').then(function () {
+            //                     window.location.href = '/Auth/Account/Login';
+            //                 });
+            //             }
+            //             else {
+            //                 swal('warning', 'Can not change the password. Please try again!', 'warning');
+            //             }
+            //         }
+            //     });
+            // })
+            $('[data-toggle="tooltip"]').tooltip();
+            // $('#lanENG').show();
+            // $('#lanBAN').hide();
+            //setCookie('lang', 'en', 30);
+            $('#lanBAN').click(function () {
+                setCookie('lang', 'bn', 30);
+                //$('#lanBAN').hide();
+                //$('#lanENG').show();
+            });
+            $('#lanENG').click(function () {
+                setCookie('lang', 'en', 30);
+                //$('#lanBAN').show();
+                //$('#lanENG').hide();
+            });
+            //$('#menu').load('@Url.Action("Navigation", "Home")');
+            $('#menu').load('@Url.Action("AssignPage", "Home")');
+            //$(".customSelect").select2();
+            $(".select2").css("width", "100%");
+            $(".select2-selection--single").css("height", "33px");
+            $(".select2-selection--single").css("border", "px solid #d1d3e2");
+            $(".select2-selection__rendered").css("line-height", "32px");
+
+            $('.fa-bell').hover(function () {
+                //console.log("ok")
+                Common.Ajax('GET', '/SCMRequisition/RequisitionMaster/GetNotificationsApi', [], 'json', ajaxFunctionNotify, false);
+            })
+            Common.Ajax('GET', '/SCMRequisition/RequisitionMaster/UnreadNotificationCount', [], 'json', ajaxFunctionUreadNotify, false);
+
+        });
+
+        var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+        var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+        function inWords(num) {
+            if ((num = num.toString()).length > 9) return 'overflow';
+            n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+            if (!n) return;
+            var str = '';
+            str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+            str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+            str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+            str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+            str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+            //$("#TotalAmountInWord").text(str)
+            return str
+        }
+
+
+        function ajaxFunctionNotify(response) {
+            var option = '<div class="d-flex justify-content-end"><button onclick="MarkAsAllRead()" class="btn btn-success">Read All</button></div>';
+            $.each(response, function (i, item) {
+                var date = formatDate(item.date);
+
+                if (item.isRead == 1) {
+                    //option += `<div class="secRead new notify_${item.Id}" id="notify_${item.type}_${item.Id}">
+                    //                    <a href="javascript:void(0)">
+                    //                        <div class="txt">
+                    //                            <span style="font-weight: bold;">${item.title}</span> </br>
+                    //                            <small>${item.description}</small>
+                    //                        </div>
+                    //                        <div class="txt sub">${date} <span class="badge badge-primary" style="font-size: 16px;">${item.type}</span></div>
+                    //                    </a>
+                    //                </div>`
+                }
+                else {
+                    option += `<div class="sec new notify_${item.Id}" onclick="MarkAsRead(${item.Id})" id="notify_${item.type}_${item.Id}">
+                                                                        <a href="${item.url}">
+                                                                            <div class="txt">
+                                                                                <span style="font-weight: bold;">${item.title}</span> </br>
+                                                                                <small>${item.description}</small>
+                                                                            </div>
+                                                                            <div class="txt sub">${date} <span class="badge badge-primary" style="font-size: 16px;">${item.type}</span></div>
+                                                                        </a>
+                                                                    </div>`
+                }
+
+
+            });
+
+            $('#notifyBox').empty();
+            $('#notifyBox').append(option);
+            $('#notifyBox').append(`
+                                                                    <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;">
+                                                                        <a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a>
+                                                                    </div>`
+            );
+        }
+
+        function ajaxFunctionUreadNotify(response) {
+            if (response == 0) {
+                $('#notifyCount').text(0);
+            }
+            else {
+                $('#notifyCount').text(response);
+            }
+
+            $('#notifyBox').empty();
+            $('#notifyBox').append(response);
+        }
+
+        function MarkAsRead(id) {
+            Common.Ajax('GET', '/SCMRequisition/RequisitionMaster/ReadNotification?id=' + id, [], 'json', ajaxFunctionRead, false);
+        }
+
+        function MarkAsAllRead() {
+            Common.Ajax('GET', '/SCMRequisition/RequisitionMaster/ReadAllNotification', [], 'json', ajaxFunctionRead, false);
+        }
+
+
+        function ajaxFunctionRead(response) {
+            location.reload();
+        }
+
+        function formatDate(date) {
+            date = new Date(date);
+            var year = date.getFullYear(),
+                month = date.getMonth() + 1, // months are zero indexed
+                day = date.getDate(),
+                hour = date.getHours(),
+                minute = date.getMinutes(),
+                second = date.getSeconds(),
+                hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
+                minuteFormatted = minute < 10 ? "0" + minute : minute,
+                morning = hour < 12 ? "am" : "pm";
+
+            return day + "/" + + month + "/" + year;
+        }
+
+        function ClearLocalStorage() {
+            window.localStorage.clear();
+        }
+        var BaseUrl = location.host;
+
+        $('.goBack').click(function () {
+            window.history.back();
+        });
+
+    </script>
+
+    <script>
+        $(".arlo_tm_resize").click(function () {
+            var existBtnClass = $(this).attr('class');
+            var existDrawerClass = $('.arlo_tm_leftpart_wrap').attr('class');
+            if (existBtnClass == 'arlo_tm_resize' && existDrawerClass == 'arlo_tm_leftpart_wrap') {
+                $(".arlo_tm_resize").addClass('opened');
+                $(".arlo_tm_leftpart_wrap").addClass('opened');
+            }
+            else {
+                $(".arlo_tm_resize").removeClass('opened');
+                $(".arlo_tm_leftpart_wrap").removeClass('opened');
+            }
+        })
+
+        function show(input) {
+            if (input.files && input.files[0]) {
+                var filerdr = new FileReader();
+                filerdr.onload = function (e) {
+                    $('#imagePath').text(input.value);
+                    $('#user_img').attr('src', e.target.result);
+                }
+                filerdr.readAsDataURL(input.files[0]);
+            }
+        }
+        // function getpasswordvalidation() {
+
+        //     var pass = $("#exampleInputPassword").val();
+
+        //     Common.Ajax('GET', '/api/PassSecurityPolicy/CheckPasswordPolicyFields/' + pass, [], 'json', ajaxFunctionCheckPasswordPolicyFields, false);
+
+        // }
+        // function ajaxFunctionCheckPasswordPolicyFields(response) {
+
+        //     console.log("ajaxFunctionCheckPasswordPolicyFields");
+        //     console.log('response', response)
+        //     console.log(response.length)
+        //     var option = "";
+        //     if (parseInt(response.length) > 0) {
+        //         $.each(response, function (i, item) {
+        //             console.log(item);
+        //             option += `
+        //                                 <p  style="color:red;">${item}</p>
+        //                             `
+        //             $('#passId').empty();
+        //             $('#passId').append(option);
+        //         })
+
+        //         localStorage.setItem('isValid', false);
+        //     }
+        //     else {
+        //         $('#passId').empty();
+        //         localStorage.setItem('isValid', true);
+
+        //     }
+
+        // }
+        function uploadPhoto() {
+            var imgfile = document.getElementById('imagePath');
+            var formData = new FormData();
+            formData.append('employeeID', $("#employeeID").val());
+            formData.append('photographID', $("#photographID").val());
+            formData.append('empPhoto', $('input[type=file]')[0].files[0]);
+            console.log(formData)
+            console.log($("#employeeID").val())
+            console.log($("#photographID").val())
+            swal({
+                title: 'Are you sure?',
+                text: 'Do you want to update this photo!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Update it!'
+            }).then(function () {
+                $.ajax({
+                    url: '@Url.Action("ProfilePictureSave", "Photograph", new { area= "HRPMSEmployee" })',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                })
+                    .done(function (response) {
+                        console.log(response);
+                        if (response == "success") {
+                            swal('', 'Update Successfully!', 'success').
+                                then(function () {
+                                    location.reload();
+                                })
+                        }
+                        else {
+                            swal('', 'Unable to Update!', 'warning');
+                        }
+                    })
+                    .fail(function () {
+                        swal('', 'Unable to Update!', 'warning');
+                    });
+            });
+        }
+
+
+
+        function getpasswordvalidation() {
+
+            var pass = $("#Password").val();
+
+            Common.Ajax('GET', '/api/PassSecurityPolicy/CheckPasswordPolicyFields/' + pass, [], 'json', ajaxFunctionCheckPasswordPolicyFields, false);
+
+        }
+        function ajaxFunctionCheckPasswordPolicyFields(response) {
+
+            console.log("ajaxFunctionCheckPasswordPolicyFields");
+            console.log('response', response)
+            console.log(response.length)
+            var option = "";
+            if (parseInt(response.length) > 0) {
+                $.each(response, function (i, item) {
+                    console.log(item);
+                    option += `
+                    <p style="color:red;">${item}</p>
+                    `
+                    $('#passId').empty();
+                    $('#passId').append(option);
+                })
+
+                localStorage.setItem('isValid', false);
+            }
+            else {
+                $('#passId').empty();
+                localStorage.setItem('isValid', true);
+
+            }
+
+        }
+
+
+
+    </script>
+    @*<script>
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+    var filerdr = new FileReader();
+    filerdr.onload = function (e) {
+    $('#user_img').attr('src', e.target.result);
+    $('#user_img_current').attr('src', e.target.result);
+    }
+    filerdr.readAsDataURL(input.files[0]);
+    }
+    }
+
+    $(document).ready(function () {
+    $("#photo").addClass("active");
+    $("#imagePath").change(function () {
+    readURL(this);
+    });
+
+    });
+    </script>*@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js" type="text/javascript"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

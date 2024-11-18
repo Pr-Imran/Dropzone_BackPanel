@@ -10,6 +10,8 @@ using DropZone_BackPanel.ERPServices.AuthService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
+using DropZone_BackPanel.ERPServices.PersonData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +77,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<IDapper, DropZone_BackPanel.Services.Dapper.Dapper>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserInfoes, UserInfoes>();
+builder.Services.AddScoped<IPersonData, PersonData>();
 
 // Register PDF Converter
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
@@ -86,9 +89,9 @@ builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new 
 var app = builder.Build();
 
 // Seed database (uncomment if required during initialization)
-// var userManager = app.Services.GetRequiredService<UserManager<ApplicationUser>>();
-// var roleManager = app.Services.GetRequiredService<RoleManager<ApplicationRole>>();
-// SeedData.Seed(userManager, roleManager);
+//var userManager = app.Services.GetRequiredService<UserManager<ApplicationUser>>();
+//var roleManager = app.Services.GetRequiredService<RoleManager<ApplicationRole>>();
+//SeedData.Seed(userManager, roleManager);
 
 // Middleware pipeline configuration
 if (!app.Environment.IsDevelopment())

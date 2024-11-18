@@ -29,4 +29,10 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="API\Models\" />
+    <Folder Include="wwwroot\assets\" />
+    <Folder Include="wwwroot\ufile\" />
+  </ItemGroup>
+
 </Project>

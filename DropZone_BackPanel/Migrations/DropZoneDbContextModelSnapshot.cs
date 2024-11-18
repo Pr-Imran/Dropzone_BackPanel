@@ -231,15 +231,13 @@ namespace DropZone_BackPanel.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("countryCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(20)");
 
                     b.Property<string>("countryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<string>("countryNameBn")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<DateTime?>("createdAt")
                         .HasColumnType("datetime2");
@@ -248,11 +246,23 @@ namespace DropZone_BackPanel.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
-                    b.Property<string>("shortName")
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("nationality")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("shortName")
+                        .HasColumnType("NVARCHAR(20)");
 
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
@@ -282,24 +292,31 @@ namespace DropZone_BackPanel.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("districtCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(20)");
 
                     b.Property<string>("districtName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<string>("districtNameBn")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<int>("divisionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
                     b.Property<string>("shortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
@@ -323,7 +340,7 @@ namespace DropZone_BackPanel.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("countryId")
+                    b.Property<int?>("countryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("createdAt")
@@ -334,21 +351,28 @@ namespace DropZone_BackPanel.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("divisionCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(20)");
 
                     b.Property<string>("divisionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<string>("divisionNameBn")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
                     b.Property<string>("shortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
@@ -415,6 +439,57 @@ namespace DropZone_BackPanel.Migrations
                     b.ToTable("postOffices");
                 });
 
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.RangeMetro", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("createdBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
+                    b.Property<int?>("isDelete")
+                        .HasColumnType("int");
+
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<int?>("pimsRangeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("pimsRangeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("rangeMetroName")
+                        .HasColumnType("NVARCHAR(350)");
+
+                    b.Property<string>("rangeMetroNameBn")
+                        .HasColumnType("NVARCHAR(350)");
+
+                    b.Property<DateTime?>("updatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("updatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("rangeMetros");
+                });
+
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Thana", b =>
                 {
                     b.Property<int>("Id")
@@ -430,23 +505,35 @@ namespace DropZone_BackPanel.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("districtId")
+                    b.Property<int?>("districtId")
                         .HasColumnType("int");
+
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
 
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<int?>("rangeMetroId")
+                        .HasColumnType("int");
+
                     b.Property<string>("shortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(50)");
 
                     b.Property<string>("thanaCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(20)");
 
                     b.Property<string>("thanaName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<string>("thanaNameBn")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
@@ -459,10 +546,12 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("districtId");
 
+                    b.HasIndex("rangeMetroId");
+
                     b.ToTable("thanas");
                 });
 
-            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Union", b =>
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.UnionWard", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -477,18 +566,35 @@ namespace DropZone_BackPanel.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int?>("districtsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
-                    b.Property<int?>("thanaId")
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("shortName")
+                        .HasColumnType("NVARCHAR(50)");
+
+                    b.Property<int>("thanaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("unionNameBn")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("unionCode")
+                        .HasColumnType("NVARCHAR(20)");
 
-                    b.Property<string>("unionNameEn")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("unionName")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("unionNameBn")
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
@@ -499,9 +605,96 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("districtsId");
+
                     b.HasIndex("thanaId");
 
-                    b.ToTable("unions");
+                    b.ToTable("unionWards");
+                });
+
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.UserLogHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("browserName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("createdBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("deviceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("deviceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ipAddress")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ipAddress2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("isDelete")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("logTime")
+                        .HasMaxLength(250)
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("mac")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("pcName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("updatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("updatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserLogHistories");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Village", b =>
@@ -519,10 +712,28 @@ namespace DropZone_BackPanel.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int?>("districtsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("isActive")
+                        .HasColumnType("NVARCHAR(10)");
+
                     b.Property<int?>("isDelete")
                         .HasColumnType("int");
 
-                    b.Property<int?>("unionId")
+                    b.Property<string>("latitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("longitude")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("shortName")
+                        .HasColumnType("NVARCHAR(50)");
+
+                    b.Property<int?>("thanaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("unionWardId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("updatedAt")
@@ -532,16 +743,22 @@ namespace DropZone_BackPanel.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("villageNameBn")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("villageCode")
+                        .HasColumnType("NVARCHAR(20)");
 
-                    b.Property<string>("villageNameEn")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("villageName")
+                        .HasColumnType("NVARCHAR(120)");
+
+                    b.Property<string>("villageNameBn")
+                        .HasColumnType("NVARCHAR(120)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("unionId");
+                    b.HasIndex("districtsId");
+
+                    b.HasIndex("thanaId");
+
+                    b.HasIndex("unionWardId");
 
                     b.ToTable("villages");
                 });
@@ -654,7 +871,7 @@ namespace DropZone_BackPanel.Migrations
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.Droper.PersonsData", b =>
                 {
-                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Union", "union")
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.UnionWard", "union")
                         .WithMany()
                         .HasForeignKey("unionId");
 
@@ -691,9 +908,7 @@ namespace DropZone_BackPanel.Migrations
                 {
                     b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Country", "country")
                         .WithMany()
-                        .HasForeignKey("countryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("countryId");
 
                     b.Navigation("country");
                 });
@@ -713,29 +928,55 @@ namespace DropZone_BackPanel.Migrations
                 {
                     b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.District", "district")
                         .WithMany()
-                        .HasForeignKey("districtId")
+                        .HasForeignKey("districtId");
+
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.RangeMetro", "rangeMetro")
+                        .WithMany()
+                        .HasForeignKey("rangeMetroId");
+
+                    b.Navigation("district");
+
+                    b.Navigation("rangeMetro");
+                });
+
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.UnionWard", b =>
+                {
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.District", "districts")
+                        .WithMany()
+                        .HasForeignKey("districtsId");
+
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Thana", "thana")
+                        .WithMany()
+                        .HasForeignKey("thanaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("district");
-                });
-
-            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Union", b =>
-                {
-                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Thana", "thana")
-                        .WithMany()
-                        .HasForeignKey("thanaId");
+                    b.Navigation("districts");
 
                     b.Navigation("thana");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Village", b =>
                 {
-                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Union", "union")
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.District", "districts")
                         .WithMany()
-                        .HasForeignKey("unionId");
+                        .HasForeignKey("districtsId");
 
-                    b.Navigation("union");
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.Thana", "thana")
+                        .WithMany()
+                        .HasForeignKey("thanaId");
+
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.UnionWard", "unionWard")
+                        .WithMany()
+                        .HasForeignKey("unionWardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("districts");
+
+                    b.Navigation("thana");
+
+                    b.Navigation("unionWard");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

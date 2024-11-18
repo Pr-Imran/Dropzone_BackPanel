@@ -61,10 +61,14 @@ namespace DropZone_BackPanel.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    countryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    countryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    countryNameBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    shortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    countryCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    countryName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    countryNameBn = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    shortName = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -74,6 +78,60 @@ namespace DropZone_BackPanel.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "rangeMetros",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rangeMetroName = table.Column<string>(type: "NVARCHAR(350)", nullable: true),
+                    rangeMetroNameBn = table.Column<string>(type: "NVARCHAR(350)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    pimsRangeId = table.Column<int>(type: "int", nullable: true),
+                    pimsRangeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isDelete = table.Column<int>(type: "int", nullable: true),
+                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    createdBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    updatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_rangeMetros", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLogHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    logTime = table.Column<DateTime>(type: "datetime2", maxLength: 250, nullable: false),
+                    status = table.Column<int>(type: "int", nullable: true),
+                    ipAddress = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    browserName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    pcName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    mac = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ipAddress2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    deviceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    deviceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isDelete = table.Column<int>(type: "int", nullable: true),
+                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    createdBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    updatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogHistories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,11 +246,14 @@ namespace DropZone_BackPanel.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    divisionCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    divisionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    countryId = table.Column<int>(type: "int", nullable: true),
+                    divisionCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    divisionName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     divisionNameBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    shortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    countryId = table.Column<int>(type: "int", nullable: false),
+                    shortName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -206,8 +267,7 @@ namespace DropZone_BackPanel.Migrations
                         name: "FK_divisions_countries_countryId",
                         column: x => x.countryId,
                         principalTable: "countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -216,11 +276,14 @@ namespace DropZone_BackPanel.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    districtCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    districtName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    districtNameBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    shortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     divisionId = table.Column<int>(type: "int", nullable: false),
+                    districtCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    districtName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    districtNameBn = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    shortName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -244,11 +307,15 @@ namespace DropZone_BackPanel.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    thanaCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    thanaName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    shortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    thanaNameBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    districtId = table.Column<int>(type: "int", nullable: false),
+                    districtId = table.Column<int>(type: "int", nullable: true),
+                    rangeMetroId = table.Column<int>(type: "int", nullable: true),
+                    thanaCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    thanaName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    thanaNameBn = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    shortName = table.Column<string>(type: "NVARCHAR(50)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -262,8 +329,12 @@ namespace DropZone_BackPanel.Migrations
                         name: "FK_thanas_districts_districtId",
                         column: x => x.districtId,
                         principalTable: "districts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_thanas_rangeMetros_rangeMetroId",
+                        column: x => x.rangeMetroId,
+                        principalTable: "rangeMetros",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -295,14 +366,20 @@ namespace DropZone_BackPanel.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "unions",
+                name: "unionWards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    thanaId = table.Column<int>(type: "int", nullable: true),
-                    unionNameBn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    unionNameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    thanaId = table.Column<int>(type: "int", nullable: false),
+                    districtsId = table.Column<int>(type: "int", nullable: true),
+                    unionCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    unionName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    unionNameBn = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    shortName = table.Column<string>(type: "NVARCHAR(50)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -311,12 +388,18 @@ namespace DropZone_BackPanel.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_unions", x => x.Id);
+                    table.PrimaryKey("PK_unionWards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_unions_thanas_thanaId",
+                        name: "FK_unionWards_districts_districtsId",
+                        column: x => x.districtsId,
+                        principalTable: "districts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_unionWards_thanas_thanaId",
                         column: x => x.thanaId,
                         principalTable: "thanas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,9 +408,16 @@ namespace DropZone_BackPanel.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    unionId = table.Column<int>(type: "int", nullable: true),
-                    villageNameBn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    villageNameEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    unionWardId = table.Column<int>(type: "int", nullable: false),
+                    thanaId = table.Column<int>(type: "int", nullable: true),
+                    districtsId = table.Column<int>(type: "int", nullable: true),
+                    villageCode = table.Column<string>(type: "NVARCHAR(20)", nullable: true),
+                    villageName = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    villageNameBn = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    shortName = table.Column<string>(type: "NVARCHAR(50)", nullable: true),
+                    isActive = table.Column<string>(type: "NVARCHAR(10)", nullable: true),
+                    latitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
+                    longitude = table.Column<string>(type: "NVARCHAR(120)", nullable: true),
                     isDelete = table.Column<int>(type: "int", nullable: true),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -338,10 +428,21 @@ namespace DropZone_BackPanel.Migrations
                 {
                     table.PrimaryKey("PK_villages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_villages_unions_unionId",
-                        column: x => x.unionId,
-                        principalTable: "unions",
+                        name: "FK_villages_districts_districtsId",
+                        column: x => x.districtsId,
+                        principalTable: "districts",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_villages_thanas_thanaId",
+                        column: x => x.thanaId,
+                        principalTable: "thanas",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_villages_unionWards_unionWardId",
+                        column: x => x.unionWardId,
+                        principalTable: "unionWards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,9 +467,9 @@ namespace DropZone_BackPanel.Migrations
                 {
                     table.PrimaryKey("PK_personsDatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_personsDatas_unions_unionId",
+                        name: "FK_personsDatas_unionWards_unionId",
                         column: x => x.unionId,
-                        principalTable: "unions",
+                        principalTable: "unionWards",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_personsDatas_villages_villageId",
@@ -471,8 +572,18 @@ namespace DropZone_BackPanel.Migrations
                 column: "districtId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_unions_thanaId",
-                table: "unions",
+                name: "IX_thanas_rangeMetroId",
+                table: "thanas",
+                column: "rangeMetroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_unionWards_districtsId",
+                table: "unionWards",
+                column: "districtsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_unionWards_thanaId",
+                table: "unionWards",
                 column: "thanaId");
 
             migrationBuilder.CreateIndex(
@@ -481,9 +592,19 @@ namespace DropZone_BackPanel.Migrations
                 column: "personsDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_villages_unionId",
+                name: "IX_villages_districtsId",
                 table: "villages",
-                column: "unionId");
+                column: "districtsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_villages_thanaId",
+                table: "villages",
+                column: "thanaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_villages_unionWardId",
+                table: "villages",
+                column: "unionWardId");
         }
 
         /// <inheritdoc />
@@ -511,6 +632,9 @@ namespace DropZone_BackPanel.Migrations
                 name: "uploadedFiles");
 
             migrationBuilder.DropTable(
+                name: "UserLogHistories");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -523,13 +647,16 @@ namespace DropZone_BackPanel.Migrations
                 name: "villages");
 
             migrationBuilder.DropTable(
-                name: "unions");
+                name: "unionWards");
 
             migrationBuilder.DropTable(
                 name: "thanas");
 
             migrationBuilder.DropTable(
                 name: "districts");
+
+            migrationBuilder.DropTable(
+                name: "rangeMetros");
 
             migrationBuilder.DropTable(
                 name: "divisions");

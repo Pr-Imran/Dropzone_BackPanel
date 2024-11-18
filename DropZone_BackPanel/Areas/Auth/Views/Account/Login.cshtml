@@ -22,8 +22,8 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <img src="~/images/verify&go.jpeg" alt="Image" class="img-fluid">
+                <div class="col-md-6 justify-content-center">
+                    <img src="~/assets/login.gif" alt="Image" class="img-fluid" height="250px" width="400px" style="margin-left:40%" >
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
@@ -34,12 +34,12 @@
                             <form asp-area="Auth" asp-controller="Account" asp-action="Login" method="post">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
-                                    <label asp-for="Name"></label>
-                                    <input asp-for="Name" class="form-control" style="color: #347a06 !important;" />
+                                    @* <label asp-for="Name"></label> *@
+                                    <input asp-for="Name" class="form-control" style="color: #347a06 !important;" placeholder="Name" />
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Password"></label>
-                                    <input asp-for="Password" class="form-control" style="color: #347a06 !important;" />
+                                    @* <label asp-for="Password"></label> *@
+                                    <input asp-for="Password" class="form-control" style="color: #347a06 !important;" placeholder="Password" />
                                 </div>
                                 <div class="form-check">
                                     <input asp-for="RememberMe" class="form-check-input" />

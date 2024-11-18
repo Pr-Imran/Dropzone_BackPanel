@@ -7,7 +7,7 @@ namespace DropZone_BackPanel.Data.Entity.Droper
         public string? name { get; set; }
         public string? mobile { get; set; }
         public int? unionId { get; set; }
-        public Union? union { get; set; }
+        public UnionWard? union { get; set; }
         public int? villageId { get; set; }
         public Village? village { get; set; }
         public string? latitude { get; set; }

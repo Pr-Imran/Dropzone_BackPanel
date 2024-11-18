@@ -3,23 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DropZone_BackPanel.Data.Entity.MasterData
 {
-    public class Village : Base
+    public class UnionWard : Base
     {
-        public int unionWardId { get; set; }
-        public UnionWard unionWard { get; set; }
-
-        public int? thanaId { get; set; }
+        public int thanaId { get; set; }
         public Thana thana { get; set; }
 
         public int? districtsId { get; set; }
         public District districts { get; set; }
 
         [Column(TypeName = "NVARCHAR(20)")]
-        public string? villageCode { get; set; }
+        public string? unionCode { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
-        public string? villageName { get; set; }
+        public string? unionName { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
-        public string? villageNameBn { get; set; }
+        public string? unionNameBn { get; set; }
         [Column(TypeName = "NVARCHAR(50)")]
         public string? shortName { get; set; }
         [Column(TypeName = "NVARCHAR(10)")]
@@ -29,6 +26,10 @@ namespace DropZone_BackPanel.Data.Entity.MasterData
         [Column(TypeName = "NVARCHAR(120)")]
         public string? longitude { get; set; }
 
+        [NotMapped]
+        public string? StationName { get; set; } = null;
+        [NotMapped]
+        public int StationId { get; set; }
 
 
     }

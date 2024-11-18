@@ -23,8 +23,10 @@ namespace DropZone_BackPanel.ERPService.AuthService.Interfaces
        
         Task<string> GetRoleNameByUserId(string Id);
         Task<string> GetRoleNameByUserIdNew(string Id);
+        Task<IEnumerable<AspNetUsersViewModel>> GetUserInfoByUserName1(string userName);
 
 
-       
+
+
     }
 }

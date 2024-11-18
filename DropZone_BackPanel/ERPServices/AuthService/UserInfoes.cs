@@ -110,7 +110,45 @@ namespace DropZone_BackPanel.ERPServices.AuthService
             await _context.SaveChangesAsync();
             return user.Id;
         }
-        
+        public async Task<IEnumerable<AspNetUsersViewModel>> GetUserInfoByUserName1(string userName)
+        {
+            List<AspNetUsersViewModel> result = (from U in _context.Users
+                                                 
+                                                 where U.UserName == userName
+                                                 //where m.ApplicationUser.UserName == userName
+                                                 select new AspNetUsersViewModel
+                                                 {
+                                                     aspnetId = U.Id,
+                                                     UserName = U.UserName,
+                                                     Email = U.Email,
+                                                     UserId = U.Id,
+                                                     isActive = U.isActive,
+                                                 }).ToList();
+
+
+            var aspnetolelist = _context.UserRoles.ToList();
+            var aspnetrolenamelist = _context.Roles.ToList();
+            List<AspNetUsersViewModel> aspNetUsersViewModels = new List<AspNetUsersViewModel>();
+            foreach (AspNetUsersViewModel data in result)
+            {
+                var roleId = aspnetolelist.Where(x => x.UserId == data.aspnetId).ToList();
+                List<string> role = new List<string>();
+                foreach (var UserRole in roleId)
+                {
+                    string rnam = aspnetrolenamelist.Where(x => x.Id == UserRole.RoleId).Select(x => x.Name).First();
+                    role.Add(rnam);
+                }
+                aspNetUsersViewModels.Add(new AspNetUsersViewModel
+                {
+                    aspnetId = data.aspnetId,
+                    UserName = data.UserName,
+                    UserId = data.UserId,
+                    isActive = data.isActive,
+                });
+
+            }
+            return aspNetUsersViewModels;
+        }
 
     }
 }
