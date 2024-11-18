@@ -273,7 +273,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("countries");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.District", b =>
@@ -329,7 +329,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("divisionId");
 
-                    b.ToTable("districts");
+                    b.ToTable("Districts");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Division", b =>
@@ -385,7 +385,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("countryId");
 
-                    b.ToTable("divisions");
+                    b.ToTable("Divisions");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.PostOffice", b =>
@@ -487,7 +487,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("rangeMetros");
+                    b.ToTable("RangeMetros");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.Thana", b =>
@@ -548,7 +548,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("rangeMetroId");
 
-                    b.ToTable("thanas");
+                    b.ToTable("Thanas");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.UnionWard", b =>
@@ -609,7 +609,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("thanaId");
 
-                    b.ToTable("unionWards");
+                    b.ToTable("UnionWards");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.UserLogHistory", b =>
@@ -760,7 +760,7 @@ namespace DropZone_BackPanel.Migrations
 
                     b.HasIndex("unionWardId");
 
-                    b.ToTable("villages");
+                    b.ToTable("Villages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

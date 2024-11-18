@@ -16,14 +16,14 @@ namespace DropZone_BackPanel.Context
             _httpContextAccessor = httpContextAccessor;
         }
         #region master Data
-        public DbSet<Country> countries { get; set; }
-        public DbSet<District> districts { get; set; }
-        public DbSet<Division> divisions { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Division> Divisions { get; set; }
         public DbSet<PostOffice> postOffices { get; set; }
-        public DbSet<Thana> thanas { get; set; }
-        public DbSet<UnionWard> unionWards { get; set; }
-        public DbSet<RangeMetro> rangeMetros { get; set; }
-        public DbSet<Village> villages { get; set; }
+        public DbSet<Thana> Thanas { get; set; }
+        public DbSet<UnionWard> UnionWards { get; set; }
+        public DbSet<RangeMetro> RangeMetros { get; set; }
+        public DbSet<Village> Villages { get; set; }
         #endregion
 
 
