@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using DropZone_BackPanel.ERPServices.PersonData;
+using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
+using DropZone_BackPanel.ERPServices.MasterData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +80,7 @@ builder.Services.AddScoped<IDapper, DropZone_BackPanel.Services.Dapper.Dapper>()
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserInfoes, UserInfoes>();
 builder.Services.AddScoped<IPersonData, PersonData>();
+builder.Services.AddScoped<IMasterData, MasterDataService>();
 
 // Register PDF Converter
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));

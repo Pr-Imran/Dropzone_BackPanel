@@ -1,7 +1,9 @@
 ﻿using DropZone_BackPanel.Data.Entity;
 using DropZone_BackPanel.Data.Entity.Droper;
+using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.ERPService.AuthService.Interfaces;
 using DropZone_BackPanel.ERPServices.AuthService.Interfaces;
+using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -92,6 +94,16 @@ namespace DropZone_BackPanel.API.Controllers
 
         }
 
+        [HttpGet("{mobile}")]
+        public async Task<IActionResult> GetPersonDataByMobile(string mobile)
+        {
+            var personData = await _persondata.GetPersonDataWithFilesByMobileAsync(mobile);
+            if (personData == null)
+            {
+                return NotFound(new { message = "No person data found for the provided mobile number." });
+            }
+            return Ok(personData);
+        }
 
 
     }
