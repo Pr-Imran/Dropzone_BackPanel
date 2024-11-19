@@ -42,7 +42,15 @@ builder.Services.AddControllers()
         };
     });
 builder.Services.AddRazorPages();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("_myAllowSpecificOrigins",
+     builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+        );
+});
 // Configure application cookie for login redirection
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -105,7 +113,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseCors("_myAllowSpecificOrigins");
 app.UseRouting();
 app.UseAuthentication(); // Enable authentication middleware
 app.UseAuthorization();  // Enable authorization middleware
