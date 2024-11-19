@@ -78,18 +78,15 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             var startDate = date.Date;
             var endDate = startDate.AddDays(1);
 
-            // Query to group data by hour and count entries
             var hourlyData = await _context.Set<PersonsData>()
                 .Where(p => p.createdAt >= startDate && p.createdAt < endDate)
                 .GroupBy(p => p.createdAt.Value.Hour)
                 .Select(g => new { Hour = g.Key, Count = g.Count() })
                 .ToListAsync();
-
-            // Create a dictionary for hourly data counts
             var result = new Dictionary<int, int>();
             for (int i = 0; i < 24; i++)
             {
-                result[i] = 0; // Initialize with zero
+                result[i] = 0; 
             }
 
             foreach (var data in hourlyData)
@@ -99,6 +96,83 @@ namespace DropZone_BackPanel.ERPServices.PersonData
 
             return result;
         }
+
+        public async Task<Dictionary<DateTime, int>> GetDailyDataCountAsync(DateTime startDate, DateTime endDate)
+        {
+            endDate = endDate.AddDays(1);
+
+            var dailyData = await _context.Set<PersonsData>()
+                .Where(p => p.createdAt >= startDate && p.createdAt < endDate)
+                .GroupBy(p => p.createdAt.Value.Date) 
+                .Select(g => new { Date = g.Key, Count = g.Count() })
+                .ToListAsync();
+            var result = new Dictionary<DateTime, int>();
+            for (var date = startDate.Date; date < endDate; date = date.AddDays(1))
+            {
+                result[date] = 0;
+            }
+            foreach (var data in dailyData)
+            {
+                result[data.Date] = data.Count;
+            }
+
+            return result;
+        }
+
+
+        public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null)
+        {
+            var startDate = date.Date;
+            var endDate = startDate.AddDays(1);
+
+            IQueryable<PersonsData> query = _context.Set<PersonsData>().AsQueryable();
+
+            if (hour.HasValue)
+            {
+                var hourStart = startDate.AddHours(hour.Value);
+                var hourEnd = hourStart.AddHours(1);
+                query = query.Where(p => p.createdAt >= hourStart && p.createdAt < hourEnd);
+            }
+            else
+            {
+                query = query.Where(p => p.createdAt >= startDate && p.createdAt < endDate);
+            }
+
+            var personData = await query
+                .Include(p => p.union)
+                .Include(p => p.village)
+                .ToListAsync();
+
+            var personIds = personData.Select(p => p.Id).ToList();
+
+            var uploadedFiles = await _context.Set<UploadedFiles>()
+                .Where(uf => personIds.Contains(uf.personsDataId ?? 0))
+                .ToListAsync();
+
+            var data = personData.Select(p => new PersonDataWithFilesDto
+            {
+                Id = p.Id,
+                Name = p.name,
+                Mobile = p.mobile,
+                UnionId = p.unionId,
+                UnionName = p.union?.unionName,
+                VillageId = p.villageId,
+                VillageName = p.village?.villageName,
+                Latitude = p.latitude,
+                Longitude = p.longitude,
+                UploadedFiles = uploadedFiles
+                    .Where(uf => uf.personsDataId == p.Id)
+                    .Select(uf => new UploadedFileDto
+                    {
+                        Id = uf.Id,
+                        AttachmentUrl = uf.attachmentUrl
+                    }).ToList()
+            }).ToList();
+
+            return data;
+        }
+
+
 
     }
 }
