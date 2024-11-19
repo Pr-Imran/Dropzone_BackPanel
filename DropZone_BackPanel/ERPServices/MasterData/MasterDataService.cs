@@ -37,7 +37,7 @@ namespace DropZone_BackPanel.ERPServices.MasterData
         public async Task<IEnumerable<UnionWard>> GetUnionWardsByThanaId(int thanaId)
         {
 
-            var data = await _context.UnionWards.Where(X => X.thanaId == thanaId).Include(a => a.thana.district.division).ToListAsync();
+            var data = await _context.UnionWards.Where(X => X.thanaId == thanaId).ToListAsync();
             return data;
         }
 

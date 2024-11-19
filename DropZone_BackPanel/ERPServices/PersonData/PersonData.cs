@@ -4,6 +4,7 @@ using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DropZone_BackPanel.ERPServices.PersonData
 {
@@ -27,9 +28,9 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             _context.uploadedFiles.AddRange(uploadedFiles);
             await _context.SaveChangesAsync();
         }
-        public async Task<PersonDataWithFilesDto?> GetPersonDataWithFilesByMobileAsync(string mobile)
+        public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByMobileAsync(string mobile)
         {
-            var personData = await _context.personsDatas
+            var personDataList = await _context.personsDatas
                 .Where(p => p.mobile == mobile)
                 .Select(p => new PersonDataWithFilesDto
                 {
@@ -42,26 +43,62 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                     VillageName = p.village != null ? p.village.villageName : null,
                     Latitude = p.latitude,
                     Longitude = p.longitude,
+                    UploadedFiles = new List<UploadedFileDto>()
                 })
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
-            if (personData != null)
+            if (personDataList.Any())
             {
-                // Fetch related UploadedFiles
-                personData.UploadedFiles = await _context.uploadedFiles
-                    .Where(uf => uf.personsDataId == personData.Id)
-                    .Select(uf => new UploadedFileDto
-                    {
-                        Id = uf.Id,
-                        AttachmentUrl = uf.attachmentUrl
+                var personIds = personDataList.Select(p => p.Id).ToList();
+                var uploadedFiles = await _context.uploadedFiles
+                    .Where(uf => personIds.Contains((int)uf.personsDataId))
+                    .Select(uf => new {
+                        uf.personsDataId,
+                        FileDto = new UploadedFileDto
+                        {
+                            Id = uf.Id,
+                            AttachmentUrl = uf.attachmentUrl
+                        }
                     })
                     .ToListAsync();
+                foreach (var personData in personDataList)
+                {
+                    personData.UploadedFiles = uploadedFiles
+                        .Where(uf => uf.personsDataId == personData.Id)
+                        .Select(uf => uf.FileDto)
+                        .ToList();
+                }
             }
 
-            return personData;
+            return personDataList;
         }
 
+        public async Task<Dictionary<int, int>> GetHourlyDataCountAsync(DateTime date)
+        {
+            var startDate = date.Date;
+            var endDate = startDate.AddDays(1);
 
+            // Query to group data by hour and count entries
+            var hourlyData = await _context.Set<PersonsData>()
+                .Where(p => p.createdAt >= startDate && p.createdAt < endDate)
+                .GroupBy(p => p.createdAt.Value.Hour)
+                .Select(g => new { Hour = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Create a dictionary for hourly data counts
+            var result = new Dictionary<int, int>();
+            for (int i = 0; i < 24; i++)
+            {
+                result[i] = 0; // Initialize with zero
+            }
+
+            foreach (var data in hourlyData)
+            {
+                result[data.Hour] = data.Count;
+            }
+
+            return result;
+        }
 
     }
 }

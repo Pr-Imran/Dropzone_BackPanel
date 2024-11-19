@@ -7,6 +7,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData.Interfaces
     {
         Task<int> AddPersonsDataAsync(PersonsData personsData);
         Task AddUploadedFilesAsync(IEnumerable<UploadedFiles> uploadedFiles);
-        Task<PersonDataWithFilesDto?> GetPersonDataWithFilesByMobileAsync(string mobile);
+        Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByMobileAsync(string mobile);
+        Task<Dictionary<int, int>> GetHourlyDataCountAsync(DateTime date);
     }
 }

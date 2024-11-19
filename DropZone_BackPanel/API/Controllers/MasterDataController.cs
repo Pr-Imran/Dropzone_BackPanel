@@ -31,74 +31,74 @@ namespace DropZone_BackPanel.API.Controllers
             _masterdata = masterData;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IEnumerable<Country>> GetAllCountries()
         {
             var countries = await _masterdata.GetAllCountries();
             return countries;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Division>> GetDivisionByCountryId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<Division>> GetDivisionByCountryId(int cId)
         {
 
-            var districts = await _masterdata.GetDivisionsByCountryId(id);
+            var districts = await _masterdata.GetDivisionsByCountryId(cId);
 
             return districts;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<District>> GetDistrictByDivisionId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<District>> GetDistrictByDivisionId(int dId)
         {
 
-            var districts = await _masterdata.GetDistrictsByDivisonId(id);
+            var districts = await _masterdata.GetDistrictsByDivisonId(dId);
 
             return districts;
         }
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Thana>> GetThanaByDistrictId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<Thana>> GetThanaByDistrictId(int dId)
         {
-            var thanas = await _masterdata.GetThanasByDistrictId(id);
+            var thanas = await _masterdata.GetThanasByDistrictId(dId);
 
             return thanas;
         }
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Thana>> GetActiveThanaByDistrictId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<Thana>> GetActiveThanaByDistrictId(int dId)
         {
-            var thanas = await _masterdata.GetActiveThanasByDistrictId(id);
+            var thanas = await _masterdata.GetActiveThanasByDistrictId(dId);
 
             return thanas;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<UnionWard>> GetUnionWardsByThanaId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<UnionWard>> GetUnionWardsByThanaId(int tId)
         {
-            var unionWards = await _masterdata.GetUnionWardsByThanaId(id);
+            var unionWards = await _masterdata.GetUnionWardsByThanaId(tId);
 
             return unionWards;
         }
         // GET: api/AddressMaster/GetActiveUnionWardsByThanaId
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<UnionWard>> GetActiveUnionWardsByThanaId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<UnionWard>> GetActiveUnionWardsByThanaId(int tId)
         {
-            var unionWards = await _masterdata.GetActiveUnionWardsByThanaId(id);
+            var unionWards = await _masterdata.GetActiveUnionWardsByThanaId(tId);
 
             return unionWards;
         }
 
         // GET: api/AddressMaster/GetAllVillageByUnionId
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Village>> GetAllVillageByUnionId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<Village>> GetAllVillageByUnionId(int uId)
         {
-            var villages = await _masterdata.GetAllVillageByUnionId(id);
+            var villages = await _masterdata.GetAllVillageByUnionId(uId);
 
             return villages;
         }
         // GET: api/AddressMaster/GetAllVillageByUnionId
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int id)
+        [HttpPost]
+        public async Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int uId)
         {
-            var villages = await _masterdata.GetAllActiveVillageByUnionId(id);
+            var villages = await _masterdata.GetAllActiveVillageByUnionId(uId);
 
             return villages;
         }

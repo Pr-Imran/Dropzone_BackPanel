@@ -94,7 +94,7 @@ namespace DropZone_BackPanel.API.Controllers
 
         }
 
-        [HttpGet("{mobile}")]
+        [HttpPost]
         public async Task<IActionResult> GetPersonDataByMobile(string mobile)
         {
             var personData = await _persondata.GetPersonDataWithFilesByMobileAsync(mobile);
