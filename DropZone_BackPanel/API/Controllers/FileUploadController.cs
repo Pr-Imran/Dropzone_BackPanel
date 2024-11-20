@@ -31,7 +31,7 @@ namespace DropZone_BackPanel.API.Controllers
             _persondata = persondata;
             _webHostEnvironment = webHostEnvironment;
         }
-
+        [RequestSizeLimit(2147483648)]
         [HttpPost]
         public async Task<IActionResult> UploadData([FromForm] PersonsData personsData, [FromForm] IFormFileCollection files)
         {
