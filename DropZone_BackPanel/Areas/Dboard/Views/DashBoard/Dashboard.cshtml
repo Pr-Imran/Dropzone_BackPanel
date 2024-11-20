@@ -5,7 +5,7 @@
 <style>
     #hourlyDataChart {
         max-width: 100%;
-        height: 150px;
+        height: 3000px;
     }
 
     #dailyDataChart {
@@ -23,7 +23,7 @@
                     Hourly Data Count
                 </div>
                 <div class="card-body">
-                    <canvas id="hourlyDataChart" width="150" height="150"></canvas>
+                    <canvas id="hourlyDataChart" width="719" height="300"></canvas>
                     <button id="actionButton" style="display:none; margin-top: 20px;">Perform Action</button>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     Daily Data Count 
                 </div>
                 <div class="card-body">
-                    <canvas id="dailyDataChart" width="400" height="300"></canvas>
+                    <canvas id="dailyDataChart" width="719" height="300"></canvas>
                 </div>
             </div>
         </div>
@@ -70,10 +70,11 @@
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false, // Disable responsiveness
+                    maintainAspectRatio: false, // Disable aspect ratio scaling
                     plugins: {
                         legend: {
-                            position: 'top',
+                            position: 'bottom',
                         },
                         tooltip: {
                             callbacks: {
@@ -120,7 +121,8 @@
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false, // Disable responsiveness
+                    maintainAspectRatio: false, // Disable aspect ratio scaling
                     scales: {
                         x: {
                             beginAtZero: true,
