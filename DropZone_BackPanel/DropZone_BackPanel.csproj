@@ -45,4 +45,11 @@
     <Folder Include="wwwroot\ufile\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Dboard\Views\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -18,6 +18,7 @@ using DropZone_BackPanel.Helpers.LinkEncrypt;
 using DropZone_BackPanel.Context;
 using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
 using DropZone_BackPanel.ERPServices.MasterData;
+using DropZone_BackPanel.Services.MasterData.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

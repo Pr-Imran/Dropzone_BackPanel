@@ -12,7 +12,9 @@ namespace DropZone_BackPanel.ERPServices.MasterData.Interfaces
         Task<IEnumerable<Thana>> GetActiveThanasByDistrictId(int DistrictId);
         Task<IEnumerable<UnionWard>> GetUnionWardsByThanaId(int thanaId);
         Task<IEnumerable<UnionWard>> GetActiveUnionWardsByThanaId(int thanaId);
+        Task<int> SaveVillage(Village village);
         Task<IEnumerable<Village>> GetAllVillageByUnionId(int id);
         Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int id);
+        Task<bool> DeleteVillageById(int id);
     }
 }

@@ -48,6 +48,21 @@ namespace DropZone_BackPanel.ERPServices.MasterData
             var data = await _context.unionWards.Include(a => a.thana.district.division).Where(X => X.thanaId == thanaId && X.isActive != "Inactive").ToListAsync();
             return data;
         }
+        public async Task<int> SaveVillage(Village village)
+        {
+            if (village.Id != 0)
+            {
+                _context.villages.Update(village);
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+            else
+            {
+                await _context.villages.AddAsync(village);
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+        }
         public async Task<IEnumerable<Village>> GetAllVillageByUnionId(int id)
         {
             return await _context.villages.Where(x => x.unionWardId == id).OrderByDescending(x => x.Id).ToListAsync();
@@ -55,6 +70,11 @@ namespace DropZone_BackPanel.ERPServices.MasterData
         public async Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int id)
         {
             return await _context.villages.Where(x => x.unionWardId == id && x.isActive != "Inactive").OrderByDescending(x => x.Id).ToListAsync();
+        }
+        public async Task<bool> DeleteVillageById(int id)
+        {
+            _context.villages.Remove(await _context.villages.FindAsync(id));
+            return 1 == await _context.SaveChangesAsync();
         }
     }
 }
