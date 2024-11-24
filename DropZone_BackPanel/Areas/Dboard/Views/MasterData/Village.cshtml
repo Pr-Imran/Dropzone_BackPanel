@@ -141,9 +141,8 @@
     <script type="text/javascript">
         var token = $('input[name="__RequestVerificationToken"]').val();
         $("#divisionId").change(function () {
-            alert($(this).val())
-                var data = { dId: $(this).val() };
-                $.ajax({
+            var data = { dId: $(this).val() };
+            $.ajax({
                 url: `/api/Auth/Home/GetDistrictByDivisionId`,
                 type: 'POST',
                 data: JSON.stringify(data),
@@ -153,53 +152,151 @@
                     'RequestVerificationToken': token
                 },
                 success: function (data) {
-                    console.log(data)
-                    // populateDropdown('#district', data, 'districtNameBn', 'Id');
-                    // resetDependentDropdowns(['#thana', '#union', '#village']);
+                    // Clear existing options
+                    $('#districtId').empty();
+
+                    // Add default option
+                    $('#districtId').append('<option value="">Select</option>');
+
+                    // Add new options from the API response
+                    data.forEach(function (district) {
+                        $('#districtId').append(`<option value="${district.Id}">${district.districtNameBn}</option>`);
+                    });
                 },
                 error: function () {
                     alert('Error loading districts.');
                 }
             });
-            });
+        });
         $(document).ready(function () {
             //Common.Ajax('POST', '/api/GetUnionWardsByThanaId/' + id, [], 'json', ajaxUnionWard);
-            
 
+
+            // Utility function to populate dropdown
+            function populateDropdown(selectElement, data, defaultOption = true) {
+                const $select = $(selectElement);
+                $select.empty();
+
+                if (defaultOption) {
+                    $select.append('<option value="">Select</option>');
+                }
+
+                data.forEach(function (item) {
+                    $select.append(`<option value="${item.Id}">${item[Object.keys(item).find(key => key.includes('Name'))]}</option>`);
+                });
+            }
+
+            // Reset dependent dropdowns
+            function resetDependentDropdowns(selectElements) {
+                selectElements.forEach(function (element) {
+                    $(element).empty().append('<option value="">Select</option>');
+                });
+            }
+
+            // Division change event
+            $("#divisionId").change(function () {
+                const data = { dId: $(this).val() };
+
+                // Reset dependent dropdowns
+                resetDependentDropdowns(['#districtId', '#thanaId', '#unionWardId']);
+
+                if (!data.dId) return; // If no division selected, just return
+
+                $.ajax({
+                    url: '/api/Auth/Home/GetDistrictByDivisionId',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    processData: false,
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (response) {
+                        populateDropdown('#districtId', response);
+                    },
+                    error: function () {
+                        alert('Error loading districts.');
+                    }
+                });
+            });
+
+            // District change event
             $("#districtId").change(function () {
-                var id = $(this).val();
-                //Common.Ajax('POST', '/global/api/GetUpazillaByDistrictId/' + id, [], 'json', ajaxUpazilla);
+                const data = { dId: $(this).val() };
+
+                // Reset dependent dropdowns
+                resetDependentDropdowns(['#thanaId', '#unionWardId']);
+
+                if (!data.dId) return;
+
+                $.ajax({
+                    url: '/api/Auth/Home/GetThanaByDistrictId',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    processData: false,
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (response) {
+                        populateDropdown('#thanaId', response);
+                    },
+                    error: function () {
+                        alert('Error loading thanas.');
+                    }
+                });
             });
 
+            // Thana change event
             $("#thanaId").change(function () {
-                var id = $(this).val();
-                //Common.Ajax('POST', '/global/api/GetUnionWardsByThanaId/' + id, [], 'json', ajaxUnionWard);
+                const data = { tId: $(this).val() };
+
+                // Reset dependent dropdown
+                resetDependentDropdowns(['#unionWardId']);
+
+                if (!data.tId) return;
+
+                $.ajax({
+                    url: '/api/Auth/Home/GetUnionWardsByThanaId',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    processData: false,
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (response) {
+                        populateDropdown('#unionWardId', response);
+                    },
+                    error: function () {
+                        alert('Error loading union wards.');
+                    }
+                });
             });
-            $("#btnLoad").on("click", function () {
-                let divisionId = $('#divisionId').val();
-                let districtId = $('#districtId').val();
-                let thanaId = $('#thanaId').val();
-                let unionWardId = $('#unionWardId').val();
 
-                if (divisionId == '') {
-                    swal('Warning', 'Select division', 'warning');
-                    return false;
-                }
-                else if (districtId == '') {
-                    swal('Warning', 'Select district', 'warning');
-                    return false;
-                }
-                else if (thanaId == '') {
-                    swal('Warning', 'Select thana', 'warning');
-                    return false;
-                }
-                else if (unionWardId == '') {
-                    swal('Warning', 'Select union', 'warning');
-                    return false;
-                }
+            // Union Ward change event (if you need to load villages)
+            $("#unionWardId").change(function () {
+                const data = { uId: $(this).val() };
 
-                GetAllVillage(divisionId, districtId, thanaId, unionWardId);
+                if (!data.uId) return;
 
+                $.ajax({
+                    url: '/api/Auth/Home/GetAllVillageByUnionId',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    processData: false,
+                    contentType: 'application/json',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (response) {
+                        // If you have a village dropdown, populate it here
+                        // populateDropdown('#villageId', response);
+                    },
+                    error: function () {
+                        alert('Error loading villages.');
+                    }
+                });
             });
 
         });
