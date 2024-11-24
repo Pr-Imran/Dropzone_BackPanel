@@ -1,199 +1,166 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 <style>
-    .appBtno {
-        float: right;
-        height: 35px;
-        width: 100px;
-        font-size: 16px;
-        color: white !important;
-        background-color: #0f1648;
+    #hourlyDataChart {
+        max-width: 100%;
+        height: 3000px;
     }
 
-    .appBtn {
-        background-color: #0f1648;
+    #dailyDataChart {
+        max-width: 100%;
+        height: 300px;
     }
-
-
-        .appBtn:hover {
-            background-color: #c34a3d;
-        }
-
-    .appBtnActive {
-        background-color: #c34a3d;
-    }
-
-    .modalMaxSize1 {
-        max-width: 1275px;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    .redStar {
-        color: red;
-    }
-
-    .searchdiv {
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-        .searchdiv .card {
-            height: 200px;
-        }
-
-            .searchdiv .card:hover {
-                background: #0F72B4;
-                color: #fff;
-            }
-
-    .mainbutton {
-        box-shadow: 0 1px 3px #13007c;
-    }
-
-    .buttonColor {
-        background: #fff;
-        color: #13007c;
-    }
-
-    .btnSpan:hover {
-        color: #1c1616;
-    }
-
-    .buttomBtn {
-        background: #ebeced;
-        color: #333333;
-        text-align: center;
-        line-height: 30px;
-        font-size: 20px;
-        font-weight: bolder;
-    }
-
-    .mainbutton:hover {
-        box-shadow: 0 3px 3px #1c1616;
-    }
-
-        .mainbutton:hover .buttonColor {
-            color: #13007c;
-        }
-
-        .mainbutton:hover .buttontext {
-            color: #000;
-        }
-
-    .buttontext {
-        color: #000;
-        font-size: 30px;
-    }
-
-        .buttontext span:nth-child(1) {
-            font-weight: bolder;
-        }
-
-
-    .icon1 {
-        color: #35b593; /* Default color */
-        font-size: 40px;
-    }
-
-    /* Apply a different color when hovering over the parent div */
-    .div:hover .icon1 {
-        font-size: 45px;
-        color: #ff0000; /* Color on hover */
-    }
-
-    .icon2 {
-        font-size: 40px;
-        color: #69aff5;
-    }
-
-    .div:hover .icon2 {
-        font-size: 45px;
-        color: #ff0000; /* Change to your desired color on hover */
-    }
-
-    .icon3 {
-        font-size: 40px;
-        color: #08b9c9;
-    }
-
-    .div:hover .icon3 {
-        font-size: 45px;
-        color: #ff0000; /* Change to your desired color on hover */
-    }
-
-    .icon4 {
-        font-size: 40px;
-        color: #35b593;
-    }
-
-    .div:hover .icon4 {
-        font-size: 45px;
-        color: #ff0000; /* Change to your desired color on hover */
-    }
-
-    .card-header {
-        border-left: 5px solid #13007c;
-        height: 60px;
-        line-height: 60px;
-        font-family: Arial;
-        font-size: 20px !important;
-    }
-
 </style>
-
+<br />
 <div class="content container-fluid">
-
-    <br />
-    <br />
-
-    <div class="card-header" style="background-color:#f7f7f7;">
-        <div class="row">
-
-            <div class="col-12" style="margin-top: -13px; color:#404040; font-weight: bolder;">
-                Dashboard
+    <div class="row">
+        <!-- Hourly Data Donut Chart -->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Hourly Data Count
+                </div>
+                <div class="card-body">
+                    <canvas id="hourlyDataChart" width="719" height="300"></canvas>
+                    <button id="actionButton" style="display:none; margin-top: 20px;">Perform Action</button>
+                </div>
             </div>
-
         </div>
 
+        <!-- Daily Data Bar Chart -->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Daily Data Count 
+                </div>
+                <div class="card-body">
+                    <canvas id="dailyDataChart" width="719" height="300"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
 
-
-
-
-
-<style>
-
-    .elpida_icon {
-        width: 50%;
-    }
-
-    .mainbutton:hover .st1 {
-        fill: #13007c !important;
-    }
-
-    .mainbutton:hover .st2 {
-        fill: #13007c !important;
-    }
-</style>
-
-
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hourly Counts - Donut Chart
+            const hourlyCounts = @Html.Raw(Json.Serialize(ViewBag.HourlyCounts));
+            const hours = Array.from({ length: 24 }, (_, i) => i);
+            const counts = hours.map(hour => hourlyCounts[hour] || 0);
 
+            const hourlyCtx = document.getElementById('hourlyDataChart').getContext('2d');
+            const hourlyChart = new Chart(hourlyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: hours.map(h => `${h}:00`),
+                    datasets: [{
+                        label: 'Hourly Data Count',
+                        data: counts,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: false, // Disable responsiveness
+                    maintainAspectRatio: false, // Disable aspect ratio scaling
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: function (event, elements) {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const clickedHour = hours[index];
+                            performAction(clickedHour);
+                        }
+                    }
+                }
+            });
 
+            // Perform action on click (for hourly donut chart)
+            function performAction(hour) {
+                const currentDate = new Date();
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                const url = `/Dboard/DashBoard/UserUploadDetailsDetails?hour=${hour}&date=${formattedDate}`;
+                window.location.href = url;
+            }
 
+            // Daily Counts - Bar Chart
+            const dailyCounts = @Html.Raw(Json.Serialize(ViewBag.DailyCounts));
+            const dailyLabels = Object.keys(dailyCounts); // These are formatted dates
+            const dailyData = Object.values(dailyCounts);
 
+            const dailyCtx = document.getElementById('dailyDataChart').getContext('2d');
+            const dailyChart = new Chart(dailyCtx, {
+                type: 'bar',
+                data: {
+                    labels: dailyLabels,  // Use the formatted date strings
+                    datasets: [{
+                        label: 'Daily Data Count',
+                        data: dailyData,
+                        backgroundColor: '#36A2EB',
+                        borderColor: '#36A2EB',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false, // Disable responsiveness
+                    maintainAspectRatio: false, // Disable aspect ratio scaling
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                autoSkip: false,
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return `Count: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: function (event, elements) {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const clickedDate = dailyLabels[index]; // Get the clicked date
+                            performDailyAction(clickedDate);
+                        }
+                    }
+                }
+            });
+
+            // Perform action on click (for daily bar chart)
+            function performDailyAction(date) {
+                const currentDate = new Date();
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                const url = `/Dboard/DashBoard/UserUploadDetailsDetails?date=${date}`;
+                window.location.href = url;
+            }
+        });
+    </script>
 }
-
-
-
 
