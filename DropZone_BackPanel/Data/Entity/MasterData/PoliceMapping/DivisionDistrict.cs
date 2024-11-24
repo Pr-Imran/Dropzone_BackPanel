@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping
 {
-    public class RangeMetro : Base
+    public class DivisionDistrict : Base
     {
+        public int? rangeMetroId { get; set; }
+        public RangeMetro rangeMetro { get; set; }
+
         [Column(TypeName = "NVARCHAR(350)")]
-        public string? rangeMetroName { get; set; }
+        public string? divisionDistrictName { get; set; }
         [Column(TypeName = "NVARCHAR(350)")]
-        public string? rangeMetroNameBn { get; set; }
+        public string? divisionDistrictNameBn { get; set; }
         [Column(TypeName = "NVARCHAR(10)")]
         public string? isActive { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
@@ -15,7 +18,8 @@ namespace DropZone_BackPanel.Data.Entity.MasterData
         [Column(TypeName = "NVARCHAR(120)")]
         public string? longitude { get; set; }
 
-        public int? pimsRangeId { get; set; }
-        public string? pimsRangeName { get; set; }
+        [NotMapped]
+        public string? stringId { get; set; }
+
     }
 }

@@ -1,8 +1,7 @@
-﻿using DropZone_BackPanel.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PublicMapping
 {
     public class Country : Base
     {
@@ -12,7 +11,6 @@ namespace DropZone_BackPanel.Data.Entity.MasterData
         public string? countryName { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
         public string? countryNameBn { get; set; }
-        public string? nationality { get; set; }
         [Column(TypeName = "NVARCHAR(20)")]
         public string? shortName { get; set; }
         [Column(TypeName = "NVARCHAR(10)")]

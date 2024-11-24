@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 using DropZone_BackPanel.Context;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.ERPServices.AuthService.Interfaces;
+using DropZone_BackPanel.Data.Entity.LogInfo;
 
 namespace DropZone_BackPanel.ERPServices.AuthService
 {
     public class DbChangeService: IDbChangeService
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
 
-        public DbChangeService(DropZoneDbContext context)
+        public DbChangeService(DropSpaceDbContext context)
         {
             _context = context;
         }

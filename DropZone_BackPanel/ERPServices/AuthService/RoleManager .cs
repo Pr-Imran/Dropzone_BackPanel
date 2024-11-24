@@ -13,9 +13,9 @@ namespace DropZone_BackPanel.ERPServices.AuthService
 {
     public class RoleManager: IRoleManager
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
         private readonly RoleManager<IdentityRole> roleManager;
-        public RoleManager(RoleManager<IdentityRole> roleManager, DropZoneDbContext context)
+        public RoleManager(RoleManager<IdentityRole> roleManager, DropSpaceDbContext context)
         {
             this.roleManager = roleManager;
             _context = context;

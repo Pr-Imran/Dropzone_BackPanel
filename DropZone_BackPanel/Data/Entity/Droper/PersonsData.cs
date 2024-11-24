@@ -1,8 +1,8 @@
-﻿using DropZone_BackPanel.Data.Entity.MasterData;
+﻿using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 
 namespace DropZone_BackPanel.Data.Entity.Droper
 {
-    public class PersonsData:Base
+    public class PersonsData : Base
     {
         public string? name { get; set; }
         public string? mobile { get; set; }

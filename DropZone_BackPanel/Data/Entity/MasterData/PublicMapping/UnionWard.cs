@@ -1,15 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PublicMapping
 {
     public class UnionWard : Base
     {
         public int thanaId { get; set; }
         public Thana thana { get; set; }
-
-        public int? districtsId { get; set; }
-        public District districts { get; set; }
 
         [Column(TypeName = "NVARCHAR(20)")]
         public string? unionCode { get; set; }
@@ -25,12 +22,6 @@ namespace DropZone_BackPanel.Data.Entity.MasterData
         public string? latitude { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
         public string? longitude { get; set; }
-
-        [NotMapped]
-        public string? StationName { get; set; } = null;
-        [NotMapped]
-        public int StationId { get; set; }
-
 
     }
 }

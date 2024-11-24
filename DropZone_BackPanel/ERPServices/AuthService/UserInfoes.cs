@@ -17,9 +17,9 @@ namespace DropZone_BackPanel.ERPServices.AuthService
 {
     public class UserInfoes : IUserInfoes
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
 
-        public UserInfoes(DropZoneDbContext context)
+        public UserInfoes(DropSpaceDbContext context)
         {
             _context = context;
         }

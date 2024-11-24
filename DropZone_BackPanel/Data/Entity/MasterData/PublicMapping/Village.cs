@@ -1,18 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PublicMapping
 {
     public class Village : Base
     {
         public int unionWardId { get; set; }
         public UnionWard unionWard { get; set; }
-
-        public int? thanaId { get; set; }
-        public Thana thana { get; set; }
-
-        public int? districtsId { get; set; }
-        public District districts { get; set; }
 
         [Column(TypeName = "NVARCHAR(20)")]
         public string? villageCode { get; set; }

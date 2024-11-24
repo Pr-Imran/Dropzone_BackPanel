@@ -1,4 +1,5 @@
 ﻿
+using DropZone_BackPanel.Data.Entity.LogInfo;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using System.Collections.Generic;
 using System.Threading.Tasks;

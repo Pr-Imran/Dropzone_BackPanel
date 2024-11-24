@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="API\Models\**" />
+    <Content Remove="API\Models\**" />
+    <EmbeddedResource Remove="API\Models\**" />
+    <None Remove="API\Models\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
@@ -30,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="API\Models\" />
     <Folder Include="wwwroot\assets\" />
     <Folder Include="wwwroot\ufile\" />
   </ItemGroup>

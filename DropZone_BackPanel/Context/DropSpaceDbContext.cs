@@ -4,35 +4,46 @@ using DropZone_BackPanel.Data;
 using DropZone_BackPanel.Data.Entity;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.Data.Entity.Droper;
+using DropZone_BackPanel.Data.Entity.LogInfo;
+using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
+using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
 
 namespace DropZone_BackPanel.Context
 {
-    public class DropZoneDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string?>
+    public class DropSpaceDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string?>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DropZoneDbContext(DbContextOptions<DropZoneDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        public DropSpaceDbContext(DbContextOptions<DropSpaceDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        #region master Data
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<District> Districts { get; set; }
-        public DbSet<Division> Divisions { get; set; }
-        public DbSet<PostOffice> postOffices { get; set; }
-        public DbSet<Thana> Thanas { get; set; }
-        public DbSet<UnionWard> UnionWards { get; set; }
-        public DbSet<RangeMetro> RangeMetros { get; set; }
-        public DbSet<Village> Villages { get; set; }
+        #region Master Data
+        #region Police Map
+        public DbSet<RangeMetro> rangeMetros { get; set; }
+        public DbSet<DivisionDistrict> divisionDistricts { get; set; }
+        public DbSet<ZoneCircle> zoneCircles { get; set; }
+        public DbSet<PoliceThana> policeThanas { get; set; }
         #endregion
-
-
+        #region Public Map
+        public DbSet<Country> countries { get; set; }
+        public DbSet<District> districts { get; set; }
+        public DbSet<Division> divisions { get; set; }
+        public DbSet<Thana> thanas { get; set; }
+        public DbSet<UnionWard> unionWards { get; set; }
+        public DbSet<Village> villages { get; set; }
+        #endregion
+        public DbSet<CrimeInfo> crimeInfos { get; set; }
+        public DbSet<UserType> userTypes { get; set; }
+        #endregion
         #region Dropers
-        public DbSet<PersonsData> personsDatas { get; set; }
+        public DbSet<PersonsData> personalDatas { get; set; }
         public DbSet<UploadedFiles> uploadedFiles { get; set; }
-
         #endregion
+        #region Log
         public DbSet<UserLogHistory> UserLogHistories { get; set; }
+        public DbSet<OTPLogs> oTPLogs { get; set; }
+        #endregion
         #region Settings Configs
         public override int SaveChanges()
         {

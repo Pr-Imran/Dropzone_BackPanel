@@ -7,16 +7,16 @@ namespace DropZone_BackPanel.ERPServices.PersonData
 {
     public class PersonData: IPersonData
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
 
-        public PersonData(DropZoneDbContext context)
+        public PersonData(DropSpaceDbContext context)
         {
             _context = context;
         }
 
         public async Task<int> AddPersonsDataAsync(PersonsData personsData)
         {
-            _context.personsDatas.Add(personsData);
+            _context.personalDatas.Add(personsData);
             await _context.SaveChangesAsync();
             return personsData.Id;
         }

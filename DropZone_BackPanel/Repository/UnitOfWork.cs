@@ -5,9 +5,9 @@ namespace DropZone_BackPanel.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
 
-        public UnitOfWork(DropZoneDbContext context)
+        public UnitOfWork(DropSpaceDbContext context)
         {
             _context = context;
         }

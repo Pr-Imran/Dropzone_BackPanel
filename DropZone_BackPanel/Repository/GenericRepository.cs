@@ -13,10 +13,10 @@ namespace DropZone_BackPanel.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DropZoneDbContext _context;
+        private readonly DropSpaceDbContext _context;
         private readonly DbSet<T> _db;
 
-        public GenericRepository(DropZoneDbContext context)
+        public GenericRepository(DropSpaceDbContext context)
         {
             _context = context;
             _db = _context.Set<T>();

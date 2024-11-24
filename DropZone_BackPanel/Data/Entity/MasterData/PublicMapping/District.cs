@@ -1,24 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PublicMapping
 {
-    public class Thana : Base
+    public class District : Base
     {
-
-        public int? districtId { get; set; }
-        public District district { get; set; }
-
-        public int? rangeMetroId { get; set; }
-        public RangeMetro rangeMetro { get; set; }
+        public int divisionId { get; set; }
+        public Division division { get; set; }
 
         [Column(TypeName = "NVARCHAR(20)")]
-        public string? thanaCode { get; set; }
+        public string? districtCode { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
-        public string? thanaName { get; set; }
+        public string? districtName { get; set; }
         [Column(TypeName = "NVARCHAR(120)")]
-        public string? thanaNameBn { get; set; }
-        [Column(TypeName = "NVARCHAR(50)")]
+        public string? districtNameBn { get; set; }
+        [Column(TypeName = "NVARCHAR(120)")]
         public string? shortName { get; set; }
         [Column(TypeName = "NVARCHAR(10)")]
         public string? isActive { get; set; }

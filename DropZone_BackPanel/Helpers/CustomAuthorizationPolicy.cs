@@ -6,9 +6,9 @@ namespace DropZone_BackPanel.Helpers
 {
     public class CustomAuthorizationPolicy : AuthorizationHandler<CustomAuthorizationRequirement>
     {
-        private readonly DropZoneDbContext _dbContext;
+        private readonly DropSpaceDbContext _dbContext;
 
-        public CustomAuthorizationPolicy(DropZoneDbContext dbContext)
+        public CustomAuthorizationPolicy(DropSpaceDbContext dbContext)
         {
             _dbContext = dbContext;
         }

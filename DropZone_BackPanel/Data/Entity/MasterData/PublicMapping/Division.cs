@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.MasterData.PublicMapping
 {
     public class Division : Base
     {
-        public int? countryId { get; set; }
+        public int countryId { get; set; }
         public Country country { get; set; }
 
         [Column(TypeName = "NVARCHAR(20)")]

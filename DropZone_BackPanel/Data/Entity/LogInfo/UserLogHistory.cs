@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace DropZone_BackPanel.Data.Entity.MasterData
+namespace DropZone_BackPanel.Data.Entity.LogInfo
 {
-    public class UserLogHistory:Base
+    public class UserLogHistory : Base
     {
         [MaxLength(250)]
         public string userId { get; set; }
