@@ -1,6 +1,7 @@
 ﻿using DropZone_BackPanel.Data.Entity;
 using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.MasterData;
+using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPService.AuthService.Interfaces;
 using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;

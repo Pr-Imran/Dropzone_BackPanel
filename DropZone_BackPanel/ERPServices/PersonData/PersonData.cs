@@ -30,7 +30,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
         }
         public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByMobileAsync(string mobile)
         {
-            var personDataList = await _context.personsDatas
+            var personDataList = await _context.personalDatas
                 .Where(p => p.mobile == mobile)
                 .Select(p => new PersonDataWithFilesDto
                 {

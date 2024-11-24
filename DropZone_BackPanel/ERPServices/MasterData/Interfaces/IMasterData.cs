@@ -1,4 +1,5 @@
 ﻿using DropZone_BackPanel.Data.Entity.MasterData;
+using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 
 namespace DropZone_BackPanel.ERPServices.MasterData.Interfaces
 {
