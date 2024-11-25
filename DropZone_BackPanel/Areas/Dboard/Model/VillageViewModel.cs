@@ -7,10 +7,10 @@ namespace DropZone_BackPanel.Areas.Dboard.Models
     public class VillageViewModel2
     {
         public int villageId { get; set; }
-        public int unionWardId { get; set; }
-        public int? thanaId { get; set; }
-        public int? divisionId { get; set; }
-        public int? districtId { get; set; }
+        public string unionWardId { get; set; }
+        public string? thanaId { get; set; }
+        public string? divisionId { get; set; }
+        public string? districtId { get; set; }
         public string villageCode { get; set; }
         public string villageName { get; set; }
         public string villageNameBn { get; set; }

@@ -66,7 +66,7 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             Village village = new Village
             {
                 Id = model.villageId,
-                unionWardId = model.unionWardId,
+                unionWardId = Convert.ToInt32(IdMasking.Decode(model.unionWardId)),
                 villageCode = model.villageCode,
                 villageName = model.villageName,
                 villageNameBn = model.villageNameBn,

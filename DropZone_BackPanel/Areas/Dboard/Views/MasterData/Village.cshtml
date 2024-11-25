@@ -301,31 +301,29 @@
 
         });
 
-        function ajaxDistrict(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                options += '<option value="' + item.Id + '">' + item.districtNameBn + '</option>';
-            });
-            $('#districtId').empty();
-            $('#districtId').append(options);
-        }
+        // Populate dropdown with data
+        function populateDropdown(selector, data) {
+            const $dropdown = $(selector);
+            $dropdown.empty().append('<option value="">Select</option>');
 
-        function ajaxUpazilla(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                options += '<option value="' + item.Id + '">' + item.thanaName + "(" + item.thanaNameBn + ")" + '</option>';
-            });
-            $('#thanaId').empty();
-            $('#thanaId').append(options);
-        }
+            data.forEach(function (item) {
+                let displayName;
+                switch (selector) {
+                    case '#districtId':
+                        displayName = item.districtNameBn;
+                        break;
+                    case '#thanaId':
+                        displayName = item.thanaNameBn;
+                        break;
+                    case '#unionWardId':
+                        displayName = item.unionWardNameBn || item.unionNameBn;
+                        break;
+                    default:
+                        displayName = item.nameBn || item.name;
+                }
 
-        function ajaxUnionWard(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                options += '<option value="' + item.Id + '">' + "(" + item.unionNameBn + ")" + "(" + item.isActive + ")" + '</option>';
+                $dropdown.append(`<option value="${item.Id}">${displayName}</option>`);
             });
-            $('#unionWardId').empty();
-            $('#unionWardId').append(options);
         }
 
         function GetAllVillage(divId, distId, thanaId, unionId) {
@@ -405,47 +403,9 @@
             });
         }
 
-        function ajaxDistrict1(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                if (sDistId != 0 && item.Id == sDistId) {
-                    options += '<option value="' + item.Id + '" selected>' + item.districtNameBn + '</option>';
-                }
-                else {
-                    options += '<option value="' + item.Id + '">' + item.districtNameBn + '</option>';
-                }
-            });
-            $('#districtId').empty();
-            $('#districtId').append(options);
-        }
+        
 
-        function ajaxUpazilla1(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                if (sThanaId != 0 && item.Id == sThanaId) {
-                    options += '<option value="' + item.Id + '" selected>' + item.thanaName + "(" + item.thanaNameBn + ")" + '</option>';
-                }
-                else {
-                    options += '<option value="' + item.Id + '">' + item.thanaName + "(" + item.thanaNameBn + ")" + '</option>';
-                }
-            });
-            $('#thanaId').empty();
-            $('#thanaId').append(options);
-        }
-
-        function ajaxUnionWard1(response) {
-            var options = '<option value="">Select One</option>';
-            $.each(response, function (i, item) {
-                if (sUnionId != 0 && item.Id == sUnionId) {
-                    options += '<option value="' + item.Id + '" selected>' + "(" + item.unionNameBn + ")" + "(" + item.isActive + ")" + '</option>';
-                }
-                else {
-                    options += '<option value="' + item.Id + '">' + "(" + item.unionNameBn + ")" + "(" + item.isActive + ")" + '</option>';
-                }
-            });
-            $('#unionWardId').empty();
-            $('#unionWardId').append(options);
-        }
+        
     </script>
 }
 
