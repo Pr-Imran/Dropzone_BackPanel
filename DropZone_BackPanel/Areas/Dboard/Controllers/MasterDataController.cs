@@ -41,7 +41,7 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
 
 
         #region Village
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Village()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
@@ -60,7 +60,9 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Village([FromForm] VillageViewModel2 model)
         {
             Village village = new Village
@@ -93,7 +95,9 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             return View(model0);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<JsonResult> DeleteVillageById(int Id)
         {
             await _masterDataService.DeleteVillageById(Id);
