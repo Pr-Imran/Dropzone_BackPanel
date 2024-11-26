@@ -1,0 +1,147 @@
+﻿@using DropZone_BackPanel.Helpers
+@model DropZone_BackPanel.Areas.Dboard.Model.CrimeTypeViewModel2
+@{
+    ViewData["Title"] = "Manage Crime Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<style>
+    .btn-link {
+        color: white;
+    }
+
+    .modal-heading h4 {
+        color: #ffffff;
+    }
+
+    .form-control {
+        border-radius: 20px;
+    }
+
+    .btn-success {
+        border-radius: 10px;
+    }
+
+    label {
+        color: black;
+    }
+
+    .choices {
+        width: 100% !important;
+    }
+
+   
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h4 class="text-center">Add Crime Type</h4>
+            <hr />
+            <form id="crimeTypeForm" asp-area="Dboard" asp-controller="MasterData" asp-action="CrimeType" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="crimeTypeId" name="Id" value="0"/>
+                <div class="form-group">
+                    <label for="crimeTypeName">Crime Type Name</label>
+                    <input type="text" id="crimeTypeName" name="crimeType" class="form-control" placeholder="Enter crime type" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="isActive">Status</label>
+                    <select id="isActive" name="isActive" class="form-control" required>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-success btn-lg">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container table-responsive py-5">
+    <table class="table table-bordered table-hover" id="crimeTypeTable">
+        <thead class="" style="background-color: #827EEF;">
+            <tr>
+                <th scope="col">Sl</th>
+                <th scope="col">Crime Type</th>
+                <th scope="col">Status</th>
+                @* <th scope="col">Created At</th> *@
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var index = 1;
+                if (Model.crimeTypes != null)
+                {
+                    foreach (var item in Model.crimeTypes)
+                    {
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td>@item.crimeType</td>
+                                <td>@(item.isActive == true ? "Active" : "Inactive")</td>
+                                @* <td>@item.CreatedAt?.ToString("yyyy-MM-dd")</td> *@
+                                <td>
+                                    <a class="btn btn-info" title="Edit" onclick="editCrimeType(@item.Id, '@item.crimeType', '@item.isActive')" href="javascript:void(0)"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-danger" title="Delete" onclick="deleteCrimeType('@IdMasking.Encode(@item.Id.ToString())')"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        index++;
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#crimeTypeTable').DataTable();
+        });
+
+        function editCrimeType(id, crimeType, isActive) {
+            console.log("Edit Crime Type with ID: ", { id, crimeType, isActive });
+            $("#crimeTypeName").val(crimeType);
+            $("#crimeTypeId").val(id);
+            const activeValue = isActive === 'True' ? 'true' : 'false';
+            $("#isActive").val(activeValue);
+        }
+
+        function deleteCrimeType(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to delete this page access?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/Dboard/MasterData/DeleteCrimeTypeById`,
+                        type: "POST",
+                        data: { Id: id },
+                        success: function (data) {
+                            if (data === true) {
+                                Swal.fire("Deleted!", "The page access has been deleted.", "success").then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire("Error!", "Failed to delete the page access.", "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error!", "Failed to delete the page access.", "error");
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}
