@@ -95,7 +95,7 @@
                     <div class="col-md-9" style="text-align:right;">
                         <button type="submit" value="জমা দিন" class="btn btn-success btn-sm" style="width:80px;">Save</button>
                         &nbsp;&nbsp;
-                        <input type="button" class="btn btn-facebook btn-sm" value="Load" id="btnLoad" style="width:80px;" />
+                        <input type="button" class="btn btn-facebook btn-sm" value="Load" onclick="GetAllVillage()" style="width:80px;" />
                     </div>
                 </div>
             </form>
@@ -128,7 +128,25 @@
                             <th>সক্রিয় কিনা</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        @if (Model.villages != null && Model.villages.Count()>0)
+                        {
+                            @foreach (var village in Model.villages)
+                            {
+                                <tr>
+                                    <th>@village.unionWard?.thana?.district?.division?.divisionNameBn</th>
+                                    <th>@village.unionWard?.thana?.district?.districtNameBn</th>
+                                    <th>@village.unionWard?.thana?.thanaNameBn</th>
+                                    <th>@village.unionWard?.unionNameBn</th>
+                                    <th>@village.villageNameBn (@village.villageCode)</th>
+                                    <th>@village.villageName (@village.villageCode)</th>
+                                    <th>@village.latitude</th>
+                                    <th>@village.longitude</th>
+                                    <th>@village.isActive</th>
+                                </tr>
+                            }
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -140,39 +158,8 @@
 {
     <script type="text/javascript">
         var token = $('input[name="__RequestVerificationToken"]').val();
-        $("#divisionId").change(function () {
-            var data = { dId: $(this).val() };
-            $.ajax({
-                url: `/api/Auth/Home/GetDistrictByDivisionId`,
-                type: 'POST',
-                data: JSON.stringify(data),
-                processData: false,
-                contentType: 'application/json',
-                headers: {
-                    'RequestVerificationToken': token
-                },
-                success: function (data) {
-                    // Clear existing options
-                    $('#districtId').empty();
-
-                    // Add default option
-                    $('#districtId').append('<option value="">Select</option>');
-
-                    // Add new options from the API response
-                    data.forEach(function (district) {
-                        $('#districtId').append(`<option value="${district.Id}">${district.districtNameBn}</option>`);
-                    });
-                },
-                error: function () {
-                    alert('Error loading districts.');
-                }
-            });
-        });
         $(document).ready(function () {
-            //Common.Ajax('POST', '/api/GetUnionWardsByThanaId/' + id, [], 'json', ajaxUnionWard);
 
-
-            // Utility function to populate dropdown
             function populateDropdown(selectElement, data, defaultOption = true) {
                 const $select = $(selectElement);
                 $select.empty();
@@ -300,39 +287,8 @@
             });
 
         });
-
-        // Populate dropdown with data
-        function populateDropdown(selector, data) {
-            const $dropdown = $(selector);
-            $dropdown.empty().append('<option value="">Select</option>');
-
-            data.forEach(function (item) {
-                let displayName;
-                switch (selector) {
-                    case '#districtId':
-                        displayName = item.districtNameBn;
-                        break;
-                    case '#thanaId':
-                        displayName = item.thanaNameBn;
-                        break;
-                    case '#unionWardId':
-                        displayName = item.unionWardNameBn || item.unionNameBn;
-                        break;
-                    default:
-                        displayName = item.nameBn || item.name;
-                }
-
-                $dropdown.append(`<option value="${item.Id}">${displayName}</option>`);
-            });
-        }
-
         function GetAllVillage(divId, distId, thanaId, unionId) {
             $('#villageId').val(0);
-            $('#villageCode').val('');
-            $('#villageName').val('');
-            $('#villageName').removeAttr('readonly', 'readonly');
-            $('#villageNameBn').removeAttr('readonly', 'readonly');
-            $('#villageNameBn').val('');
             table = $('#tblVehicleList').DataTable({
                 ajax: {
                     url: "/global/api/GetVillageListByFilter/" + divId + "/" + distId + "/" + thanaId + "/" + unionId,
@@ -345,13 +301,14 @@
                     { data: "districtNameBn" },
                     { data: "thanaNameBn" },
                     { data: "unionNameBn" },
-                    { data: "villageName" },
+                    { data: "villageName"},
                     { data: "villageNameBn" },
                     { data: "longitude" },
                     { data: "longitude" },
+                    { data: "isActive" },
                     {
                         "render": function (data, type, e, meta) {
-                            return '<a class="btn btn-info" href="javascript:void(0)" title="Edit" onclick="Edit(' + e.Id + ',' + e.unionWardId + ',' + e.thanaId + ',' + e.districtsId + ',' + e.divisionId + ',' + "'" + e.villageCode + "'" + ',' + "'" + e.villageName + "'" + ',`' + e.villageNameBn + '`,`' + e.isActive + '`,' + e.latitude + ',' + e.longitude + ')"><i class="fa fa-edit"></i></a>';
+                            return '<a class="btn btn-info" href="javascript:void(0)" title="Edit" onclick="Edit(' + e.Id + ',' + e.unionWardId + ',' + e.thanaId + ',' + e.districtId + ',' + e.divisionId + ',' + "'" + e.villageCode + "'" + ',' + "'" + e.villageName + "'" + ',`' + e.villageNameBn + '`,`' + e.isActive + '`,' + e.latitude + ',' + e.longitude + ')"><i class="fa fa-edit"></i></a>';
                             /*&nbsp;&nbsp;<a class="btn btn-danger" href="javascript:void(0)" title="Delete" onclick="DeleteMaster(' + e.Id + ')"><i class="fa fa-trash-alt"></i></a>*/
                         }
                     },
@@ -359,53 +316,6 @@
                 stateSave: true
             });
         }
-
-        function Edit(id, unionWardId, thanaId, districtsId, divisionId, villageCode, villageName, villageNameBn, isActive, latitude, longitude) {
-            $('#villageId').val(id);
-            $("#divisionId").val(divisionId);
-            //Common.Ajax('POST', '/global/api/GetDistrictsByDivisonId/' + divisionId, [], 'json', ajaxDistrict, false);
-            $("#districtId").val(districtsId);
-            //Common.Ajax('POST', '/global/api/GetUpazillaByDistrictId/' + districtsId, [], 'json', ajaxUpazilla, false);
-            $('#thanaId').val(thanaId);
-            //Common.Ajax('POST', '/global/api/GetUnionWardsByThanaId/' + thanaId, [], 'json', ajaxUnionWard, false);
-            $('#unionWardId').val(unionWardId);
-            $('#villageCode').val(villageCode);
-            $('#villageName').val(villageName);
-            $('#villageName').attr('readonly', 'readonly');
-            $('#villageNameBn').attr('readonly', 'readonly');
-            $('#villageNameBn').val(villageNameBn);
-            $('#isActive').val(isActive).trigger('change');
-            $('#isActive').val(isActive).trigger('change');
-
-            $('#latitude').val(latitude);
-            $('#longitude').val(longitude);
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        }
-
-        function DeleteMaster(Id) {
-            swal({
-                title: 'Are you sure?', text: 'Do you want to delete this record!', type: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, delete it!'
-            }).then(function () {
-
-                $.ajax({
-                    url: '@Url.Action("DeleteVillageById", "Settings")',
-                    data: { Id: Id },
-                    type: 'POST',
-                })
-                    .done(function () {
-                        swal('', 'Deleted Successfully!', 'success');
-                        window.location.href = "/MasterData/Settings/Village";
-                    })
-                    .fail(function () {
-                        swal('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
-                    });
-            });
-        }
-
-        
-
-        
     </script>
 }
 

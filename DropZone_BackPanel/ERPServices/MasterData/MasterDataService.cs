@@ -65,7 +65,7 @@ namespace DropZone_BackPanel.ERPServices.MasterData
         }
         public async Task<IEnumerable<Village>> GetAllVillageByUnionId(int id)
         {
-            return await _context.villages.Where(x => x.unionWardId == id).OrderByDescending(x => x.Id).ToListAsync();
+            return await _context.villages.Where(x => x.unionWardId == id).Include(x=>x.unionWard).ThenInclude(x=>x.thana).ThenInclude(x=>x.district).ThenInclude(x=>x.division).OrderByDescending(x => x.Id).ToListAsync();
         }
         public async Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int id)
         {
