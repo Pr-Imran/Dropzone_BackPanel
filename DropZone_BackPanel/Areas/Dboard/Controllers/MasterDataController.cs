@@ -32,14 +32,6 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             _lang = new LangGenerate<SettingsLn>(_hostingEnvironment.ContentRootPath);
             _configuration = configuration;
         }
-
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
         #region Village
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Village()
@@ -79,18 +71,10 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             await _masterDataService.SaveVillage(village);
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             var role = await _userManager.GetRolesAsync(user);
-            List<ApplicationRoleViewModel> lstRole = new List<ApplicationRoleViewModel>();
-            foreach (var data in role)
-            {
-                ApplicationRoleViewModel roleViewModel = new ApplicationRoleViewModel
-                {
-                    RoleName = data
-                };
-                lstRole.Add(roleViewModel);
-            }
             VillageViewModel2 model0 = new VillageViewModel2
             {
                 divisions = await _masterDataService.GetDivisionsByCountryId(1),
+                villages=await _masterDataService.GetAllVillageByUnionId(Convert.ToInt32(IdMasking.Decode(model.unionWardId)))
             };
             return View(model0);
         }

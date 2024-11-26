@@ -14,7 +14,7 @@ namespace DropZone_BackPanel.Services.MasterData.Interfaces
         Task<IEnumerable<System.Object>> GetVillageList();
         Task<bool> DeleteVillageById(int id);
         Task<IEnumerable<Village>> GetAllVillageByThanaUnionId(int thana, int? id);
-        //Task<IEnumerable<VillageListViewModel>> GetVillageListByFilter(int? divId, int? distId, int? thanaId, int? unionId);
+        Task<IEnumerable<VillageListViewModel>> GetVillageListByFilter(int? divId, int? distId, int? thanaId, int? unionId);
         #endregion
 
         #region Division
