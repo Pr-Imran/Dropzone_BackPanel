@@ -11,6 +11,8 @@ namespace DropZone_BackPanel.Areas.Dboard.Model
         public string VillageName { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public string crimeType { get; set; }
+        public string districtDetails { get; set; }
 
         public List<UploadedFileDto> UploadedFiles { get; set; }
     }

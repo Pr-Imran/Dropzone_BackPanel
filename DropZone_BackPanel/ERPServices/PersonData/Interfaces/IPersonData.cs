@@ -11,6 +11,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData.Interfaces
         Task<Dictionary<int, int>> GetHourlyDataCountAsync(DateTime date);
         Task<Dictionary<DateTime, int>> GetDailyDataCountAsync(DateTime startDate, DateTime endDate);
         Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null);
-        Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByPoliceThanaIdAsync(int policethanaId);
+        //Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByPoliceThanaIdAsync(int policethanaId);
+        Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByFiltersAsync(int? rangeId, int? districtId, int? zoneId, int? policethanaId);
     }
 }

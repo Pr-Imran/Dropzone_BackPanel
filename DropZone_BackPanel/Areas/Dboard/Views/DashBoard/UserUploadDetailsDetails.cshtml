@@ -21,12 +21,10 @@
     <thead>
         <tr>
             <th>Sl</th>
-            <th>Name</th>
             <th>Mobile</th>
-            <th>Union</th>
-            <th>Village</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
+            <th>Crime Type</th>
+            <th>Address</th>
+            <th>Union, Village Name</th>
             <th>Uploaded Files</th>
         </tr>
     </thead>
@@ -35,12 +33,10 @@
         {
             <tr>
                 <td>@(person.index + 1)</td> 
-                <td>@person.value.Name</td>
                 <td>@person.value.Mobile</td>
-                <td>@person.value.UnionName</td>
-                <td>@person.value.VillageName</td>
-                <td>@person.value.Latitude</td>
-                <td>@person.value.Longitude</td>
+                    <td>@person.value.crimeType</td>
+                    <td>@person.value.districtDetails</td>
+                    <td>@person.value.UnionName, @person.value.VillageName</td>
                 <td>
                     @if (person.value.UploadedFiles != null && person.value.UploadedFiles.Any())
                     {

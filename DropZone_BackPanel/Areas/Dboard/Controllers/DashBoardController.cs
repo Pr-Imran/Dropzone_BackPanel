@@ -5,6 +5,7 @@ using DropZone_BackPanel.ERPServices.AuthService;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace DropZone_BackPanel.Areas.Dboard.Controllers
 {
@@ -58,6 +59,8 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
                 VillageName = p.VillageName,
                 Latitude = p.Latitude,
                 Longitude = p.Longitude,
+                crimeType=p.crimeType,
+                districtDetails = p.districtDetails,
                 UploadedFiles = p.UploadedFiles.Select(uf => new UploadedFileDto
                 {
                     Id = uf.Id,

@@ -45,10 +45,10 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             return Json(await settingsService.GetPoliceThanaByZoneid(Id));
         }
 
-        [Route("global/api/GetReportData/{thana}")]
-        public async Task<IActionResult> GetReportData(int thana)
+        [Route("global/api/GetReportData/{range}/{district}/{zone}/{thana}")]
+        public async Task<IActionResult> GetReportData(int range,int district,int zone,int thana)
         {
-            var result=await _persondata.GetPersonDataWithFilesByPoliceThanaIdAsync(thana);
+            var result=await _persondata.GetPersonDataWithFilesByFiltersAsync(range,district,zone,thana);
             return Json(result);
         }
     }

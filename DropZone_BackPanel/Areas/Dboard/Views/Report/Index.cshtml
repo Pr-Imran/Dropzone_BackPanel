@@ -95,12 +95,10 @@
                     <thead>
                         <tr>
                             <th>Sl</th>
-                            <th>Name</th>
                             <th>Mobile</th>
-                            <th>Union Name</th>
-                            <th>Village</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
+                            <th>Crime Type</th>
+                            <th>Search Parameter</th>
+                            <th>Union, Village Name</th>
                             <th>Uploaded Files</th>
                         </tr>
                     </thead>
@@ -138,11 +136,19 @@
                 //$('#myDivloader').show();
                 $('#allDataListTable').hide();
 
+                // var params = {
+                //     thana: $("#thana").val(),
+                // };
+                //Common.Ajax('GET', `/global/api/GetReportData/${params.thana}`, [], 'json', populateTable);
                 var params = {
-                    thana: $("#thana").val(),
-                };
+                     range: $("#range").val(),
+                     district: $("#district").val(),
+                     zone: $("#zone").val(),
+                     thana: $("#thana").val(),
+                    };
 
-                Common.Ajax('GET', `/global/api/GetReportData/${params.thana}`, [], 'json', populateTable);
+
+                Common.Ajax('GET', `/global/api/GetReportData/${params.range}/${params.district}/${params.zone}/${params.thana}`, [], 'json', populateTable);
             });
         });
 
@@ -207,16 +213,14 @@
                     uploadedFilesContent = '<span>No files uploaded</span>';
                 }
 
-                // Handle null values and append data row
+                // Handle null values and append data row${item.UnionName
                 table.append(`
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${item.Name || 'N/A'}</td>
                         <td>${item.Mobile || 'N/A'}</td>
-                        <td>${item.UnionName || 'N/A'}</td>
-                        <td>${item.VillageName || 'N/A'}</td>
-                        <td>${item.Latitude || 'N/A'}</td>
-                        <td>${item.Longitude || 'N/A'}</td>
+                        <td>${item.crimeType || 'N/A'}</td>
+                        <td>${item.districtDetails}</td>
+                        <td>${item.UnionName || ''}, ${item.VillageName || ''}</td>
                         <td>${uploadedFilesContent}</td>
                     </tr>
                 `);
@@ -225,6 +229,11 @@
             
 
             // Initialize DataTable after populating rows
+           
+
+            // Hide loader and show table
+           // $('#myDivloader').hide();
+            $('#allDataListTable').show();
             $("#allDataListTable").DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -233,10 +242,6 @@
                 "info": true,
                 "autoWidth": false
             });
-
-            // Hide loader and show table
-           // $('#myDivloader').hide();
-            $('#allDataListTable').show();
         }
 
 
