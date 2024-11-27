@@ -1,6 +1,8 @@
 ﻿using DropZone_BackPanel.API.Models;
 using DropZone_BackPanel.Context;
 using DropZone_BackPanel.Data.Entity.Droper;
+using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
+using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -173,6 +175,68 @@ namespace DropZone_BackPanel.ERPServices.PersonData
         }
 
 
+        public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByPoliceThanaIdAsync(int policethanaId)
+        {
+            // Step 1: Get the Thana ID associated with the Police Thana
+            var thanaId = await _context.Set<PoliceThana>()
+                .Where(pt => pt.Id == policethanaId)
+                .Select(pt => pt.upazillaId)
+                .FirstOrDefaultAsync();
+
+            if (thanaId == null)
+            {
+                return new List<PersonDataWithFilesDto>(); // Return empty if no Thana found
+            }
+
+            // Step 2: Get Union IDs related to the Thana ID
+            var unionIds = await _context.Set<UnionWard>()
+                .Where(u => u.thanaId == thanaId)
+                .Select(u => u.Id)
+                .ToListAsync();
+
+            // Step 3: Get Village IDs related to the Union IDs
+            var villageIds = await _context.Set<Village>()
+                .Where(v => unionIds.Contains(v.unionWardId))
+                .Select(v => v.Id)
+                .ToListAsync();
+
+            // Step 4: Get PersonsData filtered by Union and Village IDs
+            var personData = await _context.Set<PersonsData>()
+                .Where(p => unionIds.Contains(p.unionId ?? 0) || villageIds.Contains(p.villageId ?? 0))
+                .Include(p => p.union)
+                .Include(p => p.village)
+                .ToListAsync();
+
+            // Step 5: Get Uploaded Files for the filtered PersonsData
+            var personIds = personData.Select(p => p.Id).ToList();
+            var uploadedFiles = await _context.Set<UploadedFiles>()
+                .Where(uf => personIds.Contains(uf.personsDataId ?? 0))
+                .ToListAsync();
+
+            // Step 6: Map data to PersonDataWithFilesDto
+            var data = personData.Select(p => new PersonDataWithFilesDto
+            {
+                Id = p.Id,
+                Name = p.name,
+                Mobile = p.mobile,
+                UnionId = p.unionId,
+                UnionName = p.union?.unionName,
+                VillageId = p.villageId,
+                VillageName = p.village?.villageName,
+                Latitude = p.latitude,
+                Longitude = p.longitude,
+                UploadedFiles = uploadedFiles
+                    .Where(uf => uf.personsDataId == p.Id)
+                    .Select(uf => new UploadedFileDto
+                    {
+                        Id = uf.Id,
+                        AttachmentUrl = uf.attachmentUrl,
+                    })
+                    .ToList()
+            }).ToList();
+
+            return data;
+        }
 
     }
 }

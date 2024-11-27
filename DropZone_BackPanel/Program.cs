@@ -19,6 +19,8 @@ using DropZone_BackPanel.Context;
 using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
 using DropZone_BackPanel.ERPServices.MasterData;
 using DropZone_BackPanel.Services.MasterData.Interfaces;
+using DropZone_BackPanel.ERPServices.ReportData.Interface;
+using DropZone_BackPanel.ERPServices.ReportData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,6 +113,7 @@ builder.Services.AddAuthorization();
 // Register application-specific services
 builder.Services.AddScoped<IDapper, DropZone_BackPanel.Services.Dapper.Dapper>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<ISettingsService, SettingsService>();
 builder.Services.AddScoped<IUserInfoes, UserInfoes>();
 builder.Services.AddScoped<IPersonData, PersonData>();
 builder.Services.AddScoped<IMasterData, MasterDataService>();
