@@ -99,12 +99,11 @@ namespace DropZone_BackPanel.Services.MasterData
         }
 
 
-        //public async Task<IEnumerable<VillageListViewModel>> GetVillageListByFilter(int? divId, int? distId, int? thanaId, int? unionId)
-        //{
-        //    var data = await _dapper.FromSqlAsync<VillageListViewModel>($"SP_GET_VillageListByFilter {divId},{distId},{thanaId},{unionId}");
-        //    //var data = await _context.VillageListViewModels.FromSql($"SP_GET_VillageListByFilter {divId},{distId},{thanaId},{unionId}").OrderByDescending(x=>x.Id).AsNoTracking().ToListAsync();
-        //    return data.OrderByDescending(x => x.Id).ToList();
-        //}
+        public async Task<IEnumerable<VillageListViewModel>> GetVillageListByFilter(int? divId, int? distId, int? thanaId, int? unionId)
+        {
+            var data = await _dapper.FromSql<VillageListViewModel>($"SP_GET_VillageListByFilter {divId},{distId},{thanaId},{unionId}");
+            return data.OrderByDescending(x => x.Id).ToList();
+        }
 
         #endregion
 

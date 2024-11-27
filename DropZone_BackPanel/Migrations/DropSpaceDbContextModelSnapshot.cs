@@ -111,6 +111,9 @@ namespace DropZone_BackPanel.Migrations
                     b.Property<int?>("isActive")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isWhiteList")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("updatedAt")
                         .HasColumnType("datetime2");
 
@@ -132,6 +135,71 @@ namespace DropZone_BackPanel.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.Droper.FileLimits", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("alertFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("archiveFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("archivingMonth")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("createdBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("dayFileNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("dayFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("fileTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("hourFileNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("hourFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("isDelete")
+                        .HasColumnType("int");
+
+                    b.Property<int>("totalFileNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("totalFileSize")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("updatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("updatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("fileTypeId");
+
+                    b.ToTable("fileLimits");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.Droper.PersonsData", b =>
@@ -390,6 +458,43 @@ namespace DropZone_BackPanel.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("crimeInfos");
+                });
+
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.FileType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("createdAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("createdBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("fileTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("isDelete")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("updatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("updatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("fileTypes");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping.DivisionDistrict", b =>
@@ -1091,6 +1196,17 @@ namespace DropZone_BackPanel.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("DropZone_BackPanel.Data.Entity.Droper.FileLimits", b =>
+                {
+                    b.HasOne("DropZone_BackPanel.Data.Entity.MasterData.FileType", "fileType")
+                        .WithMany()
+                        .HasForeignKey("fileTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("fileType");
                 });
 
             modelBuilder.Entity("DropZone_BackPanel.Data.Entity.Droper.PersonsData", b =>

@@ -16,5 +16,18 @@ namespace DropZone_BackPanel.ERPServices.MasterData.Interfaces
         Task<IEnumerable<Village>> GetAllVillageByUnionId(int id);
         Task<IEnumerable<Village>> GetAllActiveVillageByUnionId(int id);
         Task<bool> DeleteVillageById(int id);
+
+        #region Crime Types
+        Task<IEnumerable<CrimeInfo>> GetAllCrimeTypes();
+        Task<int> SaveCrimeType(CrimeInfo crimeInfo);
+        Task<bool> DeleteCrimeTypeById(int id);
+        #endregion
+
+        #region UnionWard
+        Task<IEnumerable<UnionWard>> GetAllUnionWards();
+        Task<IEnumerable<Thana>> GetAllThanas();
+        Task<int> SaveUnionWards(UnionWard unionWard);
+        Task<bool> DeleteUnionWardById(int id);
+        #endregion
     }
 }

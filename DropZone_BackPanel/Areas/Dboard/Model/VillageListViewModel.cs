@@ -5,7 +5,7 @@
         public int? Id { get; set; }
         public int? unionWardId { get; set; }
         public int? thanaId { get; set; }
-        public int? districtsId { get; set; }
+        public int? districtId { get; set; }
         public int? divisionId { get; set; }
 
         public string? villageCode { get; set; }

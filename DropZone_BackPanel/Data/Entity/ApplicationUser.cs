@@ -5,7 +5,8 @@ namespace DropZone_BackPanel.Data.Entity
 {
     public class ApplicationUser : IdentityUser
     {
-        public int? isActive { get; set; }
+        public int? isActive { get; set; }//0=InActive,1=Active
+        public bool isWhiteList { get; set; }
         public DateTime? createdAt { get; set; }
         [MaxLength(120)]
         public string? createdBy { get; set; }
