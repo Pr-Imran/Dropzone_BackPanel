@@ -13,7 +13,7 @@ namespace DropZone_BackPanel.Areas.Dboard.Model
         public string Longitude { get; set; }
         public string crimeType { get; set; }
         public string districtDetails { get; set; }
-
+        public DateTime? createdAt { get; set; }
         public List<UploadedFileDto> UploadedFiles { get; set; }
     }
 

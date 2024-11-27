@@ -51,5 +51,15 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             var result=await _persondata.GetPersonDataWithFilesByFiltersAsync(range,district,zone,thana);
             return Json(result);
         }
+
+        public async Task<IActionResult> OtpLogList()
+        {
+            var model = new OtpLogsViewModel
+            {
+                otpLogs = await settingsService.GetAllOtplogsList(),
+            };
+            return View(model);
+        }
+
     }
 }

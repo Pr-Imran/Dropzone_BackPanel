@@ -1,4 +1,5 @@
 ﻿using DropZone_BackPanel.Context;
+using DropZone_BackPanel.Data.Entity.LogInfo;
 using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
 using DropZone_BackPanel.ERPServices.ReportData.Interface;
 using DropZone_BackPanel.Services.Dapper;
@@ -35,6 +36,12 @@ namespace DropZone_BackPanel.ERPServices.ReportData
         public async Task<IEnumerable<PoliceThana>> GetPoliceThanaByZoneid(int zoneId)
         {
             return await _context.policeThanas.Where(a => a.zoneCircleId == zoneId && a.isChild != 1).ToListAsync();
+        }
+
+        public async Task<IEnumerable<OTPLogs>> GetAllOtplogsList()
+        {
+            var data = await _context.oTPLogs.Where(x=>x.isVerified==false).ToListAsync();
+            return data;
         }
     }
 }

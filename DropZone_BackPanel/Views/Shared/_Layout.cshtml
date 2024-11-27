@@ -826,63 +826,29 @@
 
             </style>
             <nav class="navbar-nav sidebar sidebar-dark accordion toggled " style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
-                @*    <menu class="py-2" style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
-                 <menuitem class="text-center">
+                <menu class="py-2" style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
+                    <menuitem class="text-center">
                         <a class="border-0 m-auto  mt-2" style="border-radius:50%" id="sidebarToggle"></a>
-                    </menuitem> *@
-                    <menuitem class="nav-item mainMenu">
-                       @*  @if (roles.Select(x => x.RoleName).Contains("Public User"))
-                        {
-                            <a class="nav-link" id="HomeIconPub">
-                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="dashboard">Dashboard</span>
-                            </a>
-                        }
-                        else if (roles.Select(x => x.RoleName).Contains("Admin") || roles.Select(x => x.RoleName).Contains("Field Officer"))
-                        {
-                            <a class="nav-link" id="HomeIcon">
-                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="dashboard">Dashboard</span>
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="nav-link" id="HomeIcon">
-                                <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="dashboard">Dashboard</span>
-                            </a>
-                        }
- *@
-
-
-                       @*  <a class="nav-link" id="HomeIcon">
-                            <i class="fas fa-fw fa-home" style="color:white;font-size:20px"></i>
-                            <span style="color:white;" id="dashboard">Dshboard</span>
-                        </a> *@
                     </menuitem>
-                   
-                    @* @foreach (var item in navbarss.ERPModules.Where(x => x.isDelete != 1))
-                    {
-                        <menuitem class="nav-item mainMenu" id="accordionSidebar_@item.moduleName.Replace(" ", "")">
-                            <a class="nav-link collapsed" onclick="clickShow('@item.moduleName.Replace(" ", "")')" data-toggle="collapse" data-target="#collapse_@item.moduleName.Replace(" ", "")" aria-expanded="true" aria-controls="collapse__@item.moduleName.Replace(" ", "")">
-                                <i style="color:white;font-size:20px" class="@item.iconeLink"></i>
-                                <span style="color:white;" id="Setting_@item.moduleName.Replace(" ", "")">@item.moduleName</span>
+                    <menuitem class="nav-item mainMenu">
+
+                        <menuitem class="nav-item mainMenu">
+                            <a class="nav-link" id="HomeIcon" href="/Dboard/DashBoard/Dashboard">
+                                <i class="fas fa-fw fa-tachometer-alt" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="dashboard">Dashboard</span>
                             </a>
-                            <menu class="p-0 m-0">
-                                @foreach (var itemchid in navbarss.navbars.Where(x => x.moduleId == item.Id && x.parentID == 0))
-                                {
-                                    if (itemchid.isParent == 0)
-                                    {
-                                        <menuitem class="p-0">
-                                            <a id="collapse_@item.moduleName.Replace(" ", "")" aria-labelledby="headingTwo" data-parent="#accordionSidebar" class="nav-link collapse subMenu hidd collapse_@item.moduleName.Replace(" ", "")" onclick="LocalSet(@itemchid.moduleId,@itemchid.Id)" href="@Url.Action("GridMenuPage", "Home", new { moduleId = @itemchid.moduleId, perentId = @itemchid.Id  })">
-                                                <i class="@itemchid.imageClass"></i><span>@itemchid.nameOption</span>
-                                            </a>
-                                        </menuitem>
-                                    }
-                                }
-                            </menu>
+                            <a class="nav-link" id="ReportIcon" href="/Dboard/Report/Index">
+                                <i class="fas fa-fw fa-file-alt" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="report">Report</span>
+                            </a>
+                            <a class="nav-link" id="otpIcon" href="/Dboard/Report/OtpLogList">
+                                <i class="fas fa-fw fa-key" style="color:white;font-size:20px"></i>
+                                <span style="color:white;" id="report">Otp</span>
+                            </a>
                         </menuitem>
-                    } *@
+
+                    </menuitem>
+
                 </menu>
             </nav>
 
@@ -918,6 +884,7 @@
         <!-- End of Page Wrapper -->
 
     </div>
+
     <!-- Scroll to Top Button-->
 @*     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>

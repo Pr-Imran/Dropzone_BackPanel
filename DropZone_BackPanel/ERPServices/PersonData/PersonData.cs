@@ -4,6 +4,7 @@ using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -123,7 +124,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             return result;
         }
 
-
+        #region comment
         //public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null)
         //{
         //    var startDate = date.Date;
@@ -179,7 +180,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
         //    return data;
         //}
 
-        #region comment
+
         //public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByPoliceThanaIdAsync(int policethanaId)
         //{
         //    // Step 1: Get the Thana ID associated with the Police Thana
@@ -248,6 +249,108 @@ namespace DropZone_BackPanel.ERPServices.PersonData
         #endregion
 
 
+        //public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null)
+        //{
+        //    var startDate = date.Date;
+        //    var endDate = startDate.AddDays(1);
+
+        //    IQueryable<PersonsData> query = _context.Set<PersonsData>().AsQueryable();
+
+        //    if (hour.HasValue)
+        //    {
+        //        var hourStart = startDate.AddHours(hour.Value);
+        //        var hourEnd = hourStart.AddHours(1);
+        //        query = query.Where(p => p.createdAt >= hourStart && p.createdAt < hourEnd);
+        //    }
+        //    else
+        //    {
+        //        query = query.Where(p => p.createdAt >= startDate && p.createdAt < endDate);
+        //    }
+
+        //    var personData = await query
+        //        .Include(p => p.union)
+        //        .Include(p => p.village)
+        //        .ToListAsync();
+
+        //    var personIds = personData.Select(p => p.Id).ToList();
+
+        //    var uploadedFiles = await _context.Set<UploadedFiles>().Include(x => x.crimeType)
+        //        .Where(uf => personIds.Contains(uf.personsDataId ?? 0))
+        //        .ToListAsync();
+
+        //    // Step 1: Get Upazilla IDs (thanaIds) from PersonsData
+        //    var upazillaIds = personData
+        //        .Select(p => p.union?.thanaId ?? 0) // Assuming union has a `thanaId` field
+        //        .Distinct()
+        //        .Where(id => id > 0)
+        //        .ToList();
+
+        //    // Step 2: Retrieve range, district, zone, and thana names
+        //    var policeThanas = await _context.Set<PoliceThana>()
+        //        .Where(pt => upazillaIds.Contains((int)pt.upazillaId))
+        //        .ToListAsync();
+
+        //    var rangeName = policeThanas
+        //        .Select(pt => pt.rangeMetroId)
+        //        .Distinct()
+        //        .Select(rangeId => _context.Set<RangeMetro>()
+        //            .Where(r => r.Id == rangeId)
+        //            .Select(r => r.rangeMetroNameBn)
+        //            .FirstOrDefault())
+        //        .FirstOrDefault();
+
+        //    var districtName = policeThanas
+        //        .Select(pt => pt.divisionDistrictId)
+        //        .Distinct()
+        //        .Select(districtId => _context.Set<DivisionDistrict>()
+        //            .Where(d => d.Id == districtId)
+        //            .Select(d => d.divisionDistrictNameBn)
+        //            .FirstOrDefault())
+        //        .FirstOrDefault();
+
+        //    var zoneName = policeThanas
+        //        .Select(pt => pt.zoneCircleId)
+        //        .Distinct()
+        //        .Select(zoneId => _context.Set<ZoneCircle>()
+        //            .Where(z => z.Id == zoneId)
+        //            .Select(z => z.zoneNameBn)
+        //            .FirstOrDefault())
+        //        .FirstOrDefault();
+
+        //    var thanaName = policeThanas
+        //        .Select(pt => pt.policeThanaNameBn)
+        //        .FirstOrDefault();
+
+        //    // Step 3: Map data and include districtDetails
+        //    var data = personData.Select(p => new PersonDataWithFilesDto
+        //    {
+        //        Id = p.Id,
+        //        Name = p.name,
+        //        Mobile = p.mobile,
+        //        UnionId = p.unionId,
+        //        UnionName = p.union?.unionName,
+        //        VillageId = p.villageId,
+        //        VillageName = p.village?.villageName,
+        //        Latitude = p.latitude,
+        //        Longitude = p.longitude,
+        //        UploadedFiles = uploadedFiles
+        //            .Where(uf => uf.personsDataId == p.Id)
+        //            .Select(uf => new UploadedFileDto
+        //            {
+        //                Id = uf.Id,
+        //                AttachmentUrl = uf.attachmentUrl,
+        //                uploadDatetime = uf.createdAt
+        //            }).ToList(),
+        //        crimeType = uploadedFiles
+        //            .Where(uf => uf.personsDataId == p.Id)
+        //            .Select(uf => uf.crimeType?.crimeType)
+        //            .FirstOrDefault(),
+        //        districtDetails = string.Join(" , ", new[] { rangeName, districtName, zoneName, thanaName }
+        //            .Where(name => !string.IsNullOrEmpty(name))) // Concatenate non-empty names
+        //    }).ToList();
+
+        //    return data;
+        //}
         public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null)
         {
             var startDate = date.Date;
@@ -277,78 +380,95 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 .Where(uf => personIds.Contains(uf.personsDataId ?? 0))
                 .ToListAsync();
 
-            // Step 1: Get Upazilla IDs (thanaIds) from PersonsData
+            // Step 1: Get all upazillaIds (thanaIds) from PersonsData
             var upazillaIds = personData
                 .Select(p => p.union?.thanaId ?? 0) // Assuming union has a `thanaId` field
                 .Distinct()
                 .Where(id => id > 0)
                 .ToList();
 
-            // Step 2: Retrieve range, district, zone, and thana names
+            // Step 2: Retrieve all PoliceThana data for the collected upazillaIds
             var policeThanas = await _context.Set<PoliceThana>()
                 .Where(pt => upazillaIds.Contains((int)pt.upazillaId))
                 .ToListAsync();
 
-            var rangeName = policeThanas
-                .Select(pt => pt.rangeMetroId)
-                .Distinct()
-                .Select(rangeId => _context.Set<RangeMetro>()
-                    .Where(r => r.Id == rangeId)
-                    .Select(r => r.rangeMetroNameBn)
-                    .FirstOrDefault())
-                .FirstOrDefault();
+            // Step 3: Map data for each person's district details
+            var data = personData.Select(p => {
+                // Get upazillaId for the current person's union
+                var upazillaId = p.union?.thanaId;
 
-            var districtName = policeThanas
-                .Select(pt => pt.divisionDistrictId)
-                .Distinct()
-                .Select(districtId => _context.Set<DivisionDistrict>()
-                    .Where(d => d.Id == districtId)
-                    .Select(d => d.divisionDistrictNameBn)
-                    .FirstOrDefault())
-                .FirstOrDefault();
+                // Filter PoliceThana data specific to the current upazillaId
+                var currentPoliceThanas = policeThanas
+                    .Where(pt => pt.upazillaId == upazillaId)
+                    .ToList();
 
-            var zoneName = policeThanas
-                .Select(pt => pt.zoneCircleId)
-                .Distinct()
-                .Select(zoneId => _context.Set<ZoneCircle>()
-                    .Where(z => z.Id == zoneId)
-                    .Select(z => z.zoneNameBn)
-                    .FirstOrDefault())
-                .FirstOrDefault();
+                // Compute rangeName, districtName, zoneName, and thanaName for the current person
+                var currentRangeName = currentPoliceThanas
+                    .Select(pt => pt.rangeMetroId)
+                    .Distinct()
+                    .Select(rangeId => _context.Set<RangeMetro>()
+                        .Where(r => r.Id == rangeId)
+                        .Select(r => r.rangeMetroNameBn)
+                        .FirstOrDefault())
+                    .FirstOrDefault();
 
-            var thanaName = policeThanas
-                .Select(pt => pt.policeThanaNameBn)
-                .FirstOrDefault();
+                var currentDistrictName = currentPoliceThanas
+                    .Select(pt => pt.divisionDistrictId)
+                    .Distinct()
+                    .Select(districtId => _context.Set<DivisionDistrict>()
+                        .Where(d => d.Id == districtId)
+                        .Select(d => d.divisionDistrictNameBn)
+                        .FirstOrDefault())
+                    .FirstOrDefault();
 
-            // Step 3: Map data and include districtDetails
-            var data = personData.Select(p => new PersonDataWithFilesDto
-            {
-                Id = p.Id,
-                Name = p.name,
-                Mobile = p.mobile,
-                UnionId = p.unionId,
-                UnionName = p.union?.unionName,
-                VillageId = p.villageId,
-                VillageName = p.village?.villageName,
-                Latitude = p.latitude,
-                Longitude = p.longitude,
-                UploadedFiles = uploadedFiles
+                var currentZoneName = currentPoliceThanas
+                    .Select(pt => pt.zoneCircleId)
+                    .Distinct()
+                    .Select(zoneId => _context.Set<ZoneCircle>()
+                        .Where(z => z.Id == zoneId)
+                        .Select(z => z.zoneNameBn)
+                        .FirstOrDefault())
+                    .FirstOrDefault();
+
+                var currentThanaName = currentPoliceThanas
+                    .Select(pt => pt.policeThanaNameBn)
+                    .FirstOrDefault();
+
+                return new PersonDataWithFilesDto
+                {
+                    Id = p.Id,
+                    Name = p.name,
+                    Mobile = p.mobile,
+                    UnionId = p.unionId,
+                    UnionName = p.union?.unionName,
+                    VillageId = p.villageId,
+                    VillageName = p.village?.villageName,
+                    Latitude = p.latitude,
+                    Longitude = p.longitude,
+                    createdAt = uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
-                    .Select(uf => new UploadedFileDto
-                    {
-                        Id = uf.Id,
-                        AttachmentUrl = uf.attachmentUrl
-                    }).ToList(),
-                crimeType = uploadedFiles
-                    .Where(uf => uf.personsDataId == p.Id)
-                    .Select(uf => uf.crimeType?.crimeType)
+                    .Select(uf => uf.createdAt)
                     .FirstOrDefault(),
-                districtDetails = string.Join(" , ", new[] { rangeName, districtName, zoneName, thanaName }
-                    .Where(name => !string.IsNullOrEmpty(name))) // Concatenate non-empty names
+                    UploadedFiles = uploadedFiles
+                        .Where(uf => uf.personsDataId == p.Id)
+                        .Select(uf => new UploadedFileDto
+                        {
+                            Id = uf.Id,
+                            AttachmentUrl = uf.attachmentUrl,
+                            uploadDatetime = uf.createdAt
+                        }).ToList(),
+                    crimeType = uploadedFiles
+                        .Where(uf => uf.personsDataId == p.Id)
+                        .Select(uf => uf.crimeType?.crimeType)
+                        .FirstOrDefault(),
+                    districtDetails = string.Join(" , ", new[] { currentRangeName, currentDistrictName, currentZoneName, currentThanaName }
+                        .Where(name => !string.IsNullOrEmpty(name))) // Concatenate non-empty names
+                };
             }).ToList();
 
             return data;
         }
+
 
         public async Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByFiltersAsync(int? rangeId, int? districtId, int? zoneId, int? policethanaId)
         {
@@ -430,7 +550,11 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 crimeType = uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
                     .Select(uf => uf.crimeType?.crimeType)
-                    .FirstOrDefault()
+                    .FirstOrDefault(),
+                createdAt= uploadedFiles
+                    .Where(uf => uf.personsDataId == p.Id)
+                    .Select(uf => uf.createdAt)
+                    .FirstOrDefault(),
             }).ToList();
 
             // Step 7: Concatenate Names

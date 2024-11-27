@@ -1,0 +1,41 @@
+﻿@using DropZone_BackPanel.Areas.Dboard.Model
+@model OtpLogsViewModel
+@{
+    ViewData["Title"] = "OtpLogList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content container-fluid">
+    <table id="userOtpDetailsTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sl</th>
+                <th>UserName</th>
+                <th>OTP</th>
+                <th>OTP Expire</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model.otpLogs.Select((value, index) => new { value, index }))
+            {
+                <tr>
+                    <td>@(person.index + 1)</td>
+                    <td>@person.value.userName</td>
+                    <td>@person.value.otp</td>
+                    <td>@person.value.otpExpire?.ToString("dd/MM/yyyy hh:mm tt")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#userOtpDetailsTable').DataTable({
+            "paging": true,  
+            "lengthChange": false, 
+            "searching": true, 
+            "ordering": true,
+            "info": true,  
+            "autoWidth": false
+        });
+    });
+</script>

@@ -25,6 +25,7 @@
             <th>Crime Type</th>
             <th>Address</th>
             <th>Union, Village Name</th>
+            <th>Uploaded At</th>
             <th>Uploaded Files</th>
         </tr>
     </thead>
@@ -37,6 +38,7 @@
                     <td>@person.value.crimeType</td>
                     <td>@person.value.districtDetails</td>
                     <td>@person.value.UnionName, @person.value.VillageName</td>
+                    <td>@person.value.createdAt?.ToString("dd/MM/yyyy hh:mm tt")</td>
                 <td>
                     @if (person.value.UploadedFiles != null && person.value.UploadedFiles.Any())
                     {

@@ -61,6 +61,7 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
                 Longitude = p.Longitude,
                 crimeType=p.crimeType,
                 districtDetails = p.districtDetails,
+                createdAt=p.createdAt,
                 UploadedFiles = p.UploadedFiles.Select(uf => new UploadedFileDto
                 {
                     Id = uf.Id,
