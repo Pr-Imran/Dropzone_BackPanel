@@ -1,13 +1,12 @@
-﻿
-@using DropZone_BackPanel.ERPService.AuthService.Interfaces
+﻿@using DropZone_BackPanel.ERPService.AuthService.Interfaces
 @using System
 @inject IUserInfoes userInfo
 @{
-   var userInfos = await userInfo.GetUserInfoByUserName1(@User.Identity.Name);
+    var userInfos = await userInfo.GetUserInfoByUserName1(@User.Identity.Name);
     var EmpInfoImage = userInfos.Where(x => x.UserName == @User.Identity.Name).FirstOrDefault();
     //var navbarss = await userInfo.AssignPage(User.Identity.Name);
-   // var roles = await _userManager.GetRolesAsync(user);
-    
+    // var roles = await _userManager.GetRolesAsync(user);
+
 
     List<string> role;
     if (EmpInfoImage != null && EmpInfoImage.lstRole != null && EmpInfoImage.lstRole.Any())
@@ -16,13 +15,13 @@
     }
     else
     {
-       
-        role = new List<string>(); 
+
+        role = new List<string>();
     }
 
 
 
-    
+
 }
 <!DOCTYPE html>
 <html>
@@ -74,7 +73,7 @@
             height: 100vh; /* Full viewport height */
             margin: 0;
             padding: 0;
-            margin-top:8%
+            margin-top: 7%
         }
 
         #accordionSidebar {
@@ -87,11 +86,19 @@
             z-index: 999;
         }
 
+       /*  #content-wrapper {
+            flex: 1; 
+            margin-left: 150px; 
+        }
+ */
+
         #content-wrapper {
-            flex: 1; /* Take up the remaining width */
-            margin-left: 150px; /* Leave space for the sidebar */
+            flex: 1;
+            margin-left: 150px; /* Adjust according to the width of your sidebar */
+            margin-right: 15px; /* Adjust according to the height of your navbar */
         }
 
+       
         footer {
             margin-top: auto; /* Stick footer to the bottom */
         }
@@ -99,9 +106,28 @@
         body {
             margin: 0; /* Remove default body margin */
         }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 200px;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+            .sidebar .nav-link {
+                font-size: 18px;
+            }
+
+        .content {
+            margin-left: 200px; /* Space for the sidebar */
+            padding: 20px;
+        }
     </style>
 
-   
+
     <style>
         .collapse {
             margin: 0 !important;
@@ -127,7 +153,6 @@
             font-size: 11pt !important;
             color: black !important;
             background: #ffffff !important;
-
         }
 
         table .btn {
@@ -152,8 +177,8 @@
 
         .subMenu {
             /*position:absolute;
-                                            top:0;
-                                            right:0;*/
+                                                    top:0;
+                                                    right:0;*/
             background: #3f4b54;
             /*margin: 0 !important;*/
             /* margin-left: 110px;*/
@@ -352,19 +377,19 @@
 
         /*Edit Employee Heading CSS*/
         /*.outerr-box {
-                                                    background: #E0E0E0;
-                                                    padding: 5px 10px;
-                                                    width: fit-content;
-                                                    color: black;
-                                                    font-weight: 700;
-                                                    margin-left: 5px;
-                                                    text-align: center;
-                                                    border-left: 2px solid;
-                                                }
+                                                            background: #E0E0E0;
+                                                            padding: 5px 10px;
+                                                            width: fit-content;
+                                                            color: black;
+                                                            font-weight: 700;
+                                                            margin-left: 5px;
+                                                            text-align: center;
+                                                            border-left: 2px solid;
+                                                        }
 
-                                                    .outerr-box p {
-                                                        margin: 0;
-                                                    }*/
+                                                            .outerr-box p {
+                                                                margin: 0;
+                                                            }*/
         .outBox p:first-child {
             font-size: 22px;
         }
@@ -436,10 +461,10 @@
         }
 
         /*body {
-                                                    margin: 0;
-                                                    padding: 0;
-                                                    font-family: 'Raleway', sans-serif;
-                                                }*/
+                                                            margin: 0;
+                                                            padding: 0;
+                                                            font-family: 'Raleway', sans-serif;
+                                                        }*/
 
         .notification .icons {
             display: inline;
@@ -510,7 +535,7 @@
                 height: 60vh
             }
 
-            .notification .content {
+            .notification  {
                 padding: 20px;
                 color: black;
                 vertical-align: middle;
@@ -647,7 +672,7 @@
     <nav class="navbar navbar-light navbar-expand bg-white topbar static-top shadow fixed-top">
 
         <img class="p-2" src="~/assets/logo-r.png" style="width: 200px; height:80px;" alt="DropZone" />
-      
+
         @* <span style="font-weight:900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 25pt; color:#13007c;">DropZone</span> *@
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
@@ -656,24 +681,24 @@
             <li class="nav-item no-arrow">
             </li>
             <li>
-               @*  <div class="notification">
-                    <a href="#">
-                        <div class="notBtn" href="#">
-                            <i class="fas fa-bell" style="font-size: 25pt !important; margin: 0"></i>
-                            <span id="notifyCount" style="position: absolute; background-color: red; padding:5px; border-radius: 50%; text-align: center; font-weight: bold; top: 15px; left: 15px;">0</span>
-                            <div class="box">
-                                <div class="display">
-                                    <div class="nothing">
-                                        <i class="fas fa-child stick"></i>
-                                        <div class="cent">Looks Like your all caught up!</div>
-                                    </div>
-                                    <div class="cont" id="notifyBox">
-                                    </div>
-                                    <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;"><a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                @*  <div class="notification">
+                <a href="#">
+                <div class="notBtn" href="#">
+                <i class="fas fa-bell" style="font-size: 25pt !important; margin: 0"></i>
+                <span id="notifyCount" style="position: absolute; background-color: red; padding:5px; border-radius: 50%; text-align: center; font-weight: bold; top: 15px; left: 15px;">0</span>
+                <div class="box">
+                <div class="display">
+                <div class="nothing">
+                <i class="fas fa-child stick"></i>
+                <div class="cent">Looks Like your all caught up!</div>
+                </div>
+                <div class="cont" id="notifyBox">
+                </div>
+                <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;"><a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a></div>
+                </div>
+                </div>
+                </div>
+                </a>
                 </div> *@
             </li>
 
@@ -688,17 +713,17 @@
                     {
                         <p class="mr-2  d-lg-inline text-gray-600 small" style="color:#13007c !important"> (@EmpInfoImage?.thanaName)</p>
                     }
-                    else{}
-                    
-                  @*   <h6 class="mr-2  d-lg-inline text-gray-600 small">@EmpInfoImage?.thanaId</h6> *@
-                  @*   <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello @User.Identity.Name</span> *@
+                    else { }
+
+                    @*   <h6 class="mr-2  d-lg-inline text-gray-600 small">@EmpInfoImage?.thanaId</h6> *@
+                    @*   <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello @User.Identity.Name</span> *@
                     @if (EmpInfoImage?.DivisionName != null)
                     {
                         <img class="img-profile rounded-circle" src="~/@EmpInfoImage?.DivisionName" height="32" width="32">
                     }
                     else
                     {
-                        <img class="img-profile rounded-circle" src="~/assets/user.png"  style="width: 45px; height:45px;">
+                        <img class="img-profile rounded-circle" src="~/assets/user.png" style="width: 45px; height:45px;">
                     }
                 </a>
                 <!-- Dropdown - User Information -->
@@ -733,39 +758,39 @@
                         <div class="col-12 flex-column" style="color:black;">
                             <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0;">
                                 <div class="card-body">
-                                 
-                                       
-
-                                        
-                                             <div class="form-group row">
-                                                 <div class="col-5" style="text-align:right;    margin-left: 7px;">
-                                                     @* <span>Employee ID:</span><br />
-                                                     <span>Department :</span><br />
-                                                     <span>Mobile     :</span><br />
-                                                     <span>Email      :</span><br /> *@
-                                                 </div>
-                                                 <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
-                                                     @* <span>@EmpInfoImage?.EmpCode</span><br />
-                                                     <span>@EmpInfoImage?.departmentName</span><br />
-                                                     <span>@EmpInfoImage?.mobileNo</span><br />
-                                                     <span style="margin-right:10px">@EmpInfoImage?.email</span><br /> *@
-                                                 </div>
-                                             </div>
-                                             
-
-                                            
-                                        
-                                        
 
 
-                                        @* <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
-                                            <span>@EmpInfoImage?.EmpCode</span><br />
+
+
+                                    <div class="form-group row">
+                                        <div class="col-5" style="text-align:right;    margin-left: 7px;">
+                                            @* <span>Employee ID:</span><br />
+                                            <span>Department :</span><br />
+                                            <span>Mobile     :</span><br />
+                                            <span>Email      :</span><br /> *@
+                                        </div>
+                                        <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
+                                            @* <span>@EmpInfoImage?.EmpCode</span><br />
                                             <span>@EmpInfoImage?.departmentName</span><br />
                                             <span>@EmpInfoImage?.mobileNo</span><br />
-                                            <span style="margin-right:10px">@EmpInfoImage?.email</span><br />
-                                        </div> *@
-                                  
-                                   
+                                            <span style="margin-right:10px">@EmpInfoImage?.email</span><br /> *@
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                    @* <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
+                                    <span>@EmpInfoImage?.EmpCode</span><br />
+                                    <span>@EmpInfoImage?.departmentName</span><br />
+                                    <span>@EmpInfoImage?.mobileNo</span><br />
+                                    <span style="margin-right:10px">@EmpInfoImage?.email</span><br />
+                                    </div> *@
+
+
                                 </div>
 
                             </div>
@@ -774,9 +799,9 @@
                         <div class="col-12">
                             <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0; margin-bottom: 0;">
                                 <div class="card-body">
-                                  @*   <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal" style="color:white;font-size:13px; text-align: center;">
-                                        <i class="fas fa-user-cog fa-sm fa-fw mr-2 "></i>
-                                        Change Password
+                                    @*   <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal" style="color:white;font-size:13px; text-align: center;">
+                                    <i class="fas fa-user-cog fa-sm fa-fw mr-2 "></i>
+                                    Change Password
                                     </a> *@
                                     <a class="dropdown-item dropdown-itemb" href="#" data-toggle="modal" data-target="#logoutModal" style="color:white;font-size:13px; text-align: center;">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
@@ -792,81 +817,68 @@
     </nav>
 
     <!-- End of Topbar -->
-    <div id="page-top" style="margin-top:67px">
+    <div id="page-top">
         <!-- Page Wrapper -->
         <div id="wrapper">
-
-
-          
-
-            
-
-
-            <nav class="navbar-nav sidebar sidebar-dark accordion toggled " style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
-                <menu class="py-2" style="font-weight: bolder; background: #252c32; top: 0; left: 0;  margin-top: 6%;" id="accordionSidebar">
-                    <menuitem class="text-center">
-                        <a class="border-0 m-auto  mt-2" style="border-radius:50%" id="sidebarToggle"></a>
-                    </menuitem>
-                    <menuitem class="nav-item mainMenu">
-
-                        <menuitem class="nav-item mainMenu">
-                            <a class="nav-link" id="HomeIcon" href="/Dboard/DashBoard/Dashboard">
-                                <i class="fas fa-fw fa-tachometer-alt" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="dashboard">Dashboard</span>
-                            </a>
-                            <a class="nav-link" id="ReportIcon" href="/Dboard/Report/Index">
-                                <i class="fas fa-fw fa-file-alt" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="report">Report</span>
-                            </a>
-                            <a class="nav-link" id="otpIcon" href="/Dboard/Report/OtpLogList">
-                                <i class="fas fa-fw fa-key" style="color:white;font-size:20px"></i>
-                                <span style="color:white;" id="report">Otp</span>
-                            </a>
-                        </menuitem>
-
-                    </menuitem>
-
-                </menu>
-            </nav>
-
-
-            <!-- End of Sidebar -->
-            <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column mt-2">
-                <div id="main-container">
-                    <!-- Main Content -->
-                    <div id="content" style="background:#f7f7f7">
-                        <!-- Begin Page Content -->
-                        <div class="container-fluid" style="padding: 0;background:#fff">
-                            @RenderBody()
-
-
-                        </div>
-                        <!-- /.container-fluid -->
-                    </div>
-                    <!-- End of Main Content -->
-                    <!-- Footer -->
-                    <!-- End of Footer -->
-                    <footer class="sticky-footer m-0 bg-white" style="background: #f7f7f7 !important;">
-                        <div class="container">
-                            <div class="copyright text-center">
-                                <span><a href="https://www.opus-bd.com/" target="_blank" style="text-decoration:none;"> OPUS Technology Ltd </a>&copy; @DateTime.Now.Year</span>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
+            <div id="menu ">
+                <ul class="navbar-nav sidebar sidebar-dark accordion mt-5 pt-5" style="font-weight: bolder;background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%)" id="accordionSidebar">
+                    <li class="nav-item">
+                        <a class="nav-link" id="HomeIcon" href="/Dboard/DashBoard/Dashboard">
+                            <i class="fas fa-fw fa-home"></i>
+                            <span style="color:white;" id="dashboard">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="HomeIcon" href="/Dboard/Report/Index">
+                            <i class="fas fa-fw fa-file-alt"></i>
+                            <span style="color:white;" id="dashboard">Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="HomeIcon" href="/Dboard/Report/OtpLogList">
+                            <i class="fas fa-fw fa-key"></i>
+                            <span style="color:white;" id="dashboard">Otp Logs</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <!-- End of Content Wrapper -->
-        </div>
-        <!-- End of Page Wrapper -->
 
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+            <div id="main-container">
+                <!-- Main Content -->
+                <div id="content" style="background:#f7f7f7 ;margin-left:5%">
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid" style="padding: 0;background:#fff;">
+                        @RenderBody()
+
+
+                    </div>
+                    <!-- /.container-fluid -->
+                </div>
+                <!-- End of Main Content -->
+                <!-- Footer -->
+                <!-- End of Footer -->
+                <footer class="sticky-footer m-0 bg-white" style="background: #f7f7f7 !important;">
+                    <div class="container">
+                        <div class="copyright text-center">
+                            <span><a href="https://www.opus-bd.com/" target="_blank" style="text-decoration:none;"> OPUS Technology Ltd </a>&copy; @DateTime.Now.Year</span>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
     </div>
 
     <!-- Scroll to Top Button-->
-@*     <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
+    @*     <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
     </a>
- *@
+    *@
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -882,7 +894,7 @@
                 <div class="modal-footer">
                     <form asp- method="post" asp-area="Auth" asp-controller="Account" asp-action="Logout" id="logoutForm" class="navbar-right">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button type="submit" onclick="ClearLocalStorage()" style="background-color:#13007c;color:white" class="btn" >Logout</button>
+                        <button type="submit" onclick="ClearLocalStorage()" style="background-color:#13007c;color:white" class="btn">Logout</button>
                     </form>
                 </div>
             </div>
@@ -1123,10 +1135,10 @@
             $("#myBox").toggle(); // Toggle the visibility of the box
         });
         $(document).ready(function () {
-            $("#HomeIcon").prop('href', '/POS/Pos/Dashboad');
-            $("#HomeIconPub").prop('href', '/POS/Pos/MerchantDashboadNew');
+            // $("#HomeIcon").prop('href', '/POS/Pos/Dashboad');
+            // $("#HomeIconPub").prop('href', '/POS/Pos/MerchantDashboadNew');
 
-            
+
             $('#main-container').click(function () {
                 $('.collapse').addClass('hidd');
 
@@ -1281,14 +1293,14 @@
                 }
                 else {
                     option += `<div class="sec new notify_${item.Id}" onclick="MarkAsRead(${item.Id})" id="notify_${item.type}_${item.Id}">
-                                                                        <a href="${item.url}">
-                                                                            <div class="txt">
-                                                                                <span style="font-weight: bold;">${item.title}</span> </br>
-                                                                                <small>${item.description}</small>
-                                                                            </div>
-                                                                            <div class="txt sub">${date} <span class="badge badge-primary" style="font-size: 16px;">${item.type}</span></div>
-                                                                        </a>
-                                                                    </div>`
+                                                                                <a href="${item.url}">
+                                                                                    <div class="txt">
+                                                                                        <span style="font-weight: bold;">${item.title}</span> </br>
+                                                                                        <small>${item.description}</small>
+                                                                                    </div>
+                                                                                    <div class="txt sub">${date} <span class="badge badge-primary" style="font-size: 16px;">${item.type}</span></div>
+                                                                                </a>
+                                                                            </div>`
                 }
 
 
@@ -1297,9 +1309,9 @@
             $('#notifyBox').empty();
             $('#notifyBox').append(option);
             $('#notifyBox').append(`
-                                                                    <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;">
-                                                                        <a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a>
-                                                                    </div>`
+                                                                            <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;">
+                                                                                <a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a>
+                                                                            </div>`
             );
         }
 
@@ -1429,7 +1441,7 @@
                 confirmButtonText: 'Yes, Update it!'
             }).then(function () {
                 $.ajax({
-                    url: '@Url.Action("ProfilePictureSave", "Photograph", new { area= "HRPMSEmployee" })',
+                    url: '@Url.Action("ProfilePictureSave", "Photograph", new { area = "HRPMSEmployee" })',
                     data: formData,
                     type: 'POST',
                     dataType: 'json',
@@ -1473,8 +1485,8 @@
                 $.each(response, function (i, item) {
                     console.log(item);
                     option += `
-                    <p style="color:red;">${item}</p>
-                    `
+                            <p style="color:red;">${item}</p>
+                            `
                     $('#passId').empty();
                     $('#passId').append(option);
                 })
