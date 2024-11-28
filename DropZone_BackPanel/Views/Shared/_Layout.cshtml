@@ -68,6 +68,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <style>
+        #wrapper {
+            display: flex;
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 0;
+            margin-top:8%
+        }
+
+        #accordionSidebar {
+            flex: 0 0 150px; /* Fixed width for the sidebar */
+            height: 100%; /* Full height */
+            position: fixed; /* Stay fixed on the left */
+            left: 0;
+            top: 0;
+            overflow-y: auto; /* Scroll if content overflows */
+            z-index: 999;
+        }
+
+        #content-wrapper {
+            flex: 1; /* Take up the remaining width */
+            margin-left: 150px; /* Leave space for the sidebar */
+        }
+
+        footer {
+            margin-top: auto; /* Stick footer to the bottom */
+        }
+
+        body {
+            margin: 0; /* Remove default body margin */
+        }
+    </style>
 
    
     <style>
@@ -765,67 +797,12 @@
         <div id="wrapper">
 
 
-            <style>
-                /* Reset default list styles */
-                menu, menuitem {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                    z-index: 999;
-                }
+          
 
-                /* Style the sidebar */
-                #sidebar2 {
-                    background-color: #252c32;
-                    color: white;
-                }
+            
 
-                /* Style top-level menu items */
-                menuitem {
-                    margin-bottom: 10px;
-                    position: relative;
-                }
 
-                    menuitem > a {
-                        display: block;
-                        color: white;
-                        text-decoration: none;
-                        padding: 10px;
-                        background-color: #252c32;
-                        transition: background-color 0.3s ease;
-                    }
-
-                    menuitem:hover menu {
-                        display: block;
-                    }
-
-                    /* Position and style submenu */
-                    menuitem menu {
-                        position: absolute;
-                        top: 0;
-                        left: 100%;
-                        /*display: none;*/
-                        background-color: #9fb3c5;
-                        padding: 0;
-                        margin: 0;
-                    }
-
-                    /* Style submenu items */
-                    menuitem menuitem a {
-                        color: white;
-                        text-decoration: none;
-                        padding: 5px;
-                        background-color: #444;
-                        border-radius: 5px;
-                        transition: background-color 0.3s ease;
-                    }
-
-                        menuitem menuitem a:hover {
-                            background-color: #666;
-                        }
-
-            </style>
-            <nav class="navbar-nav sidebar sidebar-dark accordion toggled " style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
+            <nav class="navbar-nav sidebar sidebar-dark accordion toggled " style="font-weight: bolder; background: #252c32; top: 8%; left: 0; " id="accordionSidebar">
                 <menu class="py-2" style="font-weight: bolder; background: #252c32; top: 0; left: 0; " id="accordionSidebar">
                     <menuitem class="text-center">
                         <a class="border-0 m-auto  mt-2" style="border-radius:50%" id="sidebarToggle"></a>
