@@ -35,7 +35,7 @@ namespace DropZone_BackPanel.API.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadData([FromForm] PersonsData personsData, [FromForm] IFormFileCollection files)
         {
-            if ((string.IsNullOrWhiteSpace(personsData?.name) || string.IsNullOrWhiteSpace(personsData?.mobile)) && (files == null || files.Count == 0))
+            if (string.IsNullOrWhiteSpace(personsData?.mobile) && (files == null || files.Count == 0))
             {
                 return BadRequest("Invalid input data. Either PersonsData with valid name and mobile must be provided, or files should be uploaded.");
             }

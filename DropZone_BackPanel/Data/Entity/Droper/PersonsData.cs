@@ -2,9 +2,12 @@
 
 namespace DropZone_BackPanel.Data.Entity.Droper
 {
-    public class PersonsData : Base
+    public class PersonsData:Base
     {
-        public string? name { get; set; }
+        public string? crimeName { get; set; }
+        public DateTime? crimeDate { get; set; }
+        public string? crimeTime { get; set; }
+        public string? crimePlace { get; set; }
         public string? mobile { get; set; }
         public int? unionId { get; set; }
         public UnionWard? union { get; set; }

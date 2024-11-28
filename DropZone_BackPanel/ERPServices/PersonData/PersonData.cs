@@ -38,7 +38,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 .Select(p => new PersonDataWithFilesDto
                 {
                     Id = p.Id,
-                    Name = p.name,
+                    //Name = p.name,
                     Mobile = p.mobile,
                     UnionId = p.unionId,
                     UnionName = p.union != null ? p.union.unionName : null,
@@ -437,7 +437,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 return new PersonDataWithFilesDto
                 {
                     Id = p.Id,
-                    Name = p.name,
+                    //Name = p.name,
                     Mobile = p.mobile,
                     UnionId = p.unionId,
                     UnionName = p.union?.unionName,
@@ -457,12 +457,12 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                             AttachmentUrl = uf.attachmentUrl,
                             uploadDatetime = uf.createdAt
                         }).ToList(),
-                    crimeType = uploadedFiles
-                        .Where(uf => uf.personsDataId == p.Id)
-                        .Select(uf => uf.crimeType?.crimeType)
-                        .FirstOrDefault(),
-                    districtDetails = string.Join(" , ", new[] { currentRangeName, currentDistrictName, currentZoneName, currentThanaName }
-                        .Where(name => !string.IsNullOrEmpty(name))) // Concatenate non-empty names
+                    //crimeType = uploadedFiles
+                    //    .Where(uf => uf.personsDataId == p.Id)
+                    //    .Select(uf => uf.crimeType?.crimeType)
+                    //    .FirstOrDefault(),
+                    //districtDetails = string.Join(" , ", new[] { currentRangeName, currentDistrictName, currentZoneName, currentThanaName }
+                    //    .Where(name => !string.IsNullOrEmpty(name))) // Concatenate non-empty names
                 };
             }).ToList();
 
@@ -532,7 +532,7 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             var data = personData.Select(p => new PersonDataWithFilesDto
             {
                 Id = p.Id,
-                Name = p.name,
+                //Name = p.name,
                 Mobile = p.mobile,
                 UnionId = p.unionId,
                 UnionName = p.union?.unionName,
@@ -547,10 +547,10 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                         Id = uf.Id,
                         AttachmentUrl = uf.attachmentUrl,
                     }).ToList(),
-                crimeType = uploadedFiles
-                    .Where(uf => uf.personsDataId == p.Id)
-                    .Select(uf => uf.crimeType?.crimeType)
-                    .FirstOrDefault(),
+                //crimeType = uploadedFiles
+                //    .Where(uf => uf.personsDataId == p.Id)
+                //    .Select(uf => uf.crimeType?.crimeType)
+                //    .FirstOrDefault(),
                 createdAt= uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
                     .Select(uf => uf.createdAt)
@@ -587,11 +587,11 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 : null;
 
             // Optionally add concatenated names to the result DTO
-            foreach (var item in data)
-            {
-                item.districtDetails = string.Join(" , ", new[] { rangeName, districtName, zoneName, thanaName }
-                    .Where(name => !string.IsNullOrEmpty(name))); // Concatenate non-empty names
-            }
+            //foreach (var item in data)
+            //{
+            //    item.districtDetails = string.Join(" , ", new[] { rangeName, districtName, zoneName, thanaName }
+            //        .Where(name => !string.IsNullOrEmpty(name))); // Concatenate non-empty names
+            //}
 
             return data;
         }
