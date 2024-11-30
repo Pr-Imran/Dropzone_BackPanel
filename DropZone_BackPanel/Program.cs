@@ -85,7 +85,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromHours(1);
     options.LoginPath = "/Auth/Account/Login"; // Redirects unauthenticated users to the login page
-    options.AccessDeniedPath = "/Auth/AccessDenied"; // Redirect for unauthorized access
+    options.AccessDeniedPath = "/Auth/Account/AccessDenied"; // Redirect for unauthorized access
     options.SlidingExpiration = true;
 });
 #endregion

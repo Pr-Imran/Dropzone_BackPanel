@@ -3,6 +3,7 @@ using DropZone_BackPanel.Areas.Dboard.Model;
 using DropZone_BackPanel.Areas.Dboard.Models;
 using DropZone_BackPanel.Areas.Dboard.Models.Lang;
 using DropZone_BackPanel.Data.Entity;
+using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPService.AuthService.Interfaces;
@@ -218,6 +219,116 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
            var decryptedId = IdMasking.Decode(Id);
            var isDelete = await _masterDataService.DeleteCrimeTypeById(int.Parse(decryptedId));
            return Json(isDelete);
+        }
+        #endregion
+
+
+        #region file limit
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> FileLimits()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains("Admin"))
+            {
+                FileLimitsViewModel model = new FileLimitsViewModel
+                {
+                    fileTypes = await _masterDataService.GetAllFileTypes(),
+                    fileLimites = await _masterDataService.GetAllFileLimits(),
+                };
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Account", new { Area = "Auth" });
+            }
+        }
+        [HttpPost]
+        public IActionResult SaveFileLimits(FileLimits fileLimits)
+        {
+            try
+            {
+                // If the new record is set to active, deactivate existing records
+                if (fileLimits.isActive)
+                {
+                    _masterDataService.DeactivateAllFileLimits();
+                }
+
+                // Check if it's an edit or a new entry
+                if (fileLimits.Id > 0)
+                {
+                    var existingLimit = _masterDataService.GetFileLimitsById(fileLimits.Id);
+                    if (existingLimit != null)
+                    {
+                        existingLimit.fileTypeId = fileLimits.fileTypeId;
+                        existingLimit.hourFileNo = fileLimits.hourFileNo;
+                        existingLimit.hourFileSize = fileLimits.hourFileSize;
+                        existingLimit.dayFileNo = fileLimits.dayFileNo;
+                        existingLimit.dayFileSize = fileLimits.dayFileSize;
+                        existingLimit.totalFileNo = fileLimits.totalFileNo;
+                        existingLimit.totalFileSize = fileLimits.totalFileSize;
+                        existingLimit.alertFileSize = fileLimits.alertFileSize;
+                        existingLimit.archiveFileSize = fileLimits.archiveFileSize;
+                        existingLimit.archivingMonth = fileLimits.archivingMonth;
+                        existingLimit.isActive = fileLimits.isActive;
+
+                        _masterDataService.UpdateFileLimits(existingLimit);
+                    }
+                }
+                else
+                {
+                    // Add a new record
+                    _masterDataService.AddFileLimits(fileLimits);
+                }
+
+                // Save changes to the database
+                _masterDataService.SaveFileLimits();
+
+                return Json(new { success = true, message = "File limits saved successfully." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return Json(new { success = false, message = "An error occurred while saving file limits." });
+            }
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> FileTypes()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains("Admin"))
+            {
+                FileLimitsViewModel model = new FileLimitsViewModel
+                {
+                    fileTypes = await _masterDataService.GetAllFileTypes(),
+                };
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Account", new { Area = "Auth" });
+            }
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> FileTypes([FromForm] FileLimitsViewModel model)
+        {
+            FileType fileInfo = new FileType
+            {
+                Id = model.Id,
+                fileTypeName = model.fileTypeName,
+                isActive = model.isActive,
+                createdAt = DateTime.UtcNow,
+            };
+            await _masterDataService.SaveFileType(fileInfo);
+            return RedirectToAction("FileTypes", "MasterData", new { Area = "Dboard" });
+
+
         }
         #endregion
     }

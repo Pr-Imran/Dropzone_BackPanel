@@ -1,7 +1,9 @@
 ﻿using DropZone_BackPanel.Areas.Dboard.Model;
+using DropZone_BackPanel.Data.Entity;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
 using DropZone_BackPanel.ERPServices.ReportData.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DropZone_BackPanel.Areas.Dboard.Controllers
@@ -11,19 +13,31 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
     {
         private readonly IPersonData _persondata;
         private readonly ISettingsService settingsService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReportController(IPersonData persondata, ISettingsService settingsService)
+        public ReportController(IPersonData persondata, ISettingsService settingsService, UserManager<ApplicationUser> userManager)
         {
             _persondata = persondata;
             this.settingsService = settingsService;
+            _userManager = userManager;
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var model = new ReportViewModel
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains("Admin"))
             {
-                rangeMetros = await settingsService.GetAllRangeMetro(),
-            };
-            return View(model);
+                var model = new ReportViewModel
+                {
+                    rangeMetros = await settingsService.GetAllRangeMetro(),
+                };
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Account", new { Area = "Auth" });
+            }
         }
 
         [HttpGet]
@@ -51,14 +65,23 @@ namespace DropZone_BackPanel.Areas.Dboard.Controllers
             var result=await _persondata.GetPersonDataWithFilesByFiltersAsync(range,district,zone,thana);
             return Json(result);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> OtpLogList()
         {
-            var model = new OtpLogsViewModel
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(user);
+            if (role.Contains("Admin"))
             {
-                otpLogs = await settingsService.GetAllOtplogsList(),
-            };
-            return View(model);
+                var model = new OtpLogsViewModel
+                {
+                    otpLogs = await settingsService.GetAllOtplogsList(),
+                };
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Account", new { Area = "Auth" });
+            }
         }
 
     }

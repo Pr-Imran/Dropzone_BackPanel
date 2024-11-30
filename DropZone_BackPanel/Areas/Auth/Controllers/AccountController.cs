@@ -402,6 +402,9 @@ namespace DropZone_BackPanel.Areas.Auth.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

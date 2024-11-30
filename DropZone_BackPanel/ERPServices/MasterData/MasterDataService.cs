@@ -1,4 +1,5 @@
 ﻿using DropZone_BackPanel.Context;
+using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPServices.MasterData.Interfaces;
@@ -181,5 +182,65 @@ namespace DropZone_BackPanel.ERPServices.MasterData
         }
         #endregion
 
+
+
+        #region file limits
+        public async Task<IEnumerable<FileType>> GetAllFileTypes()
+        {
+            var data = await _context.fileTypes.Where(x=>x.isActive==true).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<FileLimits>> GetAllFileLimits()
+        {
+            var data = await _context.fileLimits.Include(x=>x.fileType).ToListAsync();
+            return data;
+        }
+
+        public FileLimits GetFileLimitsById(int id)
+        {
+            return _context.fileLimits.FirstOrDefault(fl => fl.Id == id);
+        }
+
+        public void AddFileLimits(FileLimits fileLimits)
+        {
+            _context.fileLimits.Add(fileLimits);
+        }
+
+        public void UpdateFileLimits(FileLimits fileLimits)
+        {
+            _context.fileLimits.Update(fileLimits);
+        }
+
+        public void DeactivateAllFileLimits()
+        {
+            var allFileLimits = _context.fileLimits.ToList();
+            foreach (var limit in allFileLimits)
+            {
+                limit.isActive = false;
+            }
+        }
+
+        public void SaveFileLimits()
+        {
+            _context.SaveChanges();
+        }
+
+        public async Task<int> SaveFileType(FileType fileInfo)
+        {
+            if (fileInfo.Id != 0)
+            {
+                _context.fileTypes.Update(fileInfo);
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+            else
+            {
+                await _context.fileTypes.AddAsync(fileInfo);
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+        }
+        #endregion
     }
 }

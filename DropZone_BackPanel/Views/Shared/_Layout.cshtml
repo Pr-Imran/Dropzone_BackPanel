@@ -52,7 +52,7 @@
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
-
+  
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src=" https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap.min.js"></script>
@@ -840,6 +840,29 @@
                             <span style="color:white;" id="dashboard">Otp Logs</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="masterDataLink">
+                            <i class="fa fa-database" style="color:white;"></i>
+                            <span style="color:white;" id="dashboard">Master Data</span>
+                        </a>
+                        <!-- Sub-menu -->
+                        <ul class="nav flex-column ml-3 sub-menu" style="display: none;">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Dboard/MasterData/FileTypes">
+                                    <i class="fas fa-fw fa-file-alt" style="color:white;"></i>
+                                    <span style="color:white;" id="dashboard">File Types</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Dboard/MasterData/FileLimits">
+                                    <i class="fa fa-ban" style="color:white;"></i>
+                                    <span style="color:white;" id="dashboard">File Limits</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
                 </ul>
             </div>
 
@@ -1135,8 +1158,11 @@
             $("#myBox").toggle(); // Toggle the visibility of the box
         });
         $(document).ready(function () {
-            // $("#HomeIcon").prop('href', '/POS/Pos/Dashboad');
-            // $("#HomeIconPub").prop('href', '/POS/Pos/MerchantDashboadNew');
+            $('#masterDataLink').click(function (e) {
+                e.preventDefault(); // Prevent default link behavior
+                $('.sub-menu').toggle(); // Toggle the display of the sub-menu
+            });
+
 
 
             $('#main-container').click(function () {

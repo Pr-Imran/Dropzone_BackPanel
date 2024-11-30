@@ -1,4 +1,5 @@
-﻿using DropZone_BackPanel.Data.Entity.MasterData;
+﻿using DropZone_BackPanel.Data.Entity.Droper;
+using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 
 namespace DropZone_BackPanel.ERPServices.MasterData.Interfaces
@@ -29,5 +30,18 @@ namespace DropZone_BackPanel.ERPServices.MasterData.Interfaces
         Task<int> SaveUnionWards(UnionWard unionWard);
         Task<bool> DeleteUnionWardById(int id);
         #endregion
+        #region filelimits
+        Task<IEnumerable<FileType>> GetAllFileTypes();
+        Task<IEnumerable<FileLimits>> GetAllFileLimits();
+
+        FileLimits GetFileLimitsById(int id);
+        void AddFileLimits(FileLimits fileLimits);
+        void UpdateFileLimits(FileLimits fileLimits);
+        void DeactivateAllFileLimits();
+        void SaveFileLimits();
+        Task<int> SaveFileType(FileType fileInfo);
+        #endregion
     }
+
+
 }
