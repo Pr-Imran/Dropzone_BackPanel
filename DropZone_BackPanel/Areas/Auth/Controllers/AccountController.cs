@@ -1,8 +1,10 @@
 ﻿using DropZone_BackPanel.Areas.Auth.Models;
 using DropZone_BackPanel.Contracts;
 using DropZone_BackPanel.Data.Entity;
+using DropZone_BackPanel.Data.Entity.LogInfo;
 using DropZone_BackPanel.Data.Entity.MasterData;
 using DropZone_BackPanel.ERPService.AuthService.Interfaces;
+using DropZone_BackPanel.ERPServices.AuthService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -365,8 +367,26 @@ namespace DropZone_BackPanel.Areas.Auth.Controllers
         //    return Json(data.ToList());
         //}
 
+        public async Task<IActionResult> ChangePasswordNew(ChangePsswordViewModelNew model)
+        {
+            string userName = HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
 
-        
+            string message = "Fail To Update Password";
+            if (ModelState.IsValid)
+            {
+                var data = await _userManager.ChangePasswordAsync(await _userManager.FindByNameAsync(HttpContext.User.Identity.Name), model.OldPassword, model.Password);
+                message = data.ToString();
+                return Json("ok");
+            }
+            else
+            {
+                return Json("failed");
+            }
+
+        }
+
+
 
         [HttpPost]
         //[ValidateAntiForgeryToken]

@@ -73,7 +73,7 @@
             height: 100vh; /* Full viewport height */
             margin: 0;
             padding: 0;
-            margin-top: 7%
+            margin-top: 5%
         }
 
         #accordionSidebar {
@@ -669,151 +669,124 @@
 <body style="background: #f7f7f7 !important;">
 
     <!-- Topbar -->
-    <nav class="navbar navbar-light navbar-expand bg-white topbar static-top shadow fixed-top">
-
-        <img class="p-2" src="~/assets/logo-r.png" style="width: 200px; height:80px;" alt="DropZone" />
-
-        @* <span style="font-weight:900; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 25pt; color:#13007c;">DropZone</span> *@
-        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-        </button>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item no-arrow">
-            </li>
-            <li>
-                @*  <div class="notification">
-                <a href="#">
-                <div class="notBtn" href="#">
-                <i class="fas fa-bell" style="font-size: 25pt !important; margin: 0"></i>
-                <span id="notifyCount" style="position: absolute; background-color: red; padding:5px; border-radius: 50%; text-align: center; font-weight: bold; top: 15px; left: 15px;">0</span>
-                <div class="box">
-                <div class="display">
-                <div class="nothing">
-                <i class="fas fa-child stick"></i>
-                <div class="cent">Looks Like your all caught up!</div>
-                </div>
-                <div class="cont" id="notifyBox">
-                </div>
-                <div style="display: flex; justify-content: center; background-color: lightgoldenrodyellow; text-decoration: none !important; align-items: center;"><a href="/SCMRequisition/RequisitionMaster/GetNotifications" style="padding: 5px;">View All</a></div>
-                </div>
-                </div>
-                </div>
-                </a>
-                </div> *@
-            </li>
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top bg-white shadow-lg">
+        <div class="container-fluid">
+            <!-- Sidebar Toggle -->
+            <button class="btn btn-link d-lg-none me-2" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
 
 
-            <div class="topbar-divider d-none d-sm-block"></div>
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" id="toggleButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer">
-                    <p class="mr-2  d-lg-inline text-gray-600 small">Hello @User.Identity.Name</p>
-                    <br />
-                    @if (role.Contains("Field Officer"))
-                    {
-                        <p class="mr-2  d-lg-inline text-gray-600 small" style="color:#13007c !important"> (@EmpInfoImage?.thanaName)</p>
-                    }
-                    else { }
+            <a class="navbar-brand d-flex align-items-center" asp-area="Dboard" asp-controller="DashBoard" asp-action="Dashboard">
+                <i class="fas fa-cloud-upload-alt me-2"></i>
+                DropZone
+            </a>
 
-                    @*   <h6 class="mr-2  d-lg-inline text-gray-600 small">@EmpInfoImage?.thanaId</h6> *@
-                    @*   <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello @User.Identity.Name</span> *@
-                    @if (EmpInfoImage?.DivisionName != null)
-                    {
-                        <img class="img-profile rounded-circle" src="~/@EmpInfoImage?.DivisionName" height="32" width="32">
-                    }
-                    else
-                    {
-                        <img class="img-profile rounded-circle" src="~/assets/user.png" style="width: 45px; height:45px;">
-                    }
-                </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" id="myBox" aria-labelledby="" style="width:300px; padding: 0;">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0; margin-top: 0;margin: 2px 0;">
-                                <div class="card-body row">
-                                    <div class="col-12 ">
-                                        <div class="form-group row" style="display: flex;justify-content: center; align-items: center;">
-                                            @if (EmpInfoImage?.DivisionName != null)
-                                            {
-                                                <img class="img-profile rounded-circle userimg" src="~/@EmpInfoImage?.DivisionName" height="80" width="80" style="border-radius: 50%;" />
-                                            }
-                                            else
-                                            {
-                                                <img class="img-profile rounded-circle" src="~/assets/user.png" height="80" width="80" style="border-radius: 50%;">
-                                            }
-                                            <i class="fa fa-camera btncamera" data-toggle="modal" data-target="#updatePhotoModal" style="margin: 0% 1% -18% -5%;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 username" style="text-align: center; font-size:18px;font-family:'Times New Roman', Times, serif;">
-                                        <label><b>@EmpInfoImage?.EmpName</b></label><br />
-                                        <label>@EmpInfoImage?.DesignationName</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Right Navigation -->
+            <div class="ms-auto d-flex align-items-center">
 
 
-                        <br /><br /><br />
-                        <div class="col-12 flex-column" style="color:black;">
-                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0;">
-                                <div class="card-body">
-
-
-
-
-                                    <div class="form-group row">
-                                        <div class="col-5" style="text-align:right;    margin-left: 7px;">
-                                            @* <span>Employee ID:</span><br />
-                                            <span>Department :</span><br />
-                                            <span>Mobile     :</span><br />
-                                            <span>Email      :</span><br /> *@
-                                        </div>
-                                        <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
-                                            @* <span>@EmpInfoImage?.EmpCode</span><br />
-                                            <span>@EmpInfoImage?.departmentName</span><br />
-                                            <span>@EmpInfoImage?.mobileNo</span><br />
-                                            <span style="margin-right:10px">@EmpInfoImage?.email</span><br /> *@
-                                        </div>
-                                    </div>
-
-
-
-
-
-
-
-                                    @* <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
-                                    <span>@EmpInfoImage?.EmpCode</span><br />
-                                    <span>@EmpInfoImage?.departmentName</span><br />
-                                    <span>@EmpInfoImage?.mobileNo</span><br />
-                                    <span style="margin-right:10px">@EmpInfoImage?.email</span><br />
-                                    </div> *@
-
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0; margin-bottom: 0;">
-                                <div class="card-body">
-                                    @*   <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal" style="color:white;font-size:13px; text-align: center;">
-                                    <i class="fas fa-user-cog fa-sm fa-fw mr-2 "></i>
-                                    Change Password
-                                    </a> *@
-                                    <a class="dropdown-item dropdown-itemb" href="#" data-toggle="modal" data-target="#logoutModal" style="color:white;font-size:13px; text-align: center;">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
-                                        Logout
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Notifications -->
+                @* <div class="dropdown me-3">
+                    <button class="btn btn-link text-dark notification-badge" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">Notifications</h6>
+                        <a class="dropdown-item" href="#">
+                            <small class="text-muted">Just now</small>
+                            <p class="mb-0">Your file has been uploaded</p>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-center" href="#">View all</a>
                     </div>
+                </div> *@
+
+                <!-- Profile -->
+                <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="toggleButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer">
+                        <p class="mr-2  d-lg-inline text-gray-600 small">Hello @User.Identity.Name</p>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" id="myBox" aria-labelledby="" style="width:300px; padding: 0;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0; margin-top: 0;margin: 2px 0;">
+                                        <div class="card-body row">
+                                            <div class="col-12 ">
+                                                <div class="form-group row" style="display: flex;justify-content: center; align-items: center;">
+                                                    @if (EmpInfoImage?.DivisionName != null)
+                                                    {
+                                                        <img class="img-profile rounded-circle userimg" src="~/@EmpInfoImage?.DivisionName" height="80" width="80" style="border-radius: 50%;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-profile rounded-circle" src="~/assets/user.png" height="80" width="80" style="border-radius: 50%;">
+                                                    }
+                                                    <i class="fa fa-camera btncamera" data-toggle="modal" data-target="#updatePhotoModal" style="margin: 0% 1% -18% -5%;"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 username" style="text-align: center; font-size:18px;font-family:'Times New Roman', Times, serif;">
+                                            <label><b>@User.Identity.Name</b></label><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <br /><br /><br />
+                               @*  <div class="col-12 flex-column" style="color:black;">
+                                    <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0;">
+                                        <div class="card-body">
+
+
+
+
+                                            <div class="form-group row">
+                                                <div class="col-5" style="text-align:right;    margin-left: 7px;">
+                                                     <span>User Name:</span><br />
+                                                     <span>Department :</span><br />
+                                                    <span>Mobile     :</span><br />
+                                                    <span>Email      :</span><br />  
+                                                </div>
+                                                <div class="col-7" style="text-align: justify;margin: 0px -7px 0px 0px;">
+                                                <span>@User.Identity.Name</span><br />
+                                                     <span>@EmpInfoImage?.departmentName</span><br />
+                                                    <span>@EmpInfoImage?.mobileNo</span><br />
+                                                    <span style="margin-right:10px">@EmpInfoImage?.email</span><br /> 
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+ *@
+                                <div class="col-12">
+                                    <div class="card" style="margin: 0 6px; padding: 0; border-left: 0;border-right: 0;margin: 2px 0; margin-bottom: 0;">
+                                        <div class="card-body">
+                                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal" style="color:white;font-size:13px; text-align: center;">
+                                            <i class="fas fa-user-cog fa-sm fa-fw mr-2 "></i>
+                                            Change Password
+                                            </a>
+                                            <a class="dropdown-item dropdown-itemb" href="#" data-toggle="modal" data-target="#logoutModal" style="color:white;font-size:13px; text-align: center;">
+                                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 "></i>
+                                                Logout
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                   @*  <a class="btn btn-link text-dark d-flex align-items-center" href="/Auth/Account/Logout">
+                        <img src="~/Assets/user.svg" alt="Profile" class="rounded-circle me-2 mr-2" style="width: 30px; height: 30px;">
+                        <span class="fw-bold">@(User.Identity.Name != null && User.Identity.Name != " " ? User.Identity.Name.ToString() : "Username")</span>
+                    </a>
+ *@
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </nav>
 
     <!-- End of Topbar -->
@@ -1218,12 +1191,12 @@
                         type: 'GET',
                         success: function (data) {
                             if (data == 'ok') {
-                                swal('success', 'Password changed successfully!', 'success').then(function () {
+                                Swal.fire("Success!", "Password Changed Successfully.", "success").then(() => {
                                     window.location.href = '/Auth/Account/Login';
                                 });
                             }
                             else {
-                                swal('warning', 'Can not change the password. Please try again!', 'warning');
+                                Swal.fire('warning', 'Can not change the password. Please try again!', 'warning');
                             }
                         }
                     });
