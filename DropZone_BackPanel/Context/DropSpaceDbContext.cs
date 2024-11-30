@@ -7,6 +7,7 @@ using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.LogInfo;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
+using DropSpace.Data.Entity.Droper;
 
 namespace DropZone_BackPanel.Context
 {

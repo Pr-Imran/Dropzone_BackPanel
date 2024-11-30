@@ -1,6 +1,8 @@
-﻿using DropZone_BackPanel.Data.Entity.MasterData;
+﻿using DropZone_BackPanel.Data;
+using DropZone_BackPanel.Data.Entity.Droper;
+using DropZone_BackPanel.Data.Entity.MasterData;
 
-namespace DropZone_BackPanel.Data.Entity.Droper
+namespace DropSpace.Data.Entity.Droper
 {
     public class UploadedFiles:Base
     {
@@ -10,5 +12,7 @@ namespace DropZone_BackPanel.Data.Entity.Droper
         public CrimeInfo? crimeType { get; set; }
         public string? attachmentUrl { get; set; }
         public string? shortUrl { get; set; }
+        public string? newFileName { get; set; }
+        public string? oldFileName { get; set; }
     }
 }

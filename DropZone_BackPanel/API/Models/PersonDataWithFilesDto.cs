@@ -16,6 +16,13 @@
         public string? districtDetails { get; set; }
         public DateTime? createdAt { get; set; }
         public List<UploadedFileDto>? UploadedFiles { get; set; }
+
+
+
+        public string? crimeName { get; set; }
+        public DateTime? crimeDate { get; set; }
+        public string? crimeTime { get; set; }
+        public string? crimePlace { get; set; }
     }
 
     public class UploadedFileDto
@@ -25,5 +32,9 @@
         public DateTime? CreatedAt { get; set; }
         public DateTime? uploadDatetime { get; set; }
         public string crimeType { get; set; }
+        public string? shortUrl { get; set; }
+        public string? stringShortUrl { get; set; }
+        public string? newFileName { get; set; }
+        public string? mobileMsk { get; set; }
     }
 }

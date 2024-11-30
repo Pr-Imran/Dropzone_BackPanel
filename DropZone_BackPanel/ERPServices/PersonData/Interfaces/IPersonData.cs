@@ -1,4 +1,5 @@
-﻿using DropZone_BackPanel.API.Models;
+﻿using DropSpace.Data.Entity.Droper;
+using DropZone_BackPanel.API.Models;
 using DropZone_BackPanel.Data.Entity.Droper;
 
 namespace DropZone_BackPanel.ERPServices.PersonData.Interfaces
@@ -13,5 +14,6 @@ namespace DropZone_BackPanel.ERPServices.PersonData.Interfaces
         Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesAsync(DateTime date, int? hour = null);
         //Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByPoliceThanaIdAsync(int policethanaId);
         Task<List<PersonDataWithFilesDto>> GetPersonDataWithFilesByFiltersAsync(int? rangeId, int? districtId, int? zoneId, int? policethanaId);
+        Task<UploadedFileDto?> GetUploadedFileByShortUrlAsync(string shortUrl, string userIdentifier);
     }
 }

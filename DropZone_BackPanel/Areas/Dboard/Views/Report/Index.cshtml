@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -14,9 +15,6 @@
             <!-- Card Header -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">তথ্য অনুসন্ধান</h6>
-                @* <a class="btn btn-success btn-sm" onClick="javascript:history.go(-1)" style="float:right;color:white">
-                    &nbsp; &nbsp;Back &nbsp; &nbsp;
-                </a> *@
             </div>
 
             <br />
@@ -71,11 +69,8 @@
                             </select>
                         </div>
                     </div>
-                </div><div class="col-sm-6">
-                    <div class="form-group row">
-                        
-                    </div>
                 </div>
+
                 <!-- Search Button -->
                 <div class="col-sm-6">
                     <button class="btn btn-success" id="searchShip" style="float:right;margin-right:15px;">Search</button>
@@ -95,6 +90,10 @@
                     <thead>
                         <tr>
                             <th>Sl</th>
+                            <th>Crime Name</th>
+                            <th>Crime Date</th>
+                            <th>Crime Place</th>
+                            <th>Crime Time</th>
                             <th>Mobile</th>
                             <th>Crime Type</th>
                             <th>Search Parameter</th>
@@ -110,12 +109,30 @@
     </div>
 </div>
 
-@section Scripts
-{
-    <script>
+<!-- Video Modal -->
+<div id="videoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @* <h5 class="modal-title" id="videoModalTitle"></h5> *@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video id="videoPlayer" width="100%" height="auto" controls>
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
 
-            $(document).ready(function () {
-            // Event Handlers
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Event Handlers for Dropdowns
             $("#range").change(function () {
                 var id = $(this).val();
                 Common.Ajax('GET', '/Dboard/Report/GetDivisionDistrictByRangeId/' + id, [], 'json', populateDropdownDistrict("#district"), false);
@@ -131,23 +148,13 @@
                 Common.Ajax('GET', '/Dboard/Report/GetPoliceThanaByZoneid/' + id, [], 'json', populateDropdownThana("#thana"), false);
             });
 
-            
-
             $("#searchShip").click(function () {
-                //$('#myDivloader').show();
-                $('#allDataListTable').hide();
-
-                // var params = {
-                //     thana: $("#thana").val(),
-                // };
-                //Common.Ajax('GET', `/global/api/GetReportData/${params.thana}`, [], 'json', populateTable);
                 var params = {
-                     range: $("#range").val(),
-                     district: $("#district").val(),
-                     zone: $("#zone").val(),
-                     thana: $("#thana").val(),
-                    };
-
+                    range: $("#range").val(),
+                    district: $("#district").val(),
+                    zone: $("#zone").val(),
+                    thana: $("#thana").val(),
+                };
 
                 Common.Ajax('GET', `/global/api/GetReportData/${params.range}/${params.district}/${params.zone}/${params.thana}`, [], 'json', populateTable);
             });
@@ -185,58 +192,52 @@
             return function (response) {
                 var options = '<option value="0">Select</option>';
                 $.each(response, function (i, item) {
-                    options += `<option value="${item.Id}">${item.policeThanaNameBn}</option>`;
+                    options += `<option value="${item.Id}">${item.thanaNameBn}</option>`;
                 });
                 $(selector).empty().append(options);
             };
         }
 
+        // Function to populate the table with data
         function populateTable(response) {
-            // Destroy any existing DataTable instance
-            if ($.fn.dataTable.isDataTable('#allDataListTable')) {
-                $('#allDataListTable').DataTable().clear().destroy();
-            }
-            if (!response) return;
-
-            var table = $("#allDataListTable tbody");
+            var table = $('#allDataListTable').find('tbody');
             table.empty();
+            $.each(response, function (index, item) {
 
-            response.forEach((item, index) => {
-                // Format createdAt value
-                var formattedDate = 'N/A';
-                if (item.createdAt) {
-                    var date = new Date(item.createdAt);
-                    var options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
-                    formattedDate = date.toLocaleString('en-US', options).replace(',', '');
-                }
-
-                // Generate uploaded files list
+                var formattedDate = new Date(item.createdAt).toLocaleDateString();
+                var formattedcrimeDate = new Date(item.crimeDate).toLocaleDateString();
                 var uploadedFilesContent = '';
                 if (item.UploadedFiles && item.UploadedFiles.length > 0) {
                     uploadedFilesContent = '<ul>';
-                    item.UploadedFiles.forEach(file => {
-                        uploadedFilesContent += `<li><a href="${file.AttachmentUrl}" target="_blank">View File</a></li>`;
+                    $.each(item.UploadedFiles, function (index, file) {
+                        var videoUrl = '@Url.Action("StreamFile", "DashBoard", new { shortUrl = "__shortUrl__", userIdentifier = "__userIdentifier__" })';
+                        videoUrl = videoUrl.replace('__shortUrl__', file.stringShortUrl).replace('__userIdentifier__', file.mobileMsk);
+
+                        uploadedFilesContent += '<li><a href="#" class="open-video" data-url="' + videoUrl + '" data-filename="' + file.FileName + '">Play</a></li>';
                     });
+
                     uploadedFilesContent += '</ul>';
                 } else {
                     uploadedFilesContent = '<span>No files uploaded</span>';
                 }
 
-                // Handle null values and append data row
                 table.append(`
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.Mobile || 'N/A'}</td>
-                        <td>${item.crimeType || 'N/A'}</td>
-                        <td>${item.districtDetails}</td>
-                        <td>${item.UnionName || ''}, ${item.VillageName || ''}</td>
-                        <td>${formattedDate}</td>
-                        <td>${uploadedFilesContent}</td>
-                    </tr>
-                `);
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.crimeName || 'N/A'}</td>
+                                                <td>${formattedcrimeDate}</td>
+                                <td>${item.crimePlace || 'N/A'}</td>
+                                <td>${item.crimeTime || 'N/A'}</td>
+                                <td>${item.Mobile || 'N/A'}</td>
+                                <td>${item.crimeType || 'N/A'}</td>
+                                <td>${item.districtDetails}</td>
+                                <td>${item.UnionName || ''}, ${item.VillageName || ''}</td>
+                                <td>${formattedDate}</td>
+                                <td>${uploadedFilesContent}</td>
+                            </tr>
+                        `);
             });
 
-            // Initialize DataTable after populating rows
             $('#allDataListTable').show();
             $("#allDataListTable").DataTable({
                 "paging": true,
@@ -248,13 +249,16 @@
             });
         }
 
+        // Open video modal on click
+        $(document).on("click", ".open-video", function (e) {
+            e.preventDefault();
+            var videoUrl = $(this).data("url");
+            var fileName = $(this).data("filename");
 
-
+            $("#videoModalTitle").text(fileName);
+            $("#videoSource").attr("src", videoUrl);
+            $("#videoPlayer")[0].load();
+            $("#videoModal").modal("show");
+        });
     </script>
-
-
 }
-
-
-
-

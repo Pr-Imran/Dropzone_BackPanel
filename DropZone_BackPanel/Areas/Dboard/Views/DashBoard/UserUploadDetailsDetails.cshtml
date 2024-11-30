@@ -9,69 +9,128 @@
 }
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<br />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<p><strong>Date:</strong> @ViewData["Date"]</p>
-<p><strong>Hour:</strong> @ViewData["Hour"]</p>
-<table id="userUploadDetailsTable" class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Sl</th>
-            <th>Mobile</th>
-            <th>Crime Type</th>
-            <th>Address</th>
-            <th>Union, Village Name</th>
-            <th>Uploaded At</th>
-            <th>Uploaded Files</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var person in Model.Select((value, index) => new { value, index }))
-        {
+<div class="container">
+    <h2>User Upload Details</h2>
+    <table id="userUploadDetailsTable" class="table table-bordered">
+        <thead>
             <tr>
-                <td>@(person.index + 1)</td> 
-                <td>@person.value.Mobile</td>
-                    <td>@person.value.crimeType</td>
-                    <td>@person.value.districtDetails</td>
-                    <td>@person.value.UnionName, @person.value.VillageName</td>
-                    <td>@person.value.createdAt?.ToString("dd/MM/yyyy hh:mm tt")</td>
-                <td>
-                    @if (person.value.UploadedFiles != null && person.value.UploadedFiles.Any())
-                    {
-                        <ul>
-                            @foreach (var file in person.value.UploadedFiles)
-                            {
-                                <li>
-                                    <a href="@Url.Content("~/ufile/" + System.IO.Path.GetFileName(file.AttachmentUrl))" target="_blank">View File</a>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <span>No files uploaded</span>
-                    }
-                </td>
+                <th>Sl</th>
+                <th>Crime Name</th>
+                <th>Crime Date</th>
+                <th>Crime Place</th>
+                <th>Crime Time</th>
+                <th>Mobile</th>
+                <th>Crime Type</th>
+                <th>Address</th>
+                <th>Union, Village Name</th>
+                <th>Uploaded At</th>
+                <th>Uploaded Files</th>
             </tr>
-        }
-    </tbody>
+        </thead>
+        <tbody>
+            @foreach (var person in Model.Select((value, index) => new { value, index }))
+            {
+                    <tr>
+                        <td>@(person.index + 1)</td>
+                        <td>@person.value.crimeName</td>
+                        <td>@person.value.crimeDate?.ToString("dd/MM/yyyy")</td>
+                        <td>@person.value.crimePlace</td>
+                        <td>@person.value.crimeTime</td>
+                        <td>@person.value.Mobile</td>
+                        <td>@person.value.crimeType</td>
+                        <td>@person.value.districtDetails</td>
+                        <td>@person.value.UnionName, @person.value.VillageName</td>
+                        <td>@person.value.createdAt?.ToString("dd/MM/yyyy hh:mm tt")</td>
+                        <td>
+                        @if (person.value.UploadedFiles != null && person.value.UploadedFiles.Any())
+                        {
+                                    <ul>
+                                @foreach (var file in person.value.UploadedFiles)
+                                {
+                                                <li>
+                                                    <a href="#" class="open-video" 
+                                                                               data-url="@Url.Action("StreamFile", "DashBoard", new { shortUrl = file.stringShortUrl, userIdentifier = person.value.stringMobile })" 
+                                                       >
+                                                       Play 
+                                                    </a>
+                                                </li>
+                                }
+                                    </ul>
+                        }
+                        else
+                        {
+                                    <span>No files uploaded</span>
+                        }
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-</table>
+<!-- Video Modal -->
+<div id="videoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video id="videoPlayer" width="100%" height="auto" controls>
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        $('#userUploadDetailsTable').DataTable({
-            "paging": true,  
-            "lengthChange": true,  
-            "searching": true, 
-            "ordering": true,  
-            "info": true, 
-            "autoWidth": false  
-        });
+   $(document).ready(function () {
+    // Initialize DataTable
+    $('#userUploadDetailsTable').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
     });
+
+    // Open Video in Modal
+    $('.open-video').on('click', function (e) {
+        e.preventDefault();
+        var videoUrl = $(this).data('url');
+        var fileName = $(this).data('filename');
+
+        // Log video URL for debugging
+        console.log("Opening video URL: " + videoUrl);
+
+        // Set video source and title
+        $('#videoSource').attr('src', videoUrl);
+        $('#videoModalTitle').text(fileName);
+
+        // Log file name for debugging
+        console.log("Opening file: " + fileName);
+
+        // Reload video and show modal
+        $('#videoPlayer')[0].load(); // Ensure the video is loaded
+        $('#videoModal').modal('show');
+    });
+
+    // Stop video playback on modal close
+    $('#videoModal').on('hidden.bs.modal', function () {
+        $('#videoPlayer')[0].pause();
+        $('#videoPlayer')[0].currentTime = 0; // Reset video to start
+    });
+});
+
 </script>

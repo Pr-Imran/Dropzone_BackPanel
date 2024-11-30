@@ -1,9 +1,11 @@
-﻿using DropZone_BackPanel.API.Models;
+﻿using DropSpace.Data.Entity.Droper;
+using DropZone_BackPanel.API.Models;
 using DropZone_BackPanel.Context;
 using DropZone_BackPanel.Data.Entity.Droper;
 using DropZone_BackPanel.Data.Entity.MasterData.PoliceMapping;
 using DropZone_BackPanel.Data.Entity.MasterData.PublicMapping;
 using DropZone_BackPanel.ERPServices.PersonData.Interfaces;
+using DropZone_BackPanel.Helpers;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -445,6 +447,10 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                     VillageName = p.village?.villageName,
                     Latitude = p.latitude,
                     Longitude = p.longitude,
+                    crimeName = p.crimeName,
+                    crimeDate = p.crimeDate,
+                    crimePlace = p.crimePlace,
+                    crimeTime = p.crimeTime,
                     createdAt = uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
                     .Select(uf => uf.createdAt)
@@ -455,7 +461,8 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                         {
                             Id = uf.Id,
                             AttachmentUrl = uf.attachmentUrl,
-                            uploadDatetime = uf.createdAt
+                            uploadDatetime = uf.createdAt,
+                            shortUrl= uf.shortUrl,
                         }).ToList(),
                     crimeType = uploadedFiles
                         .Where(uf => uf.personsDataId == p.Id)
@@ -475,12 +482,12 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             // Step 1: Initialize filters
             IQueryable<PoliceThana> policeThanaQuery = _context.Set<PoliceThana>();
 
-            if (rangeId.HasValue && rangeId>0)
+            if (rangeId.HasValue && rangeId > 0)
             {
                 policeThanaQuery = policeThanaQuery.Where(pt => pt.rangeMetroId == rangeId.Value);
             }
 
-            if (districtId.HasValue && districtId>0)
+            if (districtId.HasValue && districtId > 0)
             {
                 policeThanaQuery = policeThanaQuery.Where(pt => pt.divisionDistrictId == districtId.Value);
             }
@@ -500,8 +507,12 @@ namespace DropZone_BackPanel.ERPServices.PersonData
 
             if (!thanaIds.Any())
             {
+                Console.WriteLine("No thanaIds found for the given rangeId.");
                 return new List<PersonDataWithFilesDto>(); // Return empty if no data matches the filter
             }
+
+            // Log the thanaIds
+            Console.WriteLine($"Found {thanaIds.Count} thanaIds for the given rangeId.");
 
             // Step 3: Get Union and Village IDs
             var unionIds = await _context.Set<UnionWard>()
@@ -509,10 +520,28 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 .Select(u => u.Id)
                 .ToListAsync();
 
+            if (!unionIds.Any())
+            {
+                Console.WriteLine("No unionIds found for the given thanaIds.");
+            }
+            else
+            {
+                Console.WriteLine($"Found {unionIds.Count} unionIds for the given thanaIds.");
+            }
+
             var villageIds = await _context.Set<Village>()
                 .Where(v => unionIds.Contains(v.unionWardId))
                 .Select(v => v.Id)
                 .ToListAsync();
+
+            if (!villageIds.Any())
+            {
+                Console.WriteLine("No villageIds found for the given unionIds.");
+            }
+            else
+            {
+                Console.WriteLine($"Found {villageIds.Count} villageIds for the given unionIds.");
+            }
 
             // Step 4: Get PersonsData filtered by Union and Village IDs
             var personData = await _context.Set<PersonsData>()
@@ -520,6 +549,15 @@ namespace DropZone_BackPanel.ERPServices.PersonData
                 .Include(p => p.union)
                 .Include(p => p.village)
                 .ToListAsync();
+
+            if (!personData.Any())
+            {
+                Console.WriteLine("No personData found for the given unionIds or villageIds.");
+            }
+            else
+            {
+                Console.WriteLine($"Found {personData.Count} personData records for the given unionIds or villageIds.");
+            }
 
             // Step 5: Get Uploaded Files for the filtered PersonsData
             var personIds = personData.Select(p => p.Id).ToList();
@@ -532,20 +570,27 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             var data = personData.Select(p => new PersonDataWithFilesDto
             {
                 Id = p.Id,
-                //Name = p.name,
                 Mobile = p.mobile,
+                mobileMsk = string.IsNullOrEmpty(p.mobile) ? string.Empty : IdMasking.Encode(p.mobile),
                 UnionId = p.unionId,
                 UnionName = p.union?.unionName,
                 VillageId = p.villageId,
                 VillageName = p.village?.villageName,
                 Latitude = p.latitude,
                 Longitude = p.longitude,
+                crimeName = p.crimeName,
+                crimeDate = p.crimeDate,
+                crimePlace = p.crimePlace,
+                crimeTime = p.crimeTime,
                 UploadedFiles = uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
                     .Select(uf => new UploadedFileDto
                     {
                         Id = uf.Id,
                         AttachmentUrl = uf.attachmentUrl,
+                        shortUrl = uf.shortUrl,
+                        stringShortUrl = string.IsNullOrEmpty(uf.shortUrl) ? string.Empty : IdMasking.Encode(uf.shortUrl),
+                        mobileMsk = string.IsNullOrEmpty(p.mobile) ? string.Empty : IdMasking.Encode(p.mobile)
                     }).ToList(),
                 crimeType = uploadedFiles
                     .Where(uf => uf.personsDataId == p.Id)
@@ -594,6 +639,23 @@ namespace DropZone_BackPanel.ERPServices.PersonData
             }
 
             return data;
+        }
+
+        public async Task<UploadedFileDto?> GetUploadedFileByShortUrlAsync(string shortUrl, string userIdentifier)
+        {
+            // Example: Query database or service to fetch the file by shortUrl and userIdentifier
+            var file = await _context.uploadedFiles
+                .Where(f => f.shortUrl == shortUrl && f.personsData.mobile == userIdentifier)
+                .Select(f => new UploadedFileDto
+                {
+                    Id = f.Id,
+                    AttachmentUrl = f.attachmentUrl,
+                    shortUrl = f.shortUrl,
+                    newFileName=f.newFileName
+                })
+                .FirstOrDefaultAsync();
+
+            return file;
         }
 
     }

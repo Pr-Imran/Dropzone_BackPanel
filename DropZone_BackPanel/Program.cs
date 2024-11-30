@@ -21,6 +21,7 @@ using DropZone_BackPanel.ERPServices.MasterData;
 using DropZone_BackPanel.Services.MasterData.Interfaces;
 using DropZone_BackPanel.ERPServices.ReportData.Interface;
 using DropZone_BackPanel.ERPServices.ReportData;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +107,11 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromHours(24);
     options.Cookie.IsEssential = true;
 });
+builder.Services.Configure<Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider>(options =>
+{
+    options.Mappings[".mp4"] = "video/mp4";
+});
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
@@ -163,6 +169,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors(builder =>
+    builder.WithOrigins("https://localhost:7073")
+           .AllowAnyMethod()
+           .AllowAnyHeader());
+
+
 app.UseCookiePolicy();
 app.UseSession();
 app.UseRouting();
